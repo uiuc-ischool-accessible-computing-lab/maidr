@@ -1,6 +1,24 @@
 class Histogram {
   constructor() {
     // initialize main data: data, elements
+    let elements = null;
+    if ('elements' in singleMaidr) {
+      elements = singleMaidr.elements;
+    }
+
+    if (elements == null) {
+      constants.hasRect = 0;
+      logError.LogAbsentElement('elements');
+    }
+
+    let data = null;
+    if ('data' in singleMaidr) {
+      data = singleMaidr.data;
+    }
+    if (elements && data && elements.length != data.length) {
+      constants.hasRect = 0;
+      logError.logDifferentLengths('elements', 'data');
+    }
 
     // data (required)
     if ('data' in singleMaidr) {

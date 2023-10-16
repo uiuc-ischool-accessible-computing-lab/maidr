@@ -3,6 +3,16 @@ class LinePlot {
     this.SetLineLayer();
     this.SetAxes();
 
+    let elements = null;
+    if ('elements' in singleMaidr) {
+      elements = singleMaidr.elements;
+    }
+
+    if (elements == null) {
+      constants.hasRect = 0;
+      logError.LogAbsentElement('elements');
+    }
+
     let legendX = '';
     let legendY = '';
     if ('axes' in singleMaidr) {
@@ -56,43 +66,35 @@ class LinePlot {
   }
 
   SetLineLayer() {
-    let len = maidr.elements.length;
-    this.plotLine = maidr.elements[len - 1];
+    if ('elements' in singleMaidr) {
+      let len = maidr.elements.length;
+      this.plotLine = maidr.elements[len - 1];
+    }
     if (typeof this.plotLine !== 'undefined') {
       let pointCoords = this.GetPointCoords();
-      let pointValues = this.GetPoints();
 
       this.chartLineX = pointCoords[0]; // x coordinates of curve
       this.chartLineY = pointCoords[1]; // y coordinates of curve
-
-      this.pointValuesX = pointValues[0]; // actual values of x
-      this.pointValuesY = pointValues[1]; // actual values of y
-
-      this.curveMinY = Math.min(...this.pointValuesY);
-      this.curveMaxY = Math.max(...this.pointValuesY);
-      constants.minX = 0;
-      constants.maxX = this.pointValuesX.length - 1;
-      constants.minY = this.curveMinY;
-      constants.maxY = this.curveMaxY;
-
-      constants.autoPlayRate = Math.min(
-        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-        constants.MAX_SPEED
-      );
-      constants.DEFAULT_SPEED = constants.autoPlayRate;
-
-      // this.gradient = this.GetGradient();
     }
-  }
 
-  SetMinMax() {
+    let pointValues = this.GetPoints();
+    this.pointValuesX = pointValues[0]; // actual values of x
+    this.pointValuesY = pointValues[1]; // actual values of y
+
+    this.curveMinY = Math.min(...this.pointValuesY);
+    this.curveMaxY = Math.max(...this.pointValuesY);
     constants.minX = 0;
     constants.maxX = this.pointValuesX.length - 1;
     constants.minY = this.curveMinY;
     constants.maxY = this.curveMaxY;
-    constants.autoPlayRate = Math.ceil(
-      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
+
+    constants.autoPlayRate = Math.min(
+      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
+      constants.MAX_SPEED
     );
+    constants.DEFAULT_SPEED = constants.autoPlayRate;
+
+    // this.gradient = this.GetGradient();
   }
 
   GetPointCoords() {

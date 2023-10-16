@@ -59,7 +59,7 @@ class Constants {
   // advanced user settings
   showRect = 1; // true / false
   hasRect = 1; // true / false
-  hasSmooth = 1; // true / false (for smooth line points)
+  hasSmooth = 1; // true / false
   duration = 0.3;
   outlierDuration = 0.06;
   autoPlayOutlierRate = 50; // ms per tone

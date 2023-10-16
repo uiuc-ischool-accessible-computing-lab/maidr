@@ -1,90 +1,107 @@
-document.addEventListener('DOMContentLoaded', function (e) {
-  // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
-});
-
 class ScatterPlot {
   constructor() {
     this.prefix = this.GetPrefix();
-    // this.SetVisualHighlight();
+    this.SetVisualHighlight();
     this.SetScatterLayer();
     this.SetLineLayer();
     this.SetAxes();
     this.svgScaler = this.GetSVGScaler();
   }
 
-  // SetVisualHighlight() {
-  //   let point_index = this.GetElementIndex('point');
-  //   let smooth_index = this.GetElementIndex('smooth');
-  //   if (point_index && smooth_index && elements < 2) {
-  //     logError.LogAbsentElement('point or/and smooth line elements');
-  //   }
-  //   if (point_index != -1) {
-  //     this.CheckData(point_index);
-  //   }
+  SetVisualHighlight() {
+    let point_index = this.GetElementIndex('point');
+    let smooth_index = this.GetElementIndex('smooth');
+    if (point_index && smooth_index && elements < 2) {
+      logError.LogAbsentElement('point or/and smooth line elements');
+    }
+    if (point_index != -1) {
+      this.CheckData(point_index);
+    }
 
-  //   if (smooth_index != -1) {
-  //     this.CheckData(smooth_index);
-  //   }
-  // }
+    if (smooth_index != -1) {
+      this.CheckData(smooth_index);
+    }
+  }
 
-  // CheckData(i) {
-  //   let elements = 'elements' in singleMaidr ? singleMaidr.elements : null;
+  // stop visual highlight for both layers even if only one layer is absent to avoid confusion
+  CheckData(i) {
+    let elements = 'elements' in singleMaidr ? singleMaidr.elements : null;
 
-  //   // elements does not exist at all
-  //   if (elements == null) {
-  //     logError.LogAbsentElement('elements');
-  //     if (i == 0) constants.hasRect = 0;
-  //     if (i == 1) constants.hasSmooth = 0;
-  //     return;
-  //   }
+    // elements does not exist at all
+    if (elements == null) {
+      logError.LogAbsentElement('elements');
+      // if (singleMaidr.type[i] == 'point') {
+      //   constants.hasRect = 0;
+      // } else if (singleMaidr.type[i] == 'smooth') {
+      //   constants.hasSmooth = 0;
+      // }
+      constants.hasRect = 0;
+      constants.hasSmooth = 0;
+      return;
+    }
 
-  //   // elements exists but is empty
-  //   if (elements.length == 0) {
-  //     logError.LogAbsentElement('elements');
-  //     if (i == 0) constants.hasRect = 0;
-  //     if (i == 1) constants.hasSmooth = 0;
-  //     return;
-  //   }
+    // elements exists but is empty
+    if (elements.length == 0) {
+      logError.LogAbsentElement('elements');
+      // if (singleMaidr.type[i] == 'point') {
+      //   constants.hasRect = 0;
+      // } else if (singleMaidr.type[i] == 'smooth') {
+      //   constants.hasSmooth = 0;
+      // }
+      constants.hasRect = 0;
+      constants.hasSmooth = 0;
+      return;
+    }
 
-  //   // elements exists but is not an array
-  //   if (!Array.isArray(elements)) {
-  //     logError.LogNotArray('elements');
-  //     if (i == 0) constants.hasRect = 0;
-  //     if (i == 1) constants.hasSmooth = 0;
-  //     return;
-  //   }
+    // elements exists but is not an array
+    if (!Array.isArray(elements)) {
+      logError.LogNotArray('elements');
+      // if (singleMaidr.type[i] == 'point') {
+      //   constants.hasRect = 0;
+      // } else if (singleMaidr.type[i] == 'smooth') {
+      //   constants.hasSmooth = 0;
+      // }
+      constants.hasRect = 0;
+      constants.hasSmooth = 0;
+      return;
+    }
 
-  //   // elements.length is more than 2
-  //   if (elements.length > 2) {
-  //     logError.LogTooManyElements('elements', 2);
-  //   }
+    // elements.length is more than 2
+    if (elements.length > 2) {
+      logError.LogTooManyElements('elements', 2);
+    }
 
-  //   if ('data' in singleMaidr) {
-  //     if (i == 0) {
-  //       // check point elements
-  //       if (
-  //         singleMaidr.data[i] == null ||
-  //         singleMaidr.data[i].length != singleMaidr.elements[i].length
-  //       ) {
-  //         constants.hasRect = 0;
-  //         logError.LogDifferentLengths('point data', 'point elements');
-  //       }
-  //     } else if (i == 1) {
-  //       // check smooth line elements
-  //       if (
-  //         singleMaidr.data[i] == null ||
-  //         (!Array.isArray(singleMaidr.data[i]) &&
-  //           singleMaidr.data[i].length != this.chartLineX.length)
-  //       ) {
-  //         constants.hasSmooth = 0;
-  //         logError.LogDifferentLengths(
-  //           'smooth line data',
-  //           'smooth line elements'
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
+    if (singleMaidr.elements.length != singleMaidr.type.length) {
+      constants.hasRect = 0;
+      constants.hasSmooth = 0;
+      if (singleMaidr.elements.length > singleMaidr.type.length) {
+        logError.LogDifferentLengths('elements', 'type');
+        throw new Error('elements and type have different lengths');
+      }
+    }
+
+    // if ('data' in singleMaidr) {
+    //   if (singleMaidr.type[i] == 'point') {
+    //     // check point elements
+    //     if (singleMaidr.data[i] == null) {
+    //       constants.hasRect = 0;
+    //       logError.LogDifferentLengths('point data', 'point elements');
+    //     }
+    //   } else if (singleMaidr.type[i] == 'smooth') {
+    //     // check smooth line elements
+    //     if (
+    //       singleMaidr.data[i] == null ||
+    //       !Array.isArray(singleMaidr.data[i])
+    //     ) {
+    //       constants.hasSmooth = 0;
+    //       logError.LogDifferentLengths(
+    //         'smooth line data',
+    //         'smooth line elements'
+    //       );
+    //     }
+    //   }
+    // }
+  }
 
   SetAxes() {
     this.x_group_label = '';
@@ -130,18 +147,17 @@ class ScatterPlot {
     }
     if (typeof this.plotPoints !== 'undefined') {
       let svgPointCoords = this.GetSvgPointCoords();
-      let pointValues = this.GetPointValues();
 
       this.chartPointsX = svgPointCoords[0]; // x coordinates of points
       this.chartPointsY = svgPointCoords[1]; // y coordinates of points
-
-      this.x = pointValues[0]; // actual values of x
-      this.y = pointValues[1]; // actual values of y
-
-      // for sound weight use
-      this.points_count = pointValues[2]; // number of each points
-      this.max_count = pointValues[3];
     }
+
+    let pointValues = this.GetPointValues();
+    this.x = pointValues[0]; // actual values of x
+    this.y = pointValues[1]; // actual values of y
+    // for sound weight use
+    this.points_count = pointValues[2]; // number of each points
+    this.max_count = pointValues[3];
   }
 
   SetLineLayer() {
@@ -154,11 +170,13 @@ class ScatterPlot {
     }
     if (typeof this.plotLine !== 'undefined') {
       let svgLineCoords = this.GetSvgLineCoords();
-      let smoothCurvePoints = this.GetSmoothCurvePoints();
 
       this.chartLineX = svgLineCoords[0]; // x coordinates of curve
       this.chartLineY = svgLineCoords[1]; // y coordinates of curve
+    }
 
+    let smoothCurvePoints = this.GetSmoothCurvePoints();
+    if (smoothCurvePoints) {
       this.curveX = smoothCurvePoints[0]; // actual values of x
       this.curvePoints = smoothCurvePoints[1]; // actual values of y
 
@@ -230,7 +248,6 @@ class ScatterPlot {
     // but first, are we even in an svg that can be scaled?
     let isSvg = false;
     let element = this.plotPoints[0]; // a random start, may as well be the first
-    console.log(element);
     while (element) {
       if (element.tagName.toLowerCase() == 'body') {
         break;

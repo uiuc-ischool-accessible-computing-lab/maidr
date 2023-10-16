@@ -16,6 +16,16 @@ class BoxPlot {
       'upper_outlier',
     ];
 
+    let elements = null;
+    if ('elements' in singleMaidr) {
+      elements = singleMaidr.elements;
+    }
+
+    if (elements == null) {
+      constants.hasRect = 0;
+      logError.LogAbsentElement('elements');
+    }
+
     if ('axes' in singleMaidr) {
       if ('x' in singleMaidr.axes) {
         if ('level' in singleMaidr.axes.x) {

@@ -195,6 +195,10 @@ class Control {
             }
             display.displayInfo('y label', ylabel);
             pressedL = false;
+          } else if (e.key == 'f') {
+            if (constants.chartType == 'heat') {
+              display.displayInfo('fill', plot.fill);
+            }
           } else if (e.key == 't') {
             // T: title
             display.displayInfo('title', plot.title);
@@ -1592,8 +1596,11 @@ class Control {
       window.position = new Position(-1, -1);
       window.plot = new ScatterPlot();
       let audio = new Audio();
-      let layer0Point = new Layer0Point();
-      let layer1Point = new Layer1Point();
+      let layer0Point, layer1Point;
+      if (constants.hasRect) {
+        layer0Point = new Layer0Point();
+        layer1Point = new Layer1Point();
+      }
 
       let lastPlayed = ''; // for autoplay use
       constants.lastx = 0; // for scatter point layer autoplay use
@@ -1869,7 +1876,7 @@ class Control {
         if (constants.showDisplay) {
           display.displayValues(plot);
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasRect) {
           layer0Point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
@@ -1882,9 +1889,9 @@ class Control {
           display.displayValues(plot);
         }
         if (constants.showRect) {
-          if (constants.chartType == 'point') {
+          if (constants.chartType == 'point' && constants.hasRect) {
             layer0Point.UpdatePointDisplay();
-          } else {
+          } else if (constants.chartType == 'smooth' && constants.hasSmooth) {
             layer1Point.UpdatePointDisplay();
           }
         }
@@ -1899,7 +1906,7 @@ class Control {
         if (constants.showDisplayInBraille) {
           display.displayValues(plot);
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasSmooth) {
           layer1Point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
@@ -2295,7 +2302,10 @@ class Control {
     } else if (singleMaidr.type == 'line') {
       window.position = new Position(-1, -1);
       window.plot = new LinePlot();
-      let point = new Point();
+      let point;
+      if (constants.hasRect) {
+        point = new Point();
+      }
 
       let audio = new Audio();
 
@@ -2499,7 +2509,7 @@ class Control {
         if (constants.showDisplay) {
           display.displayValues(plot);
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasRect) {
           point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
@@ -2510,7 +2520,7 @@ class Control {
         if (constants.showDisplayInAutoplay) {
           display.displayValues(plot);
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasRect) {
           point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
@@ -2525,7 +2535,7 @@ class Control {
         if (constants.showDisplayInBraille) {
           display.displayValues(plot);
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasRect) {
           point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
