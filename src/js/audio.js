@@ -1,7 +1,11 @@
-// Audio class
-// Sets up audio stuff (compressor, gain),
-// sets up an oscillator that has good falloff (no clipping sounds) and can be instanced to be played anytime and can handle overlaps,
-// sets up an actual playTone function that plays tones based on current chart position
+/**
+ * Audio class
+ * Sets up audio stuff (compressor, gain),
+ * sets up an oscillator that has good falloff (no clipping sounds) and can be instanced to be played anytime and can handle overlaps,
+ * sets up an actual playTone function that plays tones based on current chart position
+ *
+ * @class
+ */
 class Audio {
   constructor() {
     this.AudioContext = window['AudioContext'] || window['webkitAudioContext'];
@@ -9,6 +13,10 @@ class Audio {
     this.compressor = this.compressorSetup(this.audioContext);
   }
 
+  /**
+   * Sets up a dynamics compressor for better audio quality.
+   * @returns {DynamicsCompressorNode} The created compressor.
+   */
   compressorSetup() {
     let compressor = this.audioContext.createDynamicsCompressor(); // create compressor for better audio quality
 
@@ -26,9 +34,17 @@ class Audio {
   }
 
   // an oscillator is created and destroyed after some falloff
-  playTone() {
+  /**
+   * Plays a tone based on the current chart type and position.
+   */
+  playTone(params = null) {
     let currentDuration = constants.duration;
     let volume = constants.vol;
+    if (params != null) {
+      if (params.volScale != null) {
+        volume = params.volScale * constants.vol;
+      }
+    }
 
     let rawPanning = 0;
     let rawFreq = 0;
@@ -318,6 +334,14 @@ class Audio {
     }
   }
 
+  /**
+   * Plays an oscillator with the given frequency, duration, panning, volume, and wave type.
+   * @param {number} frequency - The frequency of the oscillator.
+   * @param {number} currentDuration - The duration of the oscillator in seconds.
+   * @param {number} panning - The panning value of the oscillator.
+   * @param {number} [currentVol=1] - The volume of the oscillator.
+   * @param {string} [wave='sine'] - The wave type of the oscillator.
+   */
   playOscillator(
     frequency,
     currentDuration,
@@ -385,6 +409,14 @@ class Audio {
     }, currentDuration * 1e3 * 2);
   }
 
+  /**
+   * Plays a smooth sound with the given frequency array, duration, panning array, volume, and wave type.
+   * @param {number[]} freqArr - The array of frequencies to play.
+   * @param {number} currentDuration - The duration of the sound in seconds.
+   * @param {number[]} panningArr - The array of panning values.
+   * @param {number} currentVol - The volume of the sound.
+   * @param {string} wave - The type of wave to use for the oscillator.
+   */
   playSmooth(
     freqArr = [600, 500, 400, 300],
     currentDuration = 2,
@@ -445,6 +477,9 @@ class Audio {
     }, currentDuration * 1e3 * 2);
   }
 
+  /**
+   * Plays a null frequency sound.
+   */
   PlayNull() {
     let frequency = constants.NULL_FREQUENCY;
     let duration = constants.duration;
@@ -469,6 +504,12 @@ class Audio {
     );
   }
 
+  /**
+   * Plays a pleasant end chime.
+   * @function
+   * @memberof audio
+   * @returns {void}
+   */
   playEnd() {
     // play a pleasent end chime. We'll use terminal chime from VSCode
     if (constants.canPlayEndChime) {
@@ -498,6 +539,13 @@ class Audio {
     }
   }
 
+  /**
+   * Stops the smooth gain and cancels any scheduled values.
+   * @function
+   * @memberof Audio
+   * @instance
+   * @returns {void}
+   */
   KillSmooth() {
     if (constants.smoothId) {
       this.smoothGain.gain.cancelScheduledValues(0);
@@ -512,6 +560,15 @@ class Audio {
     }
   }
 
+  /**
+   * Goes between min and max proportional to how val goes between a and b.
+   * @param {number} val - The value to slide between a and b.
+   * @param {number} a - The start value of the slide.
+   * @param {number} b - The end value of the slide.
+   * @param {number} min - The minimum value of the slide.
+   * @param {number} max - The maximum value of the slide.
+   * @returns {number} The new value between min and max.
+   */
   SlideBetween(val, a, b, min, max) {
     // helper function that goes between min and max proportional to how val goes between a and b
     let newVal = ((val - a) / (b - a)) * (max - min) + min;

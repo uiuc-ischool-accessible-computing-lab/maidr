@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>scatterplot.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Audio.html">Audio</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#KillSmooth">KillSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#PlayNull">PlayNull</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#SlideBetween">SlideBetween</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#compressorSetup">compressorSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playOscillator">playOscillator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playSmooth">playSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playTone">playTone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BarChart.html">BarChart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetColumns">GetColumns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetData">GetData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegend">GetLegend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegendFromManualData">GetLegendFromManualData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#ParseInnerHTML">ParseInnerHTML</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxPlot.html">BoxPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#CleanData">CleanData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentPoints">GetBoxplotSegmentPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentType">GetBoxplotSegmentType</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetPlotBounds">GetPlotBounds</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetSectionKey">GetSectionKey</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#convertBoundingClientRectToObj">convertBoundingClientRectToObj</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxplotRect.html">BoxplotRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxplotRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Constants.html">Constants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Control.html">Control</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Control.html#GetNextPrevFocusable">GetNextPrevFocusable</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Description.html">Description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#CreateComponent">CreateComponent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Destroy">Destroy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Display.html">Display</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#AllocateCharacters">AllocateCharacters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#CharLenImpact">CharLenImpact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#SetBraille">SetBraille</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#UpdateBraillePos">UpdateBraillePos</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#announceText">announceText</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#changeChartLayer">changeChartLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#displayInfo">displayInfo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleBrailleMode">toggleBrailleMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleSonificationMode">toggleSonificationMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleTextMode">toggleTextMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMap.html">HeatMap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getCaption">getCaption</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getFill">getFill</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getGroupLabels">getGroupLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getHeatMapData">getHeatMapData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getRGBNorm">getRGBNorm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getSubtitle">getSubtitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getXLabels">getXLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getYLabels">getYLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#updateConstants">updateConstants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMapRect.html">HeatMapRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMapRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Helper.html">Helper</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Helper.html#.containsObject">containsObject</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Histogram.html">Histogram</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer0Point.html">Layer0Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer1Point.html">Layer1Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LinePlot.html">LinePlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPointCoords">GetPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPoints">GetPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetMinMax">SetMinMax</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LogError.html">LogError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogAbsentElement">LogAbsentElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogCriticalElement">LogCriticalElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogDifferentLengths">LogDifferentLengths</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogNotArray">LogNotArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogTooManyElements">LogTooManyElements</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Menu.html">Menu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#CreateMenu">CreateMenu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#LoadDataFromLocalStorage">LoadDataFromLocalStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#SaveData">SaveData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Point.html">Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Position.html">Position</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Resources.html">Resources</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Resources.html#GetString">GetString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Review.html">Review</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Review.html#ToggleReviewMode">ToggleReviewMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ScatterPlot.html">ScatterPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetDataXYFormat">GetDataXYFormat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetElementIndex">GetElementIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetGradient">GetGradient</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPointValues">GetPointValues</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPrefix">GetPrefix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSmoothCurvePoints">GetSmoothCurvePoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgLineCoords">GetSvgLineCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgPointCoords">GetSvgPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Segmented.html">Segmented</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateAllLevel">CreateAllLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateSummaryLevel">CreateSummaryLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#ParseData">ParseData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Tracker.html">Tracker</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DataSetup">DataSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#Delete">Delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DownloadTrackerData">DownloadTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#GetTrackerData">GetTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#LogEvent">LogEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#SaveTrackerData">SaveTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#isUndefinedOrNull">isUndefinedOrNull</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#CreateChartComponents">CreateChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyChartComponents">DestroyChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyMaidr">DestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#FocusBeforeOrAfter">FocusBeforeOrAfter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#InitMaidr">InitMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#KillAutoplayEvent">KillAutoplayEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#SetEvents">SetEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeDestroyMaidr">ShouldWeDestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeInitMaidr">ShouldWeInitMaidr</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">scatterplot.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>document.addEventListener('DOMContentLoaded', function (e) {
+  // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
+});
+
+/**
+ * A class representing a scatter plot.
+ * @class
+ */
+class ScatterPlot {
+  /**
+   * Creates a new Scatterplot object.
+   * @constructor
+   */
+  constructor() {
+    this.prefix = this.GetPrefix();
+    // this.SetVisualHighlight();
+    this.SetScatterLayer();
+    this.SetLineLayer();
+    this.SetAxes();
+    this.svgScaler = this.GetSVGScaler();
+  }
+
+  // SetVisualHighlight() {
+  //   let point_index = this.GetElementIndex('point');
+  //   let smooth_index = this.GetElementIndex('smooth');
+  //   if (point_index &amp;&amp; smooth_index &amp;&amp; elements &lt; 2) {
+  //     logError.LogAbsentElement('point or/and smooth line elements');
+  //   }
+  //   if (point_index != -1) {
+  //     this.CheckData(point_index);
+  //   }
+
+  //   if (smooth_index != -1) {
+  //     this.CheckData(smooth_index);
+  //   }
+  // }
+
+  // CheckData(i) {
+  //   let elements = 'elements' in singleMaidr ? singleMaidr.elements : null;
+
+  //   // elements does not exist at all
+  //   if (elements == null) {
+  //     logError.LogAbsentElement('elements');
+  //     if (i == 0) constants.hasRect = 0;
+  //     if (i == 1) constants.hasSmooth = 0;
+  //     return;
+  //   }
+
+  //   // elements exists but is empty
+  //   if (elements.length == 0) {
+  //     logError.LogAbsentElement('elements');
+  //     if (i == 0) constants.hasRect = 0;
+  //     if (i == 1) constants.hasSmooth = 0;
+  //     return;
+  //   }
+
+  //   // elements exists but is not an array
+  //   if (!Array.isArray(elements)) {
+  //     logError.LogNotArray('elements');
+  //     if (i == 0) constants.hasRect = 0;
+  //     if (i == 1) constants.hasSmooth = 0;
+  //     return;
+  //   }
+
+  //   // elements.length is more than 2
+  //   if (elements.length > 2) {
+  //     logError.LogTooManyElements('elements', 2);
+  //   }
+
+  //   if ('data' in singleMaidr) {
+  //     if (i == 0) {
+  //       // check point elements
+  //       if (
+  //         singleMaidr.data[i] == null ||
+  //         singleMaidr.data[i].length != singleMaidr.elements[i].length
+  //       ) {
+  //         constants.hasRect = 0;
+  //         logError.LogDifferentLengths('point data', 'point elements');
+  //       }
+  //     } else if (i == 1) {
+  //       // check smooth line elements
+  //       if (
+  //         singleMaidr.data[i] == null ||
+  //         (!Array.isArray(singleMaidr.data[i]) &amp;&amp;
+  //           singleMaidr.data[i].length != this.chartLineX.length)
+  //       ) {
+  //         constants.hasSmooth = 0;
+  //         logError.LogDifferentLengths(
+  //           'smooth line data',
+  //           'smooth line elements'
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
+
+  /**
+   * Sets the x and y group labels and title for the scatterplot based on the data in singleMaidr.
+   */
+  SetAxes() {
+    this.x_group_label = '';
+    this.y_group_label = '';
+    this.title = '';
+    if ('labels' in singleMaidr) {
+      if ('x' in singleMaidr.labels) {
+        this.x_group_label = singleMaidr.labels.x;
+      }
+      if ('y' in singleMaidr.labels) {
+        this.y_group_label = singleMaidr.labels.y;
+      }
+      if ('title' in singleMaidr.labels) {
+        this.title = singleMaidr.labels.title;
+      }
+    }
+    if ('axes' in singleMaidr) {
+      if ('x' in singleMaidr.axes) {
+        if (this.x_group_label == '') {
+          this.x_group_label = singleMaidr.axes.x.label;
+        }
+      }
+      if ('y' in singleMaidr.axes) {
+        if (this.y_group_label == '') {
+          this.y_group_label = singleMaidr.axes.y.label;
+        }
+      }
+    }
+    if ('title' in singleMaidr) {
+      if (this.title == '') {
+        this.title = singleMaidr.title;
+      }
+    }
+  }
+
+  /**
+   * Sets the scatter layer for the chart.
+   * @function
+   * @memberof scatterplot
+   * @returns {void}
+   */
+  SetScatterLayer() {
+    // initially set as smooth layer (layer 2), if possible
+    let elIndex = this.GetElementIndex('point');
+    if (elIndex != -1) {
+      this.plotPoints = singleMaidr.elements[elIndex];
+    } else if (singleMaidr.type == 'point') {
+      this.plotPoints = singleMaidr.elements;
+    }
+    if (typeof this.plotPoints !== 'undefined') {
+      let svgPointCoords = this.GetSvgPointCoords();
+      let pointValues = this.GetPointValues();
+
+      this.chartPointsX = svgPointCoords[0]; // x coordinates of points
+      this.chartPointsY = svgPointCoords[1]; // y coordinates of points
+
+      this.x = pointValues[0]; // actual values of x
+      this.y = pointValues[1]; // actual values of y
+
+      // for sound weight use
+      this.points_count = pointValues[2]; // number of each points
+      this.max_count = pointValues[3];
+    }
+  }
+
+  /**
+   * Sets the plot line layer for the scatterplot.
+   */
+  SetLineLayer() {
+    // layer = 2, smooth layer (from singleMaidr types)
+    let elIndex = this.GetElementIndex('smooth');
+    if (elIndex != -1) {
+      this.plotLine = singleMaidr.elements[elIndex];
+    } else if (singleMaidr.type == 'smooth') {
+      this.plotLine = singleMaidr.elements;
+    }
+    if (typeof this.plotLine !== 'undefined') {
+      let svgLineCoords = this.GetSvgLineCoords();
+      let smoothCurvePoints = this.GetSmoothCurvePoints();
+
+      this.chartLineX = svgLineCoords[0]; // x coordinates of curve
+      this.chartLineY = svgLineCoords[1]; // y coordinates of curve
+
+      this.curveX = smoothCurvePoints[0]; // actual values of x
+      this.curvePoints = smoothCurvePoints[1]; // actual values of y
+
+      this.curveMinY = Math.min(...this.curvePoints);
+      this.curveMaxY = Math.max(...this.curvePoints);
+      this.gradient = this.GetGradient();
+    }
+  }
+
+  /**
+   * Returns an array of X and Y coordinates of the plot points.
+   * @returns {Array&lt;Array&lt;number>>} An array of X and Y coordinates.
+   */
+  GetSvgPointCoords() {
+    let points = new Map();
+
+    for (let i = 0; i &lt; this.plotPoints.length; i++) {
+      let x = parseFloat(this.plotPoints[i].getAttribute(this.prefix + 'x')); // .toFixed(1);
+      let y = parseFloat(this.plotPoints[i].getAttribute(this.prefix + 'y'));
+      if (!points.has(x)) {
+        points.set(x, new Set([y]));
+      } else {
+        points.get(x).add(y);
+      }
+    }
+
+    points = new Map(
+      [...points].sort(function (a, b) {
+        return a[0] - b[0];
+      })
+    );
+
+    points.forEach(function (value, key) {
+      points[key] = Array.from(value).sort(function (a, b) {
+        return a - b;
+      });
+    });
+
+    let X = [...points.keys()];
+
+    let Y = [];
+    for (let i = 0; i &lt; X.length; i++) {
+      Y.push(points[X[i]]);
+    }
+
+    return [X, Y];
+  }
+
+  /**
+   * Returns the index of the specified element in the singleMaidr object.
+   * @param {string} elementName - The name of the element to search for.
+   * @returns {number} - The index of the element in the singleMaidr object, or -1 if not found.
+   */
+  GetElementIndex(elementName = 'point') {
+    let elIndex = -1;
+    if ('type' in singleMaidr) {
+      elIndex = singleMaidr.type.indexOf(elementName);
+    }
+    return elIndex;
+  }
+
+  /**
+   * Determines the format of the data at the given index and returns it as either an object or an array.
+   * @param {number} dataIndex - The index of the data to check.
+   * @returns {string} - The format of the data as either 'object' or 'array'.
+   */
+  GetDataXYFormat(dataIndex) {
+    // detect if data is in form [{x: 1, y: 2}, {x: 2, y: 3}] (object) or {x: [1, 2], y: [2, 3]]} (array)
+    let xyFormat = 'array';
+    if (singleMaidr.data[dataIndex]) {
+      if (Array.isArray(singleMaidr.data[dataIndex])) {
+        xyFormat = 'object';
+      }
+    }
+    return xyFormat;
+  }
+
+  /**
+   * Returns an array of the X and Y scales of the first SVG element containing the plot points.
+   * @returns {Array&lt;number>} An array containing the X and Y scales of the first SVG element containing the plot points.
+   */
+  GetSVGScaler() {
+    let scaleX = 1;
+    let scaleY = 1;
+    // start with some square (first), look all the way up the parents to the svg, and record any scales along the way
+
+    // but first, are we even in an svg that can be scaled?
+    let isSvg = false;
+    let element = this.plotPoints[0]; // a random start, may as well be the first
+    console.log(element);
+    while (element) {
+      if (element.tagName.toLowerCase() == 'body') {
+        break;
+      }
+      if (element.tagName &amp;&amp; element.tagName.toLowerCase() === 'svg') {
+        isSvg = true;
+      }
+      element = element.parentNode;
+    }
+
+    if (isSvg) {
+      let element = this.plotPoints[0]; // a random start, may as well be the first
+      while (element) {
+        if (element.tagName.toLowerCase() == 'body') {
+          break;
+        }
+        if (element.getAttribute('transform')) {
+          let transform = element.getAttribute('transform');
+          let match = transform.match(
+            /scale\((-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)\)/
+          );
+          if (match) {
+            if (!isNaN(match[1])) {
+              scaleX *= parseFloat(match[1]);
+            }
+            if (!isNaN(match[3])) {
+              scaleY *= parseFloat(match[3]);
+            }
+          }
+        }
+        element = element.parentNode;
+      }
+    }
+
+    return [scaleX, scaleY];
+  }
+
+  /**
+   * Returns a prefix based on the element type.
+   * @returns {string} The prefix.
+   */
+  GetPrefix() {
+    let elIndex = this.GetElementIndex('point');
+    let element;
+    if (elIndex != -1) {
+      element = singleMaidr.elements[elIndex][0];
+    } else if (singleMaidr.type == 'point') {
+      element = singleMaidr.elements[0];
+    }
+    let prefix = '';
+    if ('element' in singleMaidr &amp;&amp; element.tagName.toLowerCase() == 'circle') {
+      prefix = 'c';
+    }
+    return prefix;
+  }
+
+  /**
+   * Retrieves x and y values from data and returns them in a specific format.
+   * @returns {Array} An array containing X, Y, points_count, and max_points.
+   */
+  GetPointValues() {
+    let points = new Map(); // keep track of x and y values
+
+    let xValues = [];
+    let yValues = [];
+
+    // prepare to fetch data from the correct index in the correct format
+    let elIndex = this.GetElementIndex('point');
+    let xyFormat = this.GetDataXYFormat(elIndex);
+
+    let data;
+    if (elIndex > -1) {
+      // data comes directly as an array, in a 'point' layer, so fetch directly as an array from that index
+      data = singleMaidr.data[elIndex];
+    } else if (singleMaidr.type == 'point') {
+      // data comes directly as an array, no 'point' layer, so fetch directly as an array
+      data = singleMaidr.data;
+    }
+    if (typeof data !== 'undefined') {
+      // assuming we got something, loop through the data and extract the x and y values
+
+      if (xyFormat == 'array') {
+        if ('x' in singleMaidr.data[elIndex]) {
+          xValues = singleMaidr.data[elIndex]['x'];
+        }
+        if ('y' in singleMaidr.data[elIndex]) {
+          yValues = singleMaidr.data[elIndex]['y'];
+        }
+      } else if (xyFormat == 'object') {
+        for (let i = 0; i &lt; singleMaidr.data[elIndex].length; i++) {
+          let x = singleMaidr.data[elIndex][i]['x'];
+          let y = singleMaidr.data[elIndex][i]['y'];
+          xValues.push(x);
+          yValues.push(y);
+        }
+      }
+
+      for (let i = 0; i &lt; xValues.length; i++) {
+        let x = xValues[i];
+        let y = yValues[i];
+        if (!points.has(x)) {
+          points.set(x, new Map([[y, 1]]));
+        } else {
+          if (points.get(x).has(y)) {
+            let mapy = points.get(x);
+            mapy.set(y, mapy.get(y) + 1);
+          } else {
+            points.get(x).set(y, 1);
+          }
+        }
+      }
+
+      constants.minX = 0;
+      constants.maxX = [...new Set(xValues)].length;
+
+      constants.minY = Math.min(...yValues);
+      constants.maxY = Math.max(...yValues);
+
+      constants.autoPlayRate = Math.min(
+        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
+        constants.MAX_SPEED
+      );
+      constants.DEFAULT_SPEED = constants.autoPlayRate;
+      if (constants.autoPlayRate &lt; constants.MIN_SPEED) {
+        constants.MIN_SPEED = constants.autoPlayRate;
+      }
+
+      points = new Map(
+        [...points].sort(function (a, b) {
+          return a[0] - b[0];
+        })
+      );
+
+      points.forEach(function (value, key) {
+        points[key] = Array.from(value).sort(function (a, b) {
+          return a[0] - b[0];
+        });
+      });
+
+      let X = [];
+      let Y = [];
+      let points_count = [];
+      for (const [x_val, y_val] of points) {
+        X.push(x_val);
+        let y_arr = [];
+        let y_count = [];
+        for (const [y, count] of y_val) {
+          y_arr.push(y);
+          y_count.push(count);
+        }
+        Y.push(y_arr.sort());
+        points_count.push(y_count);
+      }
+      let max_points = Math.max(...points_count.map((a) => Math.max(...a)));
+
+      return [X, Y, points_count, max_points];
+    } else {
+      return;
+    }
+  }
+
+  /**
+   * Plays a run of tones for the point layer or a single tone for the best fit smooth layer.
+   * @function
+   * @memberof ClassName
+   * @returns {void}
+   */
+  PlayTones() {
+    // kill the previous separate-points play before starting the next play
+    if (constants.sepPlayId) {
+      constants.KillSepPlay();
+    }
+    if (constants.chartType == 'point') {
+      // point layer
+      // we play a run of tones
+      position.z = 0;
+      constants.sepPlayId = setInterval(
+        function () {
+          // play this tone
+          audio.playTone();
+
+          // and then set up for the next one
+          position.z += 1;
+
+          // and kill if we're done
+          if (position.z + 1 > plot.y[position.x].length) {
+            constants.KillSepPlay();
+            position.z = -1;
+          }
+        },
+        constants.sonifMode == 'on' ? constants.autoPlayPointsRate : 0
+      ); // play all tones at the same time
+    } else if (constants.chartType == 'smooth') {
+      // best fit smooth layer
+      audio.playTone();
+    }
+  }
+
+  /**
+   * Extracts the x and y coordinates from the point attribute of a polyline SVG element.
+   * @returns {Array&lt;Array&lt;number>>} An array containing two arrays: the x-coordinates and y-coordinates.
+   */
+  GetSvgLineCoords() {
+    // extract all the y coordinates from the point attribute of polyline
+    let str = this.plotLine.getAttribute('points');
+    let coords = str.split(' ');
+
+    let X = [];
+    let Y = [];
+
+    for (let i = 0; i &lt; coords.length; i++) {
+      let coord = coords[i].split(',');
+      X.push(parseFloat(coord[0]));
+      Y.push(parseFloat(coord[1]));
+    }
+
+    return [X, Y];
+  }
+
+  /**
+   * Returns an array of x and y points for a smooth curve.
+   * @returns {Array&lt;Array&lt;number>>|undefined} An array of x and y points or undefined if data is not defined.
+   */
+  GetSmoothCurvePoints() {
+    let x_points = [];
+    let y_points = [];
+
+    let elIndex = this.GetElementIndex('smooth');
+    let xyFormat = this.GetDataXYFormat(elIndex);
+
+    let data;
+    if (elIndex > -1) {
+      // data comes directly as an array, in a 'smooth' layer, so fetch directly as an array from that index
+      data = singleMaidr.data[elIndex];
+    } else if (singleMaidr.type == 'smooth') {
+      // data comes directly as an array, no 'smooth' layer, so fetch directly as an array
+      data = singleMaidr.data;
+    }
+    if (typeof data !== 'undefined') {
+      if (xyFormat == 'object') {
+        for (let i = 0; i &lt; singleMaidr.data[elIndex].length; i++) {
+          x_points.push(singleMaidr.data[elIndex][i]['x']);
+          y_points.push(singleMaidr.data[elIndex][i]['y']);
+        }
+      } else if (xyFormat == 'array') {
+        if ('x' in singleMaidr.data[elIndex]) {
+          x_points = singleMaidr.data[elIndex]['x'];
+        }
+        if ('y' in singleMaidr.data[elIndex]) {
+          y_points = singleMaidr.data[elIndex]['y'];
+        }
+      }
+
+      return [x_points, y_points];
+    } else {
+      return;
+    }
+  }
+
+  /**
+   * Calculates the absolute gradient between each pair of consecutive points on the curve.
+   * @returns {Array&lt;string|number>} An array of absolute gradients between each pair of consecutive points on the curve, followed by the string 'end'.
+   */
+  GetGradient() {
+    let gradients = [];
+
+    for (let i = 0; i &lt; this.curvePoints.length - 1; i++) {
+      let abs_grad = Math.abs(
+        (this.curvePoints[i + 1] - this.curvePoints[i]) /
+          (this.curveX[i + 1] - this.curveX[i])
+      ).toFixed(3);
+      gradients.push(abs_grad);
+    }
+
+    gradients.push('end');
+
+    return gradients;
+  }
+}
+
+/**
+ * Represents a point in Layer 0 of a scatterplot chart.
+ * @class
+ */
+class Layer0Point {
+  // circles
+
+  /**
+   * Creates a new Layer0Point object.
+   * @constructor
+   */
+  constructor() {
+    this.x = plot.chartPointsX[0];
+    this.y = plot.chartPointsY[0];
+    this.strokeWidth = 1.35;
+    this.circleIndex = [];
+  }
+
+  /**
+   * Clears the points and updates the chart with new data.
+   * @returns {Promise&lt;void>}
+   */
+  async UpdatePoints() {
+    await this.ClearPoints();
+    this.x = plot.chartPointsX[position.x];
+    this.y = plot.chartPointsY[position.x];
+    // find which circles we're on by searching for the x value
+    this.circleIndex = [];
+    for (let j = 0; j &lt; this.y.length; j++) {
+      for (let i = 0; i &lt; plot.plotPoints.length; i++) {
+        if (
+          plot.plotPoints[i].getAttribute(plot.prefix + 'x') == this.x &amp;&amp;
+          plot.plotPoints[i].getAttribute(plot.prefix + 'y') == this.y[j]
+        ) {
+          this.circleIndex.push(i);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Clears the points, updates them, and prints them on the scatterplot.
+   * @async
+   * @function
+   * @returns {Promise&lt;void>}
+   */
+  async PrintPoints() {
+    await this.ClearPoints();
+    await this.UpdatePoints();
+    for (let i = 0; i &lt; this.circleIndex.length; i++) {
+      const svgns = 'http://www.w3.org/2000/svg';
+      var point = document.createElementNS(svgns, 'circle');
+      point.setAttribute('class', 'highlight_point');
+      point.setAttribute('cx', this.x);
+      if (plot.svgScaler[1] == -1) {
+        point.setAttribute(
+          'cy',
+          constants.chart.getBoundingClientRect().height - this.y[i]
+        );
+      } else {
+        point.setAttribute(
+          'cy',
+          plot.plotPoints[this.circleIndex[i]].getAttribute('cy')
+        );
+      }
+      point.setAttribute('r', 3.95);
+      point.setAttribute('stroke', constants.colorSelected);
+      point.setAttribute('stroke-width', this.strokeWidth);
+      point.setAttribute('fill', constants.colorSelected);
+      if (plot.svgScaler[1] == -1) {
+        constants.chart.appendChild(point);
+      } else {
+        plot.plotPoints[this.circleIndex[i]].parentNode.appendChild(point);
+      }
+    }
+  }
+
+  /**
+   * Clears all highlighted points from the scatterplot.
+   * @async
+   */
+  async ClearPoints() {
+    if (document.getElementById('highlight_point'))
+      document.getElementById('highlight_point').remove();
+    let points = document.getElementsByClassName('highlight_point');
+    for (let i = 0; i &lt; points.length; i++) {
+      document.getElementsByClassName('highlight_point')[i].remove();
+    }
+  }
+
+  /**
+   * Clears the points, updates them, and prints them to the screen.
+   */
+  UpdatePointDisplay() {
+    this.ClearPoints();
+    this.UpdatePoints();
+    this.PrintPoints();
+  }
+}
+
+/**
+ * Represents a point in Layer 1 of a scatterplot chart.
+ */
+class Layer1Point {
+  // smooth segments
+
+  /**
+   * Creates a new Layer1Point object.
+   * @constructor
+   */
+  constructor() {
+    this.x = plot.chartLineX[0];
+    this.y = plot.chartLineY[0];
+    this.strokeWidth = 1.35;
+  }
+
+  /**
+   * Clears the existing points and updates the x and y coordinates of the chart line.
+   * @async
+   * @returns {Promise&lt;void>}
+   */
+  async UpdatePoints() {
+    await this.ClearPoints();
+    this.x = plot.chartLineX[positionL1.x];
+    this.y = plot.chartLineY[positionL1.x];
+  }
+
+  /**
+   * Clears the points, updates them, and prints them on the scatterplot.
+   * @async
+   * @returns {Promise&lt;void>}
+   */
+  async PrintPoints() {
+    await this.ClearPoints();
+    await this.UpdatePoints();
+    const svgns = 'http://www.w3.org/2000/svg';
+    var point = document.createElementNS(svgns, 'circle');
+    point.setAttribute('id', 'highlight_point');
+    point.setAttribute('cx', this.x);
+    if (plot.svgScaler[1] == -1) {
+      point.setAttribute(
+        'cy',
+        constants.chart.getBoundingClientRect().height - this.y
+      );
+    } else {
+      point.setAttribute('cy', this.y);
+    }
+    point.setAttribute('r', 3.95);
+    point.setAttribute('stroke', constants.colorSelected);
+    point.setAttribute('stroke-width', this.strokeWidth);
+    point.setAttribute('fill', constants.colorSelected);
+    if (plot.svgScaler[1] == -1) {
+      constants.chart.appendChild(point);
+    } else {
+      plot.plotLine.parentNode.appendChild(point);
+    }
+  }
+
+  /**
+   * Removes all highlighted points from the scatterplot.
+   * @async
+   */
+  async ClearPoints() {
+    let points = document.getElementsByClassName('highlight_point');
+    for (let i = 0; i &lt; points.length; i++) {
+      document.getElementsByClassName('highlight_point')[i].remove();
+    }
+    if (document.getElementById('highlight_point'))
+      document.getElementById('highlight_point').remove();
+  }
+
+  /**
+   * Clears the points, updates them, and prints them to the screen.
+   */
+  UpdatePointDisplay() {
+    this.ClearPoints();
+    this.UpdatePoints();
+    this.PrintPoints();
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Nov 08 2023 22:37:48 GMT-0600 (Central Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

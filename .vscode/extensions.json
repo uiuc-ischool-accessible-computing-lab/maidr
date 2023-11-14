@@ -7,12 +7,19 @@
     "visualstudioexptteam.intellicode-api-usage-examples",
     "ms-vscode.js-debug-nightly",
     "ms-vsliveshare.vsliveshare",
-    "ms-vsliveshare.vsliveshare-pack",
     "ionutvmi.path-autocomplete",
     "esbenp.prettier-vscode",
     "ban.spellright",
     "redhat.vscode-xml",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "github.copilot",
+    "github.copilot-chat",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph",
+    "eamodio.gitlens",
+    "ms-edgedevtools.vscode-edge-devtools",
+    "codium.codium",
+    "ms-vscode.vscode-speech"
   ],
   "unwantedRecommendations": ["ms-vscode.js-debug"]
 }

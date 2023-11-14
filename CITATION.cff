@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: 'If you wish to cite the "maidr" package use:'
+type: software
+license: GPL-3.0
+title: 'maidr: Multimodal Access and Interactive Data Representation'
+version: 1.0.3
+abstract: maidr: Multimodal Access and Interactive Data Representation. maidr is a system for non-visual access and control of statistical charts. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification. This comprehensive  approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization.
+authors:
+- family-names: Seo
+  given-names: JooYoung
+  email: jseo1005@illinois.edu
+  orcid: https://orcid.org/0000-0002-4064-6012
+repository: https://github.com/uiuc-ischool-accessible-computing-lab/maidr
+repository-code: https://github.com/uiuc-ischool-accessible-computing-lab/maidr
+url: https://uiuc-ischool-accessible-computing-lab.github.io/maidr
+contact:
+- family-names: Seo
+  given-names: JooYoung
+  email: jseo1005@illinois.edu
+  orcid: https://orcid.org/0000-0002-4064-6012
+  

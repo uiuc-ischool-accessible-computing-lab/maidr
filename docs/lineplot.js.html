@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lineplot.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Audio.html">Audio</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#KillSmooth">KillSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#PlayNull">PlayNull</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#SlideBetween">SlideBetween</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#compressorSetup">compressorSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playOscillator">playOscillator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playSmooth">playSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playTone">playTone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BarChart.html">BarChart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetColumns">GetColumns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetData">GetData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegend">GetLegend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegendFromManualData">GetLegendFromManualData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#ParseInnerHTML">ParseInnerHTML</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxPlot.html">BoxPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#CleanData">CleanData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentPoints">GetBoxplotSegmentPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentType">GetBoxplotSegmentType</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetPlotBounds">GetPlotBounds</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetSectionKey">GetSectionKey</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#convertBoundingClientRectToObj">convertBoundingClientRectToObj</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxplotRect.html">BoxplotRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxplotRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Constants.html">Constants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Control.html">Control</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Control.html#GetNextPrevFocusable">GetNextPrevFocusable</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Description.html">Description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#CreateComponent">CreateComponent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Destroy">Destroy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Display.html">Display</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#AllocateCharacters">AllocateCharacters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#CharLenImpact">CharLenImpact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#SetBraille">SetBraille</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#UpdateBraillePos">UpdateBraillePos</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#announceText">announceText</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#changeChartLayer">changeChartLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#displayInfo">displayInfo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleBrailleMode">toggleBrailleMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleSonificationMode">toggleSonificationMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleTextMode">toggleTextMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMap.html">HeatMap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getCaption">getCaption</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getFill">getFill</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getGroupLabels">getGroupLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getHeatMapData">getHeatMapData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getRGBNorm">getRGBNorm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getSubtitle">getSubtitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getXLabels">getXLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getYLabels">getYLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#updateConstants">updateConstants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMapRect.html">HeatMapRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMapRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Helper.html">Helper</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Helper.html#.containsObject">containsObject</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Histogram.html">Histogram</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer0Point.html">Layer0Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer1Point.html">Layer1Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LinePlot.html">LinePlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPointCoords">GetPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPoints">GetPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetMinMax">SetMinMax</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LogError.html">LogError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogAbsentElement">LogAbsentElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogCriticalElement">LogCriticalElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogDifferentLengths">LogDifferentLengths</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogNotArray">LogNotArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogTooManyElements">LogTooManyElements</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Menu.html">Menu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#CreateMenu">CreateMenu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#LoadDataFromLocalStorage">LoadDataFromLocalStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#SaveData">SaveData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Point.html">Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Position.html">Position</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Resources.html">Resources</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Resources.html#GetString">GetString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Review.html">Review</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Review.html#ToggleReviewMode">ToggleReviewMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ScatterPlot.html">ScatterPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetDataXYFormat">GetDataXYFormat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetElementIndex">GetElementIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetGradient">GetGradient</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPointValues">GetPointValues</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPrefix">GetPrefix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSmoothCurvePoints">GetSmoothCurvePoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgLineCoords">GetSvgLineCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgPointCoords">GetSvgPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Segmented.html">Segmented</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateAllLevel">CreateAllLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateSummaryLevel">CreateSummaryLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#ParseData">ParseData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Tracker.html">Tracker</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DataSetup">DataSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#Delete">Delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DownloadTrackerData">DownloadTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#GetTrackerData">GetTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#LogEvent">LogEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#SaveTrackerData">SaveTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#isUndefinedOrNull">isUndefinedOrNull</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#CreateChartComponents">CreateChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyChartComponents">DestroyChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyMaidr">DestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#FocusBeforeOrAfter">FocusBeforeOrAfter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#InitMaidr">InitMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#KillAutoplayEvent">KillAutoplayEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#SetEvents">SetEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeDestroyMaidr">ShouldWeDestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeInitMaidr">ShouldWeInitMaidr</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lineplot.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a line plot.
+ * @class
+ */
+class LinePlot {
+  /**
+   * Creates a new instance of LinePlot.
+   * @constructor
+   */
+  constructor() {
+    this.SetLineLayer();
+    this.SetAxes();
+
+    let legendX = '';
+    let legendY = '';
+    if ('axes' in singleMaidr) {
+      // legend labels
+      if (singleMaidr.axes.x) {
+        if (singleMaidr.axes.x.label) {
+          if (legendX == '') {
+            legendX = singleMaidr.axes.x.label;
+          }
+        }
+      }
+      if (singleMaidr.axes.y) {
+        if (singleMaidr.axes.y.label) {
+          if (legendY == '') {
+            legendY = singleMaidr.axes.y.label;
+          }
+        }
+      }
+    }
+
+    this.plotLegend = {
+      x: legendX,
+      y: legendY,
+    };
+
+    // title
+    this.title = '';
+    if ('labels' in singleMaidr) {
+      if ('title' in singleMaidr.labels) {
+        this.title = singleMaidr.labels.title;
+      }
+    }
+    if (this.title == '') {
+      if ('title' in singleMaidr) {
+        this.title = singleMaidr.title;
+      }
+    }
+
+    // subtitle
+    if ('labels' in singleMaidr) {
+      if ('subtitle' in singleMaidr.labels) {
+        this.subtitle = singleMaidr.labels.subtitle;
+      }
+    }
+    // caption
+    if ('labels' in singleMaidr) {
+      if ('caption' in singleMaidr.labels) {
+        this.caption = singleMaidr.labels.caption;
+      }
+    }
+  }
+
+  /**
+   * Sets the line layer for the chart.
+   */
+  SetLineLayer() {
+    let len = maidr.elements.length;
+    this.plotLine = maidr.elements[len - 1];
+    if (typeof this.plotLine !== 'undefined') {
+      let pointCoords = this.GetPointCoords();
+      let pointValues = this.GetPoints();
+
+      this.chartLineX = pointCoords[0]; // x coordinates of curve
+      this.chartLineY = pointCoords[1]; // y coordinates of curve
+
+      this.pointValuesX = pointValues[0]; // actual values of x
+      this.pointValuesY = pointValues[1]; // actual values of y
+
+      this.curveMinY = Math.min(...this.pointValuesY);
+      this.curveMaxY = Math.max(...this.pointValuesY);
+      constants.minX = 0;
+      constants.maxX = this.pointValuesX.length - 1;
+      constants.minY = this.curveMinY;
+      constants.maxY = this.curveMaxY;
+
+      constants.autoPlayRate = Math.min(
+        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
+        constants.MAX_SPEED
+      );
+      constants.DEFAULT_SPEED = constants.autoPlayRate;
+      if (constants.autoPlayRate &lt; constants.MIN_SPEED) {
+        constants.MIN_SPEED = constants.autoPlayRate;
+      }
+
+      // this.gradient = this.GetGradient();
+    }
+  }
+
+  /**
+   * Sets the minimum and maximum values for the x and y axes of a line plot.
+   */
+  SetMinMax() {
+    constants.minX = 0;
+    constants.maxX = this.pointValuesX.length - 1;
+    constants.minY = this.curveMinY;
+    constants.maxY = this.curveMaxY;
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
+    );
+  }
+
+  /**
+   * Returns an array of x and y coordinates of each point in the plot line.
+   * @returns {Array&lt;Array&lt;string>>} An array of x and y coordinates of each point in the plot line.
+   */
+  GetPointCoords() {
+    let svgLineCoords = [[], []];
+    let points = this.plotLine.getAttribute('points').split(' ');
+    for (let i = 0; i &lt; points.length; i++) {
+      if (points[i] !== '') {
+        let point = points[i].split(',');
+        svgLineCoords[0].push(point[0]);
+        svgLineCoords[1].push(point[1]);
+      }
+    }
+    return svgLineCoords;
+  }
+
+  /**
+   * Returns an array of x and y points from the data object in singleMaidr.
+   * @returns {Array&lt;Array&lt;number>>|undefined} An array containing two arrays of numbers representing x and y points respectively, or undefined if data is not defined.
+   */
+  GetPoints() {
+    let x_points = [];
+    let y_points = [];
+
+    let data;
+    if ('data' in singleMaidr) {
+      data = singleMaidr.data;
+    }
+    if (typeof data !== 'undefined') {
+      for (let i = 0; i &lt; data.length; i++) {
+        x_points.push(data[i].x);
+        y_points.push(data[i].y);
+      }
+      return [x_points, y_points];
+    } else {
+      return;
+    }
+  }
+
+  // GetGradient() {
+  //   let gradients = [];
+
+  //   for (let i = 0; i &lt; this.pointValuesY.length - 1; i++) {
+  //     let abs_grad = Math.abs(
+  //       (this.pointValuesY[i + 1] - this.pointValuesY[i]) /
+  //         (this.pointValuesX[i + 1] - this.pointValuesX[i])
+  //     ).toFixed(3);
+  //     gradients.push(abs_grad);
+  //   }
+
+  //   gradients.push('end');
+
+  //   return gradients;
+  // }
+
+  /**
+   * Sets the x and y group labels and title for the line plot based on the axes and title properties of the singleMaidr object.
+   */
+  SetAxes() {
+    this.x_group_label = '';
+    this.y_group_label = '';
+    this.title = '';
+    if ('axes' in singleMaidr) {
+      if ('x' in singleMaidr.axes) {
+        if (this.x_group_label == '') {
+          this.x_group_label = singleMaidr.axes.x.label;
+        }
+      }
+      if ('y' in singleMaidr.axes) {
+        if (this.y_group_label == '') {
+          this.y_group_label = singleMaidr.axes.y.label;
+        }
+      }
+    }
+    if ('title' in singleMaidr) {
+      if (this.title == '') {
+        this.title = singleMaidr.title;
+      }
+    }
+  }
+
+  /**
+   * Plays a tone using the audio object.
+   */
+  PlayTones() {
+    audio.playTone();
+  }
+}
+
+/**
+ * Represents a point on a chart.
+ * @class
+ */
+class Point {
+  /**
+   * Creates a new instance of Point.
+   * @constructor
+   */
+  constructor() {
+    this.x = plot.chartLineX[0];
+    this.y = plot.chartLineY[0];
+  }
+
+  /**
+   * Clears the existing points and updates the x and y coordinates for the chart line.
+   * @async
+   * @returns {Promise&lt;void>}
+   */
+  async UpdatePoints() {
+    await this.ClearPoints();
+    this.x = plot.chartLineX[position.x];
+    this.y = plot.chartLineY[position.x];
+  }
+
+  /**
+   * Clears existing points, updates the points, and prints a new point on the chart.
+   * @async
+   * @returns {Promise&lt;void>}
+   */
+  async PrintPoints() {
+    await this.ClearPoints();
+    await this.UpdatePoints();
+    const svgns = 'http://www.w3.org/2000/svg';
+    var point = document.createElementNS(svgns, 'circle');
+    point.setAttribute('id', 'highlight_point');
+    point.setAttribute('cx', this.x);
+    point.setAttribute('cy', this.y);
+    point.setAttribute('r', 1.75);
+    point.setAttribute(
+      'style',
+      'fill:' + constants.colorSelected + ';stroke:' + constants.colorSelected
+    );
+    constants.chart.appendChild(point);
+  }
+
+  /**
+   * Removes all highlighted points from the line plot.
+   * @async
+   */
+  async ClearPoints() {
+    let points = document.getElementsByClassName('highlight_point');
+    for (let i = 0; i &lt; points.length; i++) {
+      document.getElementsByClassName('highlight_point')[i].remove();
+    }
+    if (document.getElementById('highlight_point'))
+      document.getElementById('highlight_point').remove();
+  }
+
+  /**
+   * Clears the points, updates them, and prints them to the display.
+   */
+  UpdatePointDisplay() {
+    this.ClearPoints();
+    this.UpdatePoints();
+    this.PrintPoints();
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Nov 08 2023 22:37:49 GMT-0600 (Central Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

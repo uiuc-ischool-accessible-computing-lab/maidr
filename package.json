@@ -1,24 +1,29 @@
 {
-  "name": "accessible-graph",
-  "version": "1.0.0",
-  "description": "MAIDR is a system for non-visual access and control of statistical charts. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: sonification, braille, and text. This innovative approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization. Check out the current build: [MAIDR Demo](https://uiuc-ischool-accessible-computing-lab.github.io/MAIDR/user_study_pilot/intro.html).",
-  "main": "webpack.config.js",
+  "name": "maidr",
+  "version": "1.0.3",
+  "description": "maidr: Multimodal Access and Interactive Data Representation. maidr is a system for non-visual access and control of statistical charts. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification. This comprehensive  approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization. Check out the current build: [MAIDR Demo](https://uiuc-ischool-accessible-computing-lab.github.io/maidr/user_study_pilot/intro.html).",
+  "main": "dist/maidr.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint .",
-    "format": "prettier --write ."
+    "build": "gulp",
+    "test": "jest",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "format": "prettier --write .",
+    "docs": "jsdoc -c jsdoc.json"
   },
+  "files": [
+    "dist/*"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uiuc-ischool-accessible-computing-lab/accessible-graph.git"
+    "url": "git+https://github.com/uiuc-ischool-accessible-computing-lab/maidr.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "JooYoung Seo",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/uiuc-ischool-accessible-computing-lab/accessible-graph/issues"
+    "url": "https://github.com/uiuc-ischool-accessible-computing-lab/maidr/issues"
   },
-  "homepage": "https://github.com/uiuc-ischool-accessible-computing-lab/accessible-graph#readme",
+  "homepage": "https://github.com/uiuc-ischool-accessible-computing-lab/maidr#readme",
   "devDependencies": {
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
@@ -29,6 +34,17 @@
     "gulp-concat-css": "^3.1.0",
     "gulp-rename": "^2.0.0",
     "gulp-terser": "^2.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdoc": "^4.0.2",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "mi": "^1.0.0",
+    "minami": "^1.2.3",
+    "taffydb": "^2.7.3"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   }
 }

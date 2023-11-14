@@ -1,4 +1,12 @@
+/**
+ * Represents a segmented chart.
+ * @class
+ */
 class Segmented {
+  /**
+   * Creates a new Segmented object.
+   * @constructor
+   */
   constructor() {
     // initialize variables level, data, and elements
     let level = null;
@@ -115,6 +123,12 @@ class Segmented {
     this.autoplay = null;
   }
 
+  /**
+   * Parses data and elements to create a full 2D array of data using level and fill.
+   * @param {Array} data - The data to parse.
+   * @param {Array} [elements=null] - The elements to parse.
+   * @returns {Array} An array containing the parsed plot data and plot elements.
+   */
   ParseData(data, elements = null) {
     let plotData = [];
     let plotElements = [];
@@ -159,6 +173,9 @@ class Segmented {
     return [plotData, plotElements];
   }
 
+  /**
+   * Creates another y level that is the sum of all the other levels.
+   */
   CreateSummaryLevel() {
     // create another y level that is the sum of all the other levels
 
@@ -173,6 +190,9 @@ class Segmented {
     this.fill.push('Sum');
   }
 
+  /**
+   * Creates another y level that plays all the other levels separately.
+   */
   CreateAllLevel() {
     // create another y level that plays all the other levels seperately
 
@@ -189,31 +209,64 @@ class Segmented {
     this.fill.push('All');
   }
 
+  /**
+   * Plays tones based on the plot data at the current position.
+   * If sonifMode is 'on', it plays a run of tones. If sonifMode is 'same', it plays all tones at once.
+   */
   PlayTones() {
     if (Array.isArray(this.plotData[position.x][position.y])) {
-      // we play a run of tones
-      position.z = 0;
-      constants.sepPlayId = setInterval(
-        function () {
-          // play this tone
-          audio.playTone();
+      if (constants.sonifMode == 'on') {
+        // we play a run of tones
+        position.z = 0;
+        constants.sepPlayId = setInterval(
+          function () {
+            // play this tone
+            audio.playTone();
 
-          // and then set up for the next one
-          position.z += 1;
+            // and then set up for the next one
+            position.z += 1;
 
-          // and kill if we're done
-          if (position.z + 1 > plot.plotData[position.x][position.y].length) {
-            constants.KillSepPlay();
-            position.z = -1;
-          }
-        },
-        constants.sonifMode == 'on' ? constants.autoPlayPointsRate : 0
-      );
+            // and kill if we're done
+            if (!Array.isArray(plot.plotData[position.x][position.y])) {
+              constants.KillSepPlay();
+              position.z = -1;
+            } else if (
+              position.z + 1 >
+              plot.plotData[position.x][position.y].length
+            ) {
+              constants.KillSepPlay();
+              position.z = -1;
+            }
+          },
+          constants.sonifMode == 'on' ? constants.autoPlayPointsRate : 0
+        );
+      } else {
+        // sonifMode == 'same', so we play all at once
+
+        // adjust these volumes by amplitude, min 50% max 125%
+        let volMin = Math.min(...this.plotData[position.x][position.y]);
+        let volMax = Math.max(...this.plotData[position.x][position.y]);
+        for (let i = 0; i < this.plotData[position.x][position.y].length; i++) {
+          position.z = i;
+          let vol = audio.SlideBetween(
+            this.plotData[position.x][position.y][i],
+            volMin,
+            volMax,
+            constants.combinedVolMin,
+            constants.combinedVolMax
+          );
+          audio.playTone({ volScale: vol });
+        }
+      }
     } else {
       audio.playTone();
     }
   }
 
+  /**
+   * Sets the maximum and minimum values for the y-axis based on the data in `singleMaidr.data`.
+   * Also sets the maximum x value, auto play rate, default speed, and minimum speed.
+   */
   SetMaxMin() {
     for (let i = 0; i < singleMaidr.data.length; i++) {
       if (i == 0) {
@@ -239,18 +292,25 @@ class Segmented {
     }
   }
 
+  /**
+   * Selects an element and changes its color to a better one.
+   */
   Select() {
     this.UnSelectPrevious();
     if (this.elements) {
       this.activeElement = this.elements[position.x][position.y];
       if (this.activeElement) {
         this.activeElementColor = this.activeElement.style.fill;
-        let invertedColor = constants.ColorInvert(this.activeElementColor);
-        this.activeElement.style.fill = invertedColor;
+        let newColor = constants.GetBetterColor(this.activeElementColor);
+        this.activeElement.style.fill = newColor;
       }
     }
   }
 
+  /**
+   * Unselects the previously selected element by resetting its fill color to the active element color.
+   * Also sets the active element to null.
+   */
   UnSelectPrevious() {
     if (this.activeElement) {
       this.activeElement.style.fill = this.activeElementColor;

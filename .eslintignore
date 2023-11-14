@@ -1,3 +1,8 @@
 node_modules/
 dist/
-other/
+docs/
+user_study_pilot/
+examples/
+**/*.css
+**/*.md
+**/*.lock

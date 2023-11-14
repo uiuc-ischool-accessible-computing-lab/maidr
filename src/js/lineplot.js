@@ -1,4 +1,12 @@
+/**
+ * Represents a line plot.
+ * @class
+ */
 class LinePlot {
+  /**
+   * Creates a new instance of LinePlot.
+   * @constructor
+   */
   constructor() {
     this.SetLineLayer();
     this.SetAxes();
@@ -55,6 +63,9 @@ class LinePlot {
     }
   }
 
+  /**
+   * Sets the line layer for the chart.
+   */
   SetLineLayer() {
     let len = maidr.elements.length;
     this.plotLine = maidr.elements[len - 1];
@@ -88,6 +99,9 @@ class LinePlot {
     }
   }
 
+  /**
+   * Sets the minimum and maximum values for the x and y axes of a line plot.
+   */
   SetMinMax() {
     constants.minX = 0;
     constants.maxX = this.pointValuesX.length - 1;
@@ -98,6 +112,10 @@ class LinePlot {
     );
   }
 
+  /**
+   * Returns an array of x and y coordinates of each point in the plot line.
+   * @returns {Array<Array<string>>} An array of x and y coordinates of each point in the plot line.
+   */
   GetPointCoords() {
     let svgLineCoords = [[], []];
     let points = this.plotLine.getAttribute('points').split(' ');
@@ -111,6 +129,10 @@ class LinePlot {
     return svgLineCoords;
   }
 
+  /**
+   * Returns an array of x and y points from the data object in singleMaidr.
+   * @returns {Array<Array<number>>|undefined} An array containing two arrays of numbers representing x and y points respectively, or undefined if data is not defined.
+   */
   GetPoints() {
     let x_points = [];
     let y_points = [];
@@ -146,6 +168,9 @@ class LinePlot {
   //   return gradients;
   // }
 
+  /**
+   * Sets the x and y group labels and title for the line plot based on the axes and title properties of the singleMaidr object.
+   */
   SetAxes() {
     this.x_group_label = '';
     this.y_group_label = '';
@@ -169,23 +194,44 @@ class LinePlot {
     }
   }
 
+  /**
+   * Plays a tone using the audio object.
+   */
   PlayTones() {
     audio.playTone();
   }
 }
 
+/**
+ * Represents a point on a chart.
+ * @class
+ */
 class Point {
+  /**
+   * Creates a new instance of Point.
+   * @constructor
+   */
   constructor() {
     this.x = plot.chartLineX[0];
     this.y = plot.chartLineY[0];
   }
 
+  /**
+   * Clears the existing points and updates the x and y coordinates for the chart line.
+   * @async
+   * @returns {Promise<void>}
+   */
   async UpdatePoints() {
     await this.ClearPoints();
     this.x = plot.chartLineX[position.x];
     this.y = plot.chartLineY[position.x];
   }
 
+  /**
+   * Clears existing points, updates the points, and prints a new point on the chart.
+   * @async
+   * @returns {Promise<void>}
+   */
   async PrintPoints() {
     await this.ClearPoints();
     await this.UpdatePoints();
@@ -202,6 +248,10 @@ class Point {
     constants.chart.appendChild(point);
   }
 
+  /**
+   * Removes all highlighted points from the line plot.
+   * @async
+   */
   async ClearPoints() {
     let points = document.getElementsByClassName('highlight_point');
     for (let i = 0; i < points.length; i++) {
@@ -211,6 +261,9 @@ class Point {
       document.getElementById('highlight_point').remove();
   }
 
+  /**
+   * Clears the points, updates them, and prints them to the display.
+   */
   UpdatePointDisplay() {
     this.ClearPoints();
     this.UpdatePoints();

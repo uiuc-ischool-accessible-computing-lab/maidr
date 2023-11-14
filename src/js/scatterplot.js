@@ -2,7 +2,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
   // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
 });
 
+/**
+ * A class representing a scatter plot.
+ * @class
+ */
 class ScatterPlot {
+  /**
+   * Creates a new Scatterplot object.
+   * @constructor
+   */
   constructor() {
     this.prefix = this.GetPrefix();
     // this.SetVisualHighlight();
@@ -86,6 +94,9 @@ class ScatterPlot {
   //   }
   // }
 
+  /**
+   * Sets the x and y group labels and title for the scatterplot based on the data in singleMaidr.
+   */
   SetAxes() {
     this.x_group_label = '';
     this.y_group_label = '';
@@ -120,6 +131,12 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Sets the scatter layer for the chart.
+   * @function
+   * @memberof scatterplot
+   * @returns {void}
+   */
   SetScatterLayer() {
     // initially set as smooth layer (layer 2), if possible
     let elIndex = this.GetElementIndex('point');
@@ -144,6 +161,9 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Sets the plot line layer for the scatterplot.
+   */
   SetLineLayer() {
     // layer = 2, smooth layer (from singleMaidr types)
     let elIndex = this.GetElementIndex('smooth');
@@ -168,6 +188,10 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Returns an array of X and Y coordinates of the plot points.
+   * @returns {Array<Array<number>>} An array of X and Y coordinates.
+   */
   GetSvgPointCoords() {
     let points = new Map();
 
@@ -203,6 +227,11 @@ class ScatterPlot {
     return [X, Y];
   }
 
+  /**
+   * Returns the index of the specified element in the singleMaidr object.
+   * @param {string} elementName - The name of the element to search for.
+   * @returns {number} - The index of the element in the singleMaidr object, or -1 if not found.
+   */
   GetElementIndex(elementName = 'point') {
     let elIndex = -1;
     if ('type' in singleMaidr) {
@@ -211,6 +240,11 @@ class ScatterPlot {
     return elIndex;
   }
 
+  /**
+   * Determines the format of the data at the given index and returns it as either an object or an array.
+   * @param {number} dataIndex - The index of the data to check.
+   * @returns {string} - The format of the data as either 'object' or 'array'.
+   */
   GetDataXYFormat(dataIndex) {
     // detect if data is in form [{x: 1, y: 2}, {x: 2, y: 3}] (object) or {x: [1, 2], y: [2, 3]]} (array)
     let xyFormat = 'array';
@@ -222,6 +256,10 @@ class ScatterPlot {
     return xyFormat;
   }
 
+  /**
+   * Returns an array of the X and Y scales of the first SVG element containing the plot points.
+   * @returns {Array<number>} An array containing the X and Y scales of the first SVG element containing the plot points.
+   */
   GetSVGScaler() {
     let scaleX = 1;
     let scaleY = 1;
@@ -268,6 +306,10 @@ class ScatterPlot {
     return [scaleX, scaleY];
   }
 
+  /**
+   * Returns a prefix based on the element type.
+   * @returns {string} The prefix.
+   */
   GetPrefix() {
     let elIndex = this.GetElementIndex('point');
     let element;
@@ -283,6 +325,10 @@ class ScatterPlot {
     return prefix;
   }
 
+  /**
+   * Retrieves x and y values from data and returns them in a specific format.
+   * @returns {Array} An array containing X, Y, points_count, and max_points.
+   */
   GetPointValues() {
     let points = new Map(); // keep track of x and y values
 
@@ -384,6 +430,12 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Plays a run of tones for the point layer or a single tone for the best fit smooth layer.
+   * @function
+   * @memberof ClassName
+   * @returns {void}
+   */
   PlayTones() {
     // kill the previous separate-points play before starting the next play
     if (constants.sepPlayId) {
@@ -415,6 +467,10 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Extracts the x and y coordinates from the point attribute of a polyline SVG element.
+   * @returns {Array<Array<number>>} An array containing two arrays: the x-coordinates and y-coordinates.
+   */
   GetSvgLineCoords() {
     // extract all the y coordinates from the point attribute of polyline
     let str = this.plotLine.getAttribute('points');
@@ -432,6 +488,10 @@ class ScatterPlot {
     return [X, Y];
   }
 
+  /**
+   * Returns an array of x and y points for a smooth curve.
+   * @returns {Array<Array<number>>|undefined} An array of x and y points or undefined if data is not defined.
+   */
   GetSmoothCurvePoints() {
     let x_points = [];
     let y_points = [];
@@ -468,6 +528,10 @@ class ScatterPlot {
     }
   }
 
+  /**
+   * Calculates the absolute gradient between each pair of consecutive points on the curve.
+   * @returns {Array<string|number>} An array of absolute gradients between each pair of consecutive points on the curve, followed by the string 'end'.
+   */
   GetGradient() {
     let gradients = [];
 
@@ -485,9 +549,17 @@ class ScatterPlot {
   }
 }
 
+/**
+ * Represents a point in Layer 0 of a scatterplot chart.
+ * @class
+ */
 class Layer0Point {
   // circles
 
+  /**
+   * Creates a new Layer0Point object.
+   * @constructor
+   */
   constructor() {
     this.x = plot.chartPointsX[0];
     this.y = plot.chartPointsY[0];
@@ -495,6 +567,10 @@ class Layer0Point {
     this.circleIndex = [];
   }
 
+  /**
+   * Clears the points and updates the chart with new data.
+   * @returns {Promise<void>}
+   */
   async UpdatePoints() {
     await this.ClearPoints();
     this.x = plot.chartPointsX[position.x];
@@ -514,6 +590,12 @@ class Layer0Point {
     }
   }
 
+  /**
+   * Clears the points, updates them, and prints them on the scatterplot.
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   async PrintPoints() {
     await this.ClearPoints();
     await this.UpdatePoints();
@@ -545,6 +627,10 @@ class Layer0Point {
     }
   }
 
+  /**
+   * Clears all highlighted points from the scatterplot.
+   * @async
+   */
   async ClearPoints() {
     if (document.getElementById('highlight_point'))
       document.getElementById('highlight_point').remove();
@@ -554,6 +640,9 @@ class Layer0Point {
     }
   }
 
+  /**
+   * Clears the points, updates them, and prints them to the screen.
+   */
   UpdatePointDisplay() {
     this.ClearPoints();
     this.UpdatePoints();
@@ -561,21 +650,38 @@ class Layer0Point {
   }
 }
 
+/**
+ * Represents a point in Layer 1 of a scatterplot chart.
+ */
 class Layer1Point {
   // smooth segments
 
+  /**
+   * Creates a new Layer1Point object.
+   * @constructor
+   */
   constructor() {
     this.x = plot.chartLineX[0];
     this.y = plot.chartLineY[0];
     this.strokeWidth = 1.35;
   }
 
+  /**
+   * Clears the existing points and updates the x and y coordinates of the chart line.
+   * @async
+   * @returns {Promise<void>}
+   */
   async UpdatePoints() {
     await this.ClearPoints();
     this.x = plot.chartLineX[positionL1.x];
     this.y = plot.chartLineY[positionL1.x];
   }
 
+  /**
+   * Clears the points, updates them, and prints them on the scatterplot.
+   * @async
+   * @returns {Promise<void>}
+   */
   async PrintPoints() {
     await this.ClearPoints();
     await this.UpdatePoints();
@@ -602,6 +708,10 @@ class Layer1Point {
     }
   }
 
+  /**
+   * Removes all highlighted points from the scatterplot.
+   * @async
+   */
   async ClearPoints() {
     let points = document.getElementsByClassName('highlight_point');
     for (let i = 0; i < points.length; i++) {
@@ -611,6 +721,9 @@ class Layer1Point {
       document.getElementById('highlight_point').remove();
   }
 
+  /**
+   * Clears the points, updates them, and prints them to the screen.
+   */
   UpdatePointDisplay() {
     this.ClearPoints();
     this.UpdatePoints();

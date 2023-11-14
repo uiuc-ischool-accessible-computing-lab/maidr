@@ -3,7 +3,15 @@
 // This initializes and contains the JSON data model for this chart
 //
 // todo:
+/**
+ * A class representing a box plot.
+ * @class
+ */
 class BoxPlot {
+  /**
+   * Creates a new instance of BoxPlot.
+   * @constructor
+   */
   constructor() {
     constants.plotOrientation = 'horz'; // default
     this.sections = [
@@ -105,6 +113,9 @@ class BoxPlot {
     this.CleanData();
   }
 
+  /**
+   * Cleans up data and extra variables like min/max stuff.
+   */
   CleanData() {
     // clean up data and extra vars like min / max stuff
 
@@ -177,6 +188,10 @@ class BoxPlot {
     }
   }
 
+  /**
+   * Calculates the bounding boxes for all elements in the parent element, including outliers, whiskers, and range.
+   * @returns {Array} An array of bounding boxes for all elements.
+   */
   GetPlotBounds() {
     // we fetch the elements in our parent,
     // and similar to old GetData we run through and get bounding boxes (or blanks) for everything,
@@ -447,6 +462,10 @@ class BoxPlot {
     return plotBounds;
   }
 
+  /**
+   * Returns an array of all segment types needed for a box plot.
+   * @returns {string[]} Array of segment types.
+   */
   GetAllSegmentTypes() {
     let allWeNeed = [
       resources.GetString('lower_outlier'),
@@ -461,6 +480,11 @@ class BoxPlot {
     return allWeNeed;
   }
 
+  /**
+   * Returns the type of boxplot segment based on the section id.
+   * @param {string} sectionId - The section id to determine the segment type.
+   * @returns {string} - The type of boxplot segment ('range', 'whisker', or 'outlier').
+   */
   GetBoxplotSegmentType(sectionId) {
     // Helper function for main GetData:
     // Fetch type, which comes from section id:
@@ -480,6 +504,12 @@ class BoxPlot {
     return segmentType;
   }
 
+  /**
+   * Helper function for main GetData: Fetch x and y point data from chart
+   * @param {Object} segment - The segment object to get points from
+   * @param {string} segmentType - The type of segment ('range', 'outlier', or 'whisker')
+   * @returns {Array} - An array of x and y point data from the chart
+   */
   GetBoxplotSegmentPoints(segment, segmentType) {
     // Helper function for main GetData:
     // Fetch x and y point data from chart
@@ -515,6 +545,10 @@ class BoxPlot {
 
     return points;
   }
+  /**
+   * Returns an array of all the segment types needed for a box plot.
+   * @returns {string[]} Array of segment types.
+   */
   GetAllSegmentTypes() {
     let allWeNeed = [
       resources.GetString('lower_outlier'),
@@ -529,6 +563,11 @@ class BoxPlot {
     return allWeNeed;
   }
 
+  /**
+   * Converts a DOMRect object to a plain object with properties for top, right, bottom, left, width, height, x, and y.
+   * @param {DOMRect} rect - The DOMRect object to convert.
+   * @returns {Object} An object with properties for top, right, bottom, left, width, height, x, and y.
+   */
   convertBoundingClientRectToObj(rect) {
     return {
       top: rect.top,
@@ -542,6 +581,9 @@ class BoxPlot {
     };
   }
 
+  /**
+   * Plays tones based on the plot data and position.
+   */
   PlayTones() {
     // init
     let plotPos = null;
@@ -585,6 +627,11 @@ class BoxPlot {
     }
   }
 
+  /**
+   * Returns the section key at the specified position.
+   * @param {number} sectionPos - The position of the section.
+   * @returns {string} The section key.
+   */
   GetSectionKey(sectionPos) {
     return this.sections[sectionPos];
   }
@@ -592,11 +639,27 @@ class BoxPlot {
 
 // BoxplotRect class
 // Initializes and updates the visual outline around sections of the chart
+/**
+ * Represents a rectangular box in a box plot chart.
+ * @class
+ */
 class BoxplotRect {
   // maybe put this stuff in user config?
+  /**
+   * The padding between rectangles in pixels.
+   * @type {number}
+   */
   rectPadding = 15; // px
+  /**
+   * The stroke width of the rectangle in the box plot.
+   * @type {number}
+   */
   rectStrokeWidth = 4; // px
 
+  /**
+   * Creates a new BoxPlot object.
+   * @constructor
+   */
   constructor() {
     this.x1 = 0;
     this.width = 0;
@@ -606,6 +669,9 @@ class BoxplotRect {
     this.chartOffsetTop = constants.chart.getBoundingClientRect().top;
   }
 
+  /**
+   * Updates the bounding box values from the object and gets bounds of visual outline to be drawn.
+   */
   UpdateRect() {
     // UpdateRect takes bounding box values from the object and gets bounds of visual outline to be drawn
 
@@ -664,6 +730,12 @@ class BoxplotRect {
     }
   }
 
+  /**
+   * Creates a visual outline using the given bounding points.
+   * @function
+   * @memberof module:boxplot.js
+   * @returns {void}
+   */
   CreateRectDisplay() {
     // CreateRectDisplay takes bounding points and creates the visual outline
 

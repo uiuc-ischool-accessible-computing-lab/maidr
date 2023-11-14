@@ -1,8 +1,24 @@
+/**
+ * Represents a control object.
+ * @class
+ */
 class Control {
+  /**
+   * Creates a new instance of the Controls class.
+   * @constructor
+   */
   constructor() {
     this.SetControls();
   }
 
+  /**
+   * Sets up event listeners for the global controls and prefix events.
+   * @function
+   * @memberof Maidr
+   * @instance
+   * @name SetControls
+   * @returns {void}
+   */
   SetControls() {
     // global controls
 
@@ -3152,6 +3168,11 @@ class Control {
     }
   }
 
+  /**
+   * Gets the next or previous focusable element based on the current focus.
+   * @param {string} nextprev - Determines whether to get the next or previous focusable element. Defaults to 'next'.
+   * @returns {HTMLElement|null} - The next or previous focusable element, or null if it does not exist.
+   */
   GetNextPrevFocusable(nextprev = 'next') {
     // store all focusable elements for future tabbing away from chart
     let focusableSelectors =

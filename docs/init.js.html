@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>init.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Audio.html">Audio</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#KillSmooth">KillSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#PlayNull">PlayNull</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#SlideBetween">SlideBetween</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#compressorSetup">compressorSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playOscillator">playOscillator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playSmooth">playSmooth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Audio.html#playTone">playTone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BarChart.html">BarChart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetColumns">GetColumns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetData">GetData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegend">GetLegend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#GetLegendFromManualData">GetLegendFromManualData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#ParseInnerHTML">ParseInnerHTML</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BarChart.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxPlot.html">BoxPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#CleanData">CleanData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetAllSegmentTypes">GetAllSegmentTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentPoints">GetBoxplotSegmentPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetBoxplotSegmentType">GetBoxplotSegmentType</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetPlotBounds">GetPlotBounds</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#GetSectionKey">GetSectionKey</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxPlot.html#convertBoundingClientRectToObj">convertBoundingClientRectToObj</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BoxplotRect.html">BoxplotRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BoxplotRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Constants.html">Constants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Control.html">Control</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Control.html#GetNextPrevFocusable">GetNextPrevFocusable</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Description.html">Description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#CreateComponent">CreateComponent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Destroy">Destroy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Description.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Display.html">Display</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#AllocateCharacters">AllocateCharacters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#CharLenImpact">CharLenImpact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#SetBraille">SetBraille</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#UpdateBraillePos">UpdateBraillePos</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#announceText">announceText</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#changeChartLayer">changeChartLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#displayInfo">displayInfo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleBrailleMode">toggleBrailleMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleSonificationMode">toggleSonificationMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Display.html#toggleTextMode">toggleTextMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMap.html">HeatMap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getCaption">getCaption</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getFill">getFill</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getGroupLabels">getGroupLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getHeatMapData">getHeatMapData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getRGBNorm">getRGBNorm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getSubtitle">getSubtitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getXLabels">getXLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#getYLabels">getYLabels</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMap.html#updateConstants">updateConstants</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HeatMapRect.html">HeatMapRect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HeatMapRect.html#UpdateRect">UpdateRect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Helper.html">Helper</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Helper.html#.containsObject">containsObject</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Histogram.html">Histogram</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Histogram.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer0Point.html">Layer0Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer0Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Layer1Point.html">Layer1Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Layer1Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LinePlot.html">LinePlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPointCoords">GetPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#GetPoints">GetPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LinePlot.html#SetMinMax">SetMinMax</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LogError.html">LogError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogAbsentElement">LogAbsentElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogCriticalElement">LogCriticalElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogDifferentLengths">LogDifferentLengths</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogNotArray">LogNotArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LogError.html#LogTooManyElements">LogTooManyElements</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Menu.html">Menu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#CreateMenu">CreateMenu</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#LoadDataFromLocalStorage">LoadDataFromLocalStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#PopulateData">PopulateData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#SaveData">SaveData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Menu.html#Toggle">Toggle</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Point.html">Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#ClearPoints">ClearPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#PrintPoints">PrintPoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePointDisplay">UpdatePointDisplay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Point.html#UpdatePoints">UpdatePoints</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Position.html">Position</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Resources.html">Resources</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Resources.html#GetString">GetString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Review.html">Review</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Review.html#ToggleReviewMode">ToggleReviewMode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ScatterPlot.html">ScatterPlot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetDataXYFormat">GetDataXYFormat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetElementIndex">GetElementIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetGradient">GetGradient</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPointValues">GetPointValues</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetPrefix">GetPrefix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSVGScaler">GetSVGScaler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSmoothCurvePoints">GetSmoothCurvePoints</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgLineCoords">GetSvgLineCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#GetSvgPointCoords">GetSvgPointCoords</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetAxes">SetAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ScatterPlot.html#SetLineLayer">SetLineLayer</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Segmented.html">Segmented</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateAllLevel">CreateAllLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#CreateSummaryLevel">CreateSummaryLevel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#ParseData">ParseData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#PlayTones">PlayTones</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#Select">Select</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#SetMaxMin">SetMaxMin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Segmented.html#UnSelectPrevious">UnSelectPrevious</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Tracker.html">Tracker</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DataSetup">DataSetup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#Delete">Delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#DownloadTrackerData">DownloadTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#GetTrackerData">GetTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#LogEvent">LogEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#SaveTrackerData">SaveTrackerData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#isUndefinedOrNull">isUndefinedOrNull</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#CreateChartComponents">CreateChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyChartComponents">DestroyChartComponents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#DestroyMaidr">DestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#FocusBeforeOrAfter">FocusBeforeOrAfter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#InitMaidr">InitMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#KillAutoplayEvent">KillAutoplayEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#SetEvents">SetEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeDestroyMaidr">ShouldWeDestroyMaidr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShouldWeInitMaidr">ShouldWeInitMaidr</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">init.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// events and init functions
+// we do some setup, but most of the work is done when user focuses on an element matching an id from maidr user data
+document.addEventListener('DOMContentLoaded', function (e) {
+  // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
+
+  // create global vars
+  window.constants = new Constants();
+  window.resources = new Resources();
+  window.tracker = new Tracker();
+  window.logError = new LogError();
+
+  // set focus events for all charts matching maidr ids
+  let maidrObjects = [];
+  if (!Array.isArray(maidr)) {
+    maidrObjects.push(maidr);
+  } else {
+    maidrObjects = maidr;
+  }
+  // set focus events for all maidr ids
+  DestroyMaidr(); // just in case
+  window.maidrIds = [];
+  for (let i = 0; i &lt; maidrObjects.length; i++) {
+    let maidrId = maidrObjects[i].id;
+    maidrIds.push(maidrId);
+    let maidrElemn = document.getElementById(maidrId);
+    if (maidrElemn) {
+      maidrElemn.addEventListener('focus', function (e) {
+        ShouldWeInitMaidr(maidrObjects[i]);
+      });
+      // blur done elsewhere
+    }
+  }
+
+  // events etc for user study page
+  // run tracker stuff only on user study page
+  if (document.getElementById('download_data_trigger')) {
+    // download data button
+    document
+      .getElementById('download_data_trigger')
+      .addEventListener('click', function (e) {
+        tracker.DownloadTrackerData();
+      });
+
+    // general events
+    document.addEventListener('keydown', function (e) {
+      // reset tracking with Ctrl + F5 / command + F5, and Ctrl + Shift + R / command + Shift + R
+      // future todo: this should probably be a button with a confirmation. This is dangerous
+      if (
+        (e.key == 'F5' &amp;&amp; (constants.isMac ? e.metaKey : e.ctrlKey)) ||
+        (e.key == 'R' &amp;&amp; (constants.isMac ? e.metaKey : e.ctrlKey))
+      ) {
+        e.preventDefault();
+        tracker.Delete();
+        location.reload(true);
+      }
+
+      // Tracker
+      if (constants.isTracking) {
+        if (e.key == 'F10') {
+          //tracker.DownloadTrackerData();
+        } else {
+          if (plot) {
+            tracker.LogEvent(e);
+          }
+        }
+      }
+
+      // Stuff to only run if we're on a chart (so check if the info div exists?)
+      if (document.getElementById('info')) {
+      }
+    });
+  }
+});
+
+/**
+ * Initializes the Maidr chart with the given configuration.
+ * @param {Object} thisMaidr - The configuration object for the Maidr chart.
+ */
+function InitMaidr(thisMaidr) {
+  // just in case
+  if (typeof constants != 'undefined') {
+    // init vars and html
+    window.singleMaidr = thisMaidr;
+    constants.chartId = singleMaidr.id;
+    if (Array.isArray(singleMaidr.type)) {
+      constants.chartType = singleMaidr.type[0];
+    } else {
+      constants.chartType = singleMaidr.type;
+    }
+    CreateChartComponents(singleMaidr);
+    window.control = new Control(); // this inits the plot
+    window.review = new Review();
+    window.display = new Display();
+    window.audio = new Audio();
+
+    // blur destruction events
+    let controlElements = [
+      constants.chart,
+      constants.brailleInput,
+      constants.review,
+    ];
+    for (let i = 0; i &lt; controlElements.length; i++) {
+      constants.events.push([controlElements[i], 'blur', ShouldWeDestroyMaidr]);
+    }
+
+    // kill autoplay event
+    constants.events.push([document, 'keydown', KillAutoplayEvent]);
+
+    this.SetEvents();
+
+    // once everything is set up, announce the chart name (or title as a backup) to the user
+    if ('name' in singleMaidr) {
+      display.announceText(singleMaidr.name);
+    } else if ('title' in singleMaidr) {
+      display.announceText(singleMaidr.title);
+    }
+  }
+}
+
+/**
+ * Determines whether to initialize Maidr based on certain conditions.
+ * @param {Object} thisMaidr - The Maidr object to be initialized.
+ */
+function ShouldWeInitMaidr(thisMaidr) {
+  // conditions:
+  // - maidr isn't enabled (check if singleMaidr is undefined or false)
+  // - the chart we're moving to isn't the same as the one we're on
+  // note: if we move from one to another, destroy the current first
+
+  if (typeof singleMaidr == 'undefined') {
+    // not enabled
+    InitMaidr(thisMaidr);
+  } else if (!singleMaidr) {
+    // not enabled
+    InitMaidr(thisMaidr);
+  } else if (thisMaidr.id !== singleMaidr.id) {
+    // different chart, destroy first
+    DestroyMaidr();
+    InitMaidr(thisMaidr);
+  }
+}
+
+/**
+ * Determines whether Maidr should be destroyed based on the tab movement.
+ * If tab movement is 0, do nothing. If tab movement is 1 or -1, move to before/after and then destroy.
+ * @param {Event} e - The blur event.
+ */
+function ShouldWeDestroyMaidr(e) {
+  // conditions: we've tabbed away from the chart or any component
+
+  // timeout to delay blur event. I forget why this is necessary, but it is
+  setTimeout(() => {
+    if (constants.tabMovement == 0) {
+      // do nothing, this is an allowed move
+      // but also reset so we can leave later
+      constants.tabMovement = null;
+    } else {
+      if (constants.tabMovement == 1 || constants.tabMovement == -1) {
+        // move to before / after, and then destroy
+        FocusBeforeOrAfter();
+      }
+      DestroyMaidr();
+    }
+  }, 0);
+}
+
+/**
+ * Creates a temporary div element and sets focus on it before or after the main container based on the tab movement direction.
+ * @function
+ * @name FocusBeforeOrAfter
+ * @returns {void}
+ */
+function FocusBeforeOrAfter() {
+  // Tab / forward
+  if (constants.tabMovement == 1) {
+    let focusTemp = document.createElement('div');
+    focusTemp.setAttribute('tabindex', '0');
+    constants.main_container.after(focusTemp);
+    focusTemp.focus();
+    focusTemp.remove();
+  }
+  // Shift + Tab / backward
+  else if (constants.tabMovement == -1) {
+    // create an element to focus on, add it before currentFocus, focus it, then remove it
+    let focusTemp = document.createElement('div');
+    focusTemp.setAttribute('tabindex', '0');
+    constants.main_container.before(focusTemp);
+    focusTemp.focus();
+    focusTemp.remove();
+  }
+}
+
+/**
+ * Removes all events, global variables, and chart components associated with Maidr.
+ */
+function DestroyMaidr() {
+  // chart cleanup
+  if (constants.chartType == 'bar' || constants.chartType == 'hist') {
+    // deselect, if possible
+    if (typeof plot.DeselectAll === 'function') {
+      plot.DeselectAll();
+    }
+    if (typeof plot.UnSelectPrevious === 'function') {
+      plot.UnSelectPrevious();
+    }
+  }
+
+  // remove events
+  for (let i = 0; i &lt; constants.events.length; i++) {
+    if (Array.isArray(constants.events[i][0])) {
+      for (let j = 0; j &lt; constants.events[i][0].length; j++) {
+        constants.events[i][0][j].removeEventListener(
+          constants.events[i][1],
+          constants.events[i][2]
+        );
+      }
+    } else {
+      constants.events[i][0].removeEventListener(
+        constants.events[i][1],
+        constants.events[i][2]
+      );
+    }
+  }
+  for (let i = 0; i &lt; constants.postLoadEvents.length; i++) {
+    if (Array.isArray(constants.postLoadEvents[i][0])) {
+      for (let j = 0; j &lt; constants.postLoadEvents[i][0].length; j++) {
+        constants.postLoadEvents[i][0][j].removeEventListener(
+          constants.postLoadEvents[i][1],
+          constants.postLoadEvents[i][2]
+        );
+      }
+    } else {
+      constants.postLoadEvents[i][0].removeEventListener(
+        constants.postLoadEvents[i][1],
+        constants.postLoadEvents[i][2]
+      );
+    }
+  }
+  constants.events = [];
+  constants.postLoadEvents = [];
+
+  // remove global vars
+  constants.chartId = null;
+  constants.chartType = null;
+  constants.tabMovement = null;
+  DestroyChartComponents();
+
+  window.review = null;
+  window.display = null;
+  window.control = null;
+  window.plot = null;
+  window.audio = null;
+  window.singleMaidr = null;
+}
+/**
+ * Kills autoplay if the user presses the control key (Windows) or command key (Mac).
+ * @param {KeyboardEvent} e - The keyboard event object.
+ */
+function KillAutoplayEvent(e) {
+  // Kill autoplay
+  if (
+    constants.isMac
+      ? e.key == 'Meta' || e.key == 'ContextMenu'
+      : e.key == 'Control'
+  ) {
+    // ctrl (either one)
+    constants.KillAutoplay();
+  }
+}
+
+/**
+ * Adds all events and post load events to the DOM elements.
+ */
+function SetEvents() {
+  // add all events
+  for (let i = 0; i &lt; constants.events.length; i++) {
+    if (Array.isArray(constants.events[i][0])) {
+      for (let j = 0; j &lt; constants.events[i][0].length; j++) {
+        constants.events[i][0][j].addEventListener(
+          constants.events[i][1],
+          constants.events[i][2]
+        );
+      }
+    } else {
+      constants.events[i][0].addEventListener(
+        constants.events[i][1],
+        constants.events[i][2]
+      );
+    }
+  }
+  // add all post load events
+  // we delay adding post load events just a tick so the chart loads
+  setTimeout(function () {
+    for (let i = 0; i &lt; constants.postLoadEvents.length; i++) {
+      if (Array.isArray(constants.postLoadEvents[i][0])) {
+        for (let j = 0; j &lt; constants.postLoadEvents[i][0].length; j++) {
+          constants.postLoadEvents[i][0][j].addEventListener(
+            constants.postLoadEvents[i][1],
+            constants.postLoadEvents[i][2]
+          );
+        }
+      } else {
+        constants.postLoadEvents[i][0].addEventListener(
+          constants.postLoadEvents[i][1],
+          constants.postLoadEvents[i][2]
+        );
+      }
+    }
+  }, 100);
+}
+
+/**
+ * Initializes the chart components by creating a structure with a main container and a chart container,
+ * updating the parents from just chart to main container > chart container > chart, and setting various
+ * page elements and attributes. Also creates a braille input, an info aria live region, announcements,
+ * an end chime audio element, and a review mode form field.
+ */
+function CreateChartComponents() {
+  // init html stuff. aria live regions, braille input, etc
+
+  // core chart
+  let chart = document.getElementById(singleMaidr.id);
+
+  // we create a structure with a main container, and a chart container
+  let main_container = document.createElement('div');
+  main_container.id = constants.main_container_id;
+  let chart_container = document.createElement('div');
+  chart_container.id = constants.chart_container_id;
+  // update parents from just chart, to main container > chart container > chart
+  chart.parentNode.replaceChild(main_container, chart);
+  main_container.appendChild(chart);
+  chart.parentNode.replaceChild(chart_container, chart);
+  chart_container.appendChild(chart);
+  chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
+
+  constants.chart = chart;
+  constants.chart_container = chart_container;
+  constants.main_container = main_container;
+
+  // braille input, pre sibling of chart container
+  constants.chart_container.insertAdjacentHTML(
+    'beforebegin',
+    '&lt;div class="hidden" id="' +
+      constants.braille_container_id +
+      '">\n&lt;input id="' +
+      constants.braille_input_id +
+      '" class="braille-input" type="text" size="' +
+      constants.brailleDisplayLength +
+      '" ' +
+      'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
+      '/>\n&lt;/div>\n'
+  );
+
+  // info aria live, next sibling of chart container
+  constants.chart_container.insertAdjacentHTML(
+    'afterend',
+    '&lt;br>\n&lt;div id="' +
+      constants.info_id +
+      '" aria-live="assertive" aria-atomic="true">\n&lt;p id="x">&lt;/p>\n&lt;p id="y">&lt;/p>\n&lt;/div>\n'
+  );
+
+  // announcements, next sibling of info
+  document
+    .getElementById(constants.info_id)
+    .insertAdjacentHTML(
+      'afterend',
+      '&lt;div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3">&lt;/div>\n'
+    );
+
+  // end chime audio element
+  // TODO: external media file is not working as a stereo audio so commenting this out until we find a solution
+  // document
+  // .getElementById(constants.info_id)
+  // .insertAdjacentHTML(
+  // 'afterend',
+  // '&lt;div class="hidden"> &lt;audio src="../src/terminalBell.mp3" id="end_chime">&lt;/audio> &lt;/div>'
+  // );
+
+  // review mode form field
+  document
+    .getElementById(constants.info_id)
+    .insertAdjacentHTML(
+      'beforebegin',
+      '&lt;div id="' +
+        constants.review_id_container +
+        '" class="hidden sr-only sr-only-focusable">&lt;input id="' +
+        constants.review_id +
+        '" type="text" readonly size="50" />&lt;/div>'
+    );
+
+  // some tweaks
+  constants.chart_container.setAttribute('role', 'application');
+
+  // set page elements
+  constants.brailleContainer = document.getElementById(
+    constants.braille_container_id
+  );
+  constants.brailleInput = document.getElementById(constants.braille_input_id);
+  constants.infoDiv = document.getElementById(constants.info_id);
+  constants.announceContainer = document.getElementById(
+    constants.announcement_container_id
+  );
+  constants.nonMenuFocus = constants.chart;
+  constants.endChime = document.getElementById(constants.end_chime_id);
+  constants.review_container = document.querySelector(
+    '#' + constants.review_id_container
+  );
+  constants.review = document.querySelector('#' + constants.review_id);
+
+  // help menu
+  window.menu = new Menu();
+
+  // Description modal
+  window.description = new Description(); // developement on hold
+}
+
+/**
+ * Removes all chart components from the DOM and resets related variables to null.
+ * @function
+ * @name DestroyChartComponents
+ * @returns {void}
+ */
+function DestroyChartComponents() {
+  // remove html stuff
+  if (constants.chart_container != null) {
+    if (constants.chart != null) {
+      if (constants.chart_container.parentNode != null) {
+        constants.chart_container.parentNode.replaceChild(
+          constants.chart,
+          constants.chart_container
+        );
+      }
+    }
+    constants.chart_container.remove();
+  }
+  if (constants.brailleContainer != null) {
+    constants.brailleContainer.remove();
+  }
+  if (constants.infoDiv != null) {
+    constants.infoDiv.remove();
+  }
+  if (constants.announceContainer != null) {
+    constants.announceContainer.remove();
+  }
+  if (constants.endChime != null) {
+    constants.endChime.remove();
+  }
+  if (constants.review_container != null) {
+    constants.review_container.remove();
+  }
+
+  if (typeof menu != 'undefined') {
+    menu.Destroy();
+  }
+  if (typeof description != 'undefined') {
+    description.Destroy();
+  }
+
+  constants.chart = null;
+  constants.chart_container = null;
+  constants.brailleContainer = null;
+  constants.brailleInput = null;
+  constants.infoDiv = null;
+  constants.announceContainer = null;
+  constants.endChime = null;
+  constants.review_container = null;
+  menu = null;
+  description = null;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Nov 08 2023 22:37:49 GMT-0600 (Central Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

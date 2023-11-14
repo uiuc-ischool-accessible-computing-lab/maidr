@@ -1,4 +1,12 @@
+/**
+ * A class representing the display of the chart.
+ * @class
+ */
 class Display {
+  /**
+   * Creates a new instance of the Display class.
+   * @constructor
+   */
   constructor() {
     this.infoDiv = constants.infoDiv;
 
@@ -21,6 +29,10 @@ class Display {
     ];
   }
 
+  /**
+   * Toggles the text mode between 'off', 'terse', and 'verbose'.
+   * Updates the constants.textMode property and announces the new mode.
+   */
   toggleTextMode() {
     if (constants.textMode == 'off') {
       constants.textMode = 'terse';
@@ -35,6 +47,11 @@ class Display {
     );
   }
 
+  /**
+   * Toggles braille mode on or off.
+   * @param {string} [onoff] - Optional parameter to explicitly set braille mode on or off.
+   * @returns {void}
+   */
   toggleBrailleMode(onoff) {
     if (constants.chartType == 'point') {
       this.announceText('Braille is not supported in point layer.');
@@ -112,8 +129,18 @@ class Display {
     this.announceText('Braille ' + constants.brailleMode);
   }
 
+  /**
+   * Toggles the sonification mode based on the current chart type and sonification mode.
+   * If the chart type is point, stacked_bar, stacked_normalized_bar, or dodged_bar, the sonification mode can be toggled between 'off', 'on', and 'same'.
+   * If the chart type is not one of the above, the sonification mode can only be toggled between 'off' and 'on'.
+   */
   toggleSonificationMode() {
-    if (singleMaidr.type == 'point' || singleMaidr.type.includes('point')) {
+    if (
+      constants.chartType == 'point' ||
+      constants.chartType == 'stacked_bar' ||
+      constants.chartType == 'stacked_normalized_bar' ||
+      constants.chartType == 'dodged_bar'
+    ) {
       if (constants.sonifMode == 'off') {
         constants.sonifMode = 'on';
         this.announceText(resources.GetString('son_sep'));
@@ -135,6 +162,10 @@ class Display {
     }
   }
 
+  /**
+   * Changes the chart layer up or down and updates the position relative to where we were on the previous layer.
+   * @param {string} [updown='down'] - The direction to change the chart layer. Can be 'up' or 'down'. Defaults to 'down'.
+   */
   changeChartLayer(updown = 'down') {
     // get possible chart types, where we are, and move between them
     let chartTypes = maidr.type;
@@ -171,10 +202,17 @@ class Display {
     }
   }
 
+  /**
+   * Sets the text of the announce container element.
+   * @param {string} txt - The text to be displayed in the announce container.
+   */
   announceText(txt) {
-    constants.announceContainer.innerHTML = txt;
+    this.displayInfo('announce', txt, constants.announceContainer);
   }
 
+  /**
+   * Updates the position of the cursor in the braille display based on the current chart type and position.
+   */
   UpdateBraillePos() {
     if (
       constants.chartType == 'bar' ||
@@ -235,6 +273,12 @@ class Display {
     }
   }
 
+  /**
+   * Builds an html text string to output to both visual users and aria live based on what chart we're on, our position, and the mode.
+   * @function
+   * @memberof module:display
+   * @returns {void}
+   */
   displayValues() {
     // we build an html text string to output to both visual users and aria live based on what chart we're on, our position, and the mode
     // note: we do this all as one string rather than changing individual element IDs so that aria-live receives a single update
@@ -558,28 +602,45 @@ class Display {
     }
   }
 
-  displayInfo(textType, textValue) {
-    if (textType) {
+  /**
+   * Displays information on the webpage based on the textType and textValue provided.
+   * @param {string} textType - The type of text to be displayed.
+   * @param {string} textValue - The value of the text to be displayed.
+   */
+  displayInfo(textType, textValue, elem = constants.infoDiv) {
+    let textToAdd = '';
+    if (textType == 'announce') {
+      if (textValue) {
+        textToAdd = textValue;
+      }
+    } else if (textType) {
       if (textValue) {
         if (constants.textMode == 'terse') {
-          constants.infoDiv.innerHTML = '<p>' + textValue + '<p>';
+          textToAdd = textValue;
         } else if (constants.textMode == 'verbose') {
           let capsTextType =
             textType.charAt(0).toUpperCase() + textType.slice(1);
-          constants.infoDiv.innerHTML =
-            '<p>' + capsTextType + ' is ' + textValue + '<p>';
+          textToAdd = capsTextType + ' is ' + textValue;
         }
       } else {
         let aOrAn = ['a', 'e', 'i', 'o', 'u'].includes(textType.charAt(0))
           ? 'an'
           : 'a';
 
-        constants.infoDiv.innerHTML =
-          '<p>Plot does not have ' + aOrAn + ' ' + textType + '<p>';
+        textToAdd = 'Plot does not have ' + aOrAn + ' ' + textType;
       }
+    }
+    if (textToAdd.length > 0) {
+      elem.innerHTML = null;
+      let p = document.createElement('p');
+      p.innerHTML = textToAdd;
+      elem.appendChild(p);
     }
   }
 
+  /**
+   * Sets the braille representation of the chart based on the current chart type and plot data.
+   */
   SetBraille() {
     let brailleArray = [];
 
@@ -1014,6 +1075,13 @@ class Display {
     this.UpdateBraillePos();
   }
 
+  /**
+   * Calculates the impact of character length on the given character data.
+   * @param {Object} charData - The character data to calculate the impact for.
+   * @param {number} charData.length - The total length of all characters.
+   * @param {number} charData.numChars - The total number of characters.
+   * @returns {number} The impact of character length on the given character data.
+   */
   CharLenImpact(charData) {
     return charData.length / charData.numChars;
   }

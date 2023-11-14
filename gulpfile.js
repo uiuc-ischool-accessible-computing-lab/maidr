@@ -22,6 +22,8 @@ gulp.task('scripts', function () {
       './src/js/heatmap.js',
       './src/js/scatterplot.js',
       './src/js/histogram.js',
+      './src/js/lineplot.js',
+      './src/js/segmented.js',
       './src/js/controls.js',
       './src/js/init.js',
     ]) // order matters here
@@ -36,7 +38,7 @@ gulp.task('scripts', function () {
 gulp.task('styles', function () {
   return gulp
     .src('src/css/*.css')
-    .pipe(concatCss('styles.css'))
+    .pipe(concatCss('maidr_style.css'))
     .pipe(gulp.dest('dist')) // destination folder for unminified version
     .pipe(cleanCss())
     .pipe(rename({ extname: '.min.css' }))

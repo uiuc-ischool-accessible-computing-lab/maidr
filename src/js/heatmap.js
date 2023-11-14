@@ -1,4 +1,12 @@
+/**
+ * A class representing a heatmap.
+ * @class
+ */
 class HeatMap {
+  /**
+   * Creates a new Heatmap object.
+   * @constructor
+   */
   constructor() {
     // initialize variables xlevel, data, and elements
     let xlevel = null;
@@ -114,6 +122,11 @@ class HeatMap {
     this.y_group_label = this.group_labels[1].trim();
   }
 
+  /**
+   * Returns an array of heatmap data containing unique x and y coordinates, norms, number of rows, and number of columns.
+   * If 'data' exists in singleMaidr, it returns the norms from the data. Otherwise, it calculates the norms from the unique x and y coordinates.
+   * @returns {Array} An array of heatmap data containing unique x and y coordinates, norms, number of rows, and number of columns.
+   */
   getHeatMapData() {
     // get the x_coord and y_coord to check if a square exists at the coordinates
     let x_coord_check = [];
@@ -190,6 +203,9 @@ class HeatMap {
     return plotData;
   }
 
+  /**
+   * Updates the constants used in the heatmap.
+   */
   updateConstants() {
     constants.minX = 0;
     constants.maxX = this.plotData[4];
@@ -213,10 +229,17 @@ class HeatMap {
     }
   }
 
+  /**
+   * Plays a tone using the audio object.
+   */
   PlayTones() {
     audio.playTone();
   }
 
+  /**
+   * Returns an array of the X and Y scales of the first SVG element found in the plots array.
+   * @returns {Array<number>} An array containing the X and Y scales of the SVG element.
+   */
   GetSVGScaler() {
     let scaleX = 1;
     let scaleY = 1;
@@ -262,6 +285,11 @@ class HeatMap {
     return [scaleX, scaleY];
   }
 
+  /**
+   * Returns the sum of squared values of the RGB color of a plot element.
+   * @param {number} i - The index of the plot element.
+   * @returns {number} The sum of squared values of the RGB color.
+   */
   getRGBNorm(i) {
     let rgb_string = this.plots[i].getAttribute('fill');
     let rgb_array = rgb_string.slice(4, -1).split(',');
@@ -275,6 +303,10 @@ class HeatMap {
       });
   }
 
+  /**
+   * Returns an array of group labels for the heatmap.
+   * @returns {Array<string>} An array containing the X and Y labels for the heatmap.
+   */
   getGroupLabels() {
     let labels_nodelist;
     let legendX = '';
@@ -310,6 +342,10 @@ class HeatMap {
     return labels_nodelist;
   }
 
+  /**
+   * Returns the x-axis labels from the singleMaidr object.
+   * @returns {Array} The x-axis labels.
+   */
   getXLabels() {
     if ('axes' in singleMaidr) {
       if ('x' in singleMaidr.axes) {
@@ -320,6 +356,10 @@ class HeatMap {
     }
   }
 
+  /**
+   * Returns the y-axis labels from the singleMaidr object, if available.
+   * @returns {Array<string>|undefined} The y-axis labels, or undefined if not available.
+   */
   getYLabels() {
     if ('axes' in singleMaidr) {
       if ('y' in singleMaidr.axes) {
@@ -330,6 +370,11 @@ class HeatMap {
     }
   }
 
+  /**
+   * Returns the title of the singleMaidr object, if it exists.
+   * If not, returns the title of the labels object within singleMaidr, if it exists.
+   * @returns {string|undefined} The title of the singleMaidr or labels object, or undefined if neither exists.
+   */
   getTitle() {
     if ('title' in singleMaidr) {
       return singleMaidr.title;
@@ -340,6 +385,10 @@ class HeatMap {
     }
   }
 
+  /**
+   * Returns the subtitle from the `singleMaidr` object if it exists.
+   * @returns {string|undefined} The subtitle string if it exists, otherwise undefined.
+   */
   getSubtitle() {
     if ('labels' in singleMaidr) {
       if ('subtitle' in singleMaidr.labels) {
@@ -348,6 +397,10 @@ class HeatMap {
     }
   }
 
+  /**
+   * Returns the caption from the `singleMaidr` object's `labels` property, if it exists.
+   * @returns {string|undefined} The caption string, or undefined if it doesn't exist.
+   */
   getCaption() {
     if ('labels' in singleMaidr) {
       if ('caption' in singleMaidr.labels) {
@@ -356,6 +409,10 @@ class HeatMap {
     }
   }
 
+  /**
+   * Returns the fill color for the heatmap based on the `fill` property in `singleMaidr.labels`.
+   * @returns {string|undefined} The fill color or undefined if `singleMaidr.labels.fill` is not defined.
+   */
   getFill() {
     if ('labels' in singleMaidr) {
       if ('fill' in singleMaidr.labels) {
@@ -365,7 +422,15 @@ class HeatMap {
   }
 }
 
+/**
+ * Represents a rectangular heatmap.
+ * @class
+ */
 class HeatMapRect {
+  /**
+   * Creates a new instance of Heatmap.
+   * @constructor
+   */
   constructor() {
     if (constants.hasRect) {
       this.x = plot.x_coord[0];
@@ -376,6 +441,9 @@ class HeatMapRect {
     }
   }
 
+  /**
+   * Updates the position of the rectangle based on the current x and y coordinates.
+   */
   UpdateRect() {
     this.x = plot.x_coord[position.x];
     this.y = plot.y_coord[position.y];
@@ -391,6 +459,12 @@ class HeatMapRect {
     }
   }
 
+  /**
+   * Updates the rectangle display.
+   * @function
+   * @memberof Heatmap
+   * @returns {void}
+   */
   UpdateRectDisplay() {
     this.UpdateRect();
     if (document.getElementById('highlight_rect'))

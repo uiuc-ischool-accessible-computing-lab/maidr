@@ -1,4 +1,12 @@
+/**
+ * Represents a bar chart.
+ * @class
+ */
 class BarChart {
+  /**
+   * Creates a new instance of Barplot.
+   * @constructor
+   */
   constructor() {
     // initialize variables xlevel, data, and elements
     let xlevel = null;
@@ -149,6 +157,9 @@ class BarChart {
     this.autoplay = null;
   }
 
+  /**
+   * Sets the maximum and minimum values for the plot data and calculates other constants.
+   */
   SetMaxMin() {
     for (let i = 0; i < this.plotData.length; i++) {
       if (i == 0) {
@@ -174,10 +185,17 @@ class BarChart {
     }
   }
 
+  /**
+   * Plays a tone using the audio player.
+   */
   PlayTones() {
     audio.playTone();
   }
 
+  /**
+   * Returns the legend object for the barplot based on manual data.
+   * @returns {Object} The legend object with x and y coordinates.
+   */
   GetLegendFromManualData() {
     let legend = {};
 
@@ -187,6 +205,10 @@ class BarChart {
     return legend;
   }
 
+  /**
+   * Returns an array of heights for each bar in the plot.
+   * @returns {Array} An array of heights for each bar in the plot.
+   */
   GetData() {
     // set height for each bar
 
@@ -201,6 +223,10 @@ class BarChart {
     return plotData;
   }
 
+  /**
+   * Returns an array of column names from the chart.
+   * @returns {Array<string>} An array of column names.
+   */
   GetColumns() {
     // get column names
     // the pattern seems to be a <tspan> with dy="10", but check this for future output (todo)
@@ -214,6 +240,10 @@ class BarChart {
     return columnLabels;
   }
 
+  /**
+   * Returns an object containing the x and y coordinates of the legend.
+   * @returns {{x: string, y: string}} An object with x and y properties representing the coordinates of the legend.
+   */
   GetLegend() {
     let legend = {};
     let els = constants.chart.querySelectorAll('tspan[dy="12"]'); // todo, generalize this selector
@@ -223,6 +253,11 @@ class BarChart {
     return legend;
   }
 
+  /**
+   * Parses the innerHTML of elements.
+   * @param {Array} els - The array of elements to parse.
+   * @returns {Array} - The parsed innerHTML of the elements.
+   */
   ParseInnerHTML(els) {
     // parse innerHTML of elements
     let parsed = [];
@@ -232,20 +267,28 @@ class BarChart {
     return parsed;
   }
 
+  /**
+   * Selects the active element and changes its color.
+   */
   Select() {
     this.UnSelectPrevious();
     if (this.bars) {
       this.activeElement = this.bars[position.x];
       if (this.activeElement) {
-        this.activeElementColor = this.activeElement.style.fill;
-        this.activeElement.style.fill = constants.colorSelected;
+        this.activeElementColor = this.activeElement.getAttribute('fill');
+        let newColor = constants.GetBetterColor(this.activeElementColor);
+        this.activeElement.setAttribute('fill', newColor);
       }
     }
   }
 
+  /**
+   * Unselects the previously selected element by setting its fill attribute to the original color.
+   */
   UnSelectPrevious() {
     if (this.activeElement) {
-      this.activeElement.style.fill = this.activeElementColor;
+      // set fill attribute to the original color
+      this.activeElement.setAttribute('fill', this.activeElementColor);
       this.activeElement = null;
     }
   }

@@ -1,5 +1,13 @@
+/**
+ * A class representing constants used throughout the application.
+ * @class
+ */
 class Constants {
   // element ids
+  /**
+   * The ID of the chart container element.
+   * @type {string}
+   */
   chart_container_id = 'chart-container';
   main_container_id = 'maidr-container';
   //chart_container_class = 'chart-container'; // remove later
@@ -19,6 +27,10 @@ class Constants {
   postLoadEvents = [];
 
   // default constructor for all charts
+  /**
+   * Creates a new instance of the Constants class.
+   * @constructor
+   */
   constructor() {}
 
   // BTS modes initial values
@@ -40,6 +52,8 @@ class Constants {
   MAX_FREQUENCY = 1000;
   MIN_FREQUENCY = 200;
   NULL_FREQUENCY = 100;
+  combinedVolMin = 0.25; // volume for min amplitude combined tones
+  combinedVolMax = 1.25; // volume for max amplitude combined tones
 
   // autoplay speed
   MAX_SPEED = 500;
@@ -63,8 +77,8 @@ class Constants {
   duration = 0.3;
   outlierDuration = 0.06;
   autoPlayOutlierRate = 50; // ms per tone
-  autoPlayPointsRate = 30;
-  colorUnselected = '#595959'; // we don't use this yet, but remember: don't rely on color! also do a shape or pattern fill
+  autoPlayPointsRate = 50; // time between tones in a run
+  colorUnselected = '#595959'; // deprecated, todo: find all instances replace with storing old color method
   isTracking = 1; // 0 / 1, is tracking on or off
   visualBraille = false; // do we want to represent braille based on what's visually there or actually there. Like if we have 2 outliers with the same position, do we show 1 (visualBraille true) or 2 (false)
   globalMinMax = true;
@@ -129,8 +143,29 @@ class Constants {
     let b = 255 - rgb[2];
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
+  GetBetterColor(oldColor) {
+    // get a highly contrasting color against the current
+    // method: choose an inverted color, but if it's just a shade of gray, default to this.colorSelected
+    let newColor = this.ColorInvert(oldColor);
+    let rgb = newColor.replace(/[^\d,]/g, '').split(',');
+    if (
+      rgb[1] < rgb[0] + 10 &&
+      rgb[1] > rgb[0] - 10 &&
+      rgb[2] < rgb[0] + 10 &&
+      rgb[2] > rgb[0] - 10 &&
+      (rgb[0] > 86 || rgb[0] < 169)
+    ) {
+      // too gray and too close to center gray, use default
+      newColor = this.colorSelected;
+    }
+
+    return newColor;
+  }
 }
 
+/**
+ * Resources class contains properties and methods related to language, knowledge level, and strings.
+ */
 class Resources {
   constructor() {}
 
@@ -163,11 +198,19 @@ class Resources {
     },
   };
 
+  /**
+   * Returns a string based on the provided ID, language, and knowledge level.
+   * @param {string} id - The ID of the string to retrieve.
+   * @returns {string} The string corresponding to the provided ID, language, and knowledge level.
+   */
   GetString(id) {
     return this.strings[this.language][this.knowledgeLevel][id];
   }
 }
 
+/**
+ * Represents a menu object with various settings and keyboard shortcuts.
+ */
 class Menu {
   whereWasMyFocus = null;
 
@@ -276,6 +319,9 @@ class Menu {
         <div id="menu_modal_backdrop" class="modal-backdrop hidden"></div>
         `;
 
+  /**
+   * Creates a menu element and sets up event listeners for opening and closing the menu.
+   */
   CreateMenu() {
     // menu element creation
     document
@@ -325,6 +371,13 @@ class Menu {
     ]);
   }
 
+  /**
+   * Destroys the menu element and its backdrop.
+   * @function
+   * @name Destroy
+   * @memberof module:constants
+   * @returns {void}
+   */
   Destroy() {
     // menu element destruction
     let menu = document.getElementById('menu');
@@ -337,6 +390,10 @@ class Menu {
     }
   }
 
+  /**
+   * Toggles the menu on and off.
+   * @param {boolean} [onoff=false] - Whether to turn the menu on or off. Defaults to false.
+   */
   Toggle(onoff = false) {
     if (typeof onoff == 'undefined') {
       if (document.getElementById('menu').classList.contains('hidden')) {
@@ -362,6 +419,9 @@ class Menu {
     }
   }
 
+  /**
+   * Populates the data in the HTML elements with the values from the constants object.
+   */
   PopulateData() {
     document.getElementById('vol').value = constants.vol;
     //document.getElementById('show_rect').checked = constants.showRect;
@@ -375,6 +435,9 @@ class Menu {
       constants.keypressInterval;
   }
 
+  /**
+   * Saves the data from the HTML elements into the constants object.
+   */
   SaveData() {
     constants.vol = document.getElementById('vol').value;
     //constants.showRect = document.getElementById('show_rect').checked;
@@ -389,6 +452,12 @@ class Menu {
       document.getElementById('keypress_interval').value;
   }
 
+  /**
+   * Saves all data in this.SaveData() to local storage.
+   * @function
+   * @memberof constants
+   * @returns {void}
+   */
   SaveDataToLocalStorage() {
     // save all data in this.SaveData() to local storage
     let data = {};
@@ -402,6 +471,9 @@ class Menu {
     data.keypressInterval = constants.keypressInterval;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
+  /**
+   * Loads data from local storage and updates the constants object with the retrieved values.
+   */
   LoadDataFromLocalStorage() {
     let data = JSON.parse(localStorage.getItem('settings_data'));
     if (data) {
@@ -417,6 +489,10 @@ class Menu {
   }
 }
 
+/**
+ * Creates an html modal containing summary info of the active chart.
+ * @class
+ */
 class Description {
   // This class creates an html modal containing summary info of the active chart
   // Trigger popup with 'D' key
@@ -429,6 +505,9 @@ class Description {
     //this.CreateComponent(); // disabled as we're in development and have switched priorities
   }
 
+  /**
+   * Creates a modal component containing description summary stuff.
+   */
   CreateComponent() {
     // modal containing description summary stuff
     let html = `
@@ -496,6 +575,9 @@ class Description {
     ]);
   }
 
+  /**
+   * Removes the description element and backdrop from the DOM.
+   */
   Destroy() {
     // description element destruction
     let description = document.getElementById('menu');
@@ -508,6 +590,10 @@ class Description {
     }
   }
 
+  /**
+   * Toggles the visibility of the description element.
+   * @param {boolean} [onoff=false] - Whether to turn the description element on or off.
+   */
   Toggle(onoff = false) {
     if (typeof onoff == 'undefined') {
       if (document.getElementById('description').classList.contains('hidden')) {
@@ -533,6 +619,9 @@ class Description {
     }
   }
 
+  /**
+   * Populates the data for the chart and table based on the chart type and plot data.
+   */
   PopulateData() {
     let descHtml = '';
 
@@ -663,6 +752,10 @@ class Description {
   }
 }
 
+/**
+ * Represents a position in 3D space.
+ * @class
+ */
 class Position {
   constructor(x, y, z = -1) {
     this.x = x;
@@ -672,7 +765,16 @@ class Position {
 }
 
 // HELPER FUNCTIONS
+/**
+ * A helper class with static methods.
+ */
 class Helper {
+  /**
+   * Checks if an object is present in an array.
+   * @param {Object} obj - The object to search for.
+   * @param {Array} arr - The array to search in.
+   * @returns {boolean} - True if the object is present in the array, false otherwise.
+   */
   static containsObject(obj, arr) {
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] === obj) return true;
@@ -681,11 +783,18 @@ class Helper {
   }
 }
 
+/**
+ * A class representing a Tracker.
+ * @class
+ */
 class Tracker {
   constructor() {
     this.DataSetup();
   }
 
+  /**
+   * Sets up the tracker data by checking if previous data exists and creating new data if it doesn't.
+   */
   DataSetup() {
     let prevData = this.GetTrackerData();
     if (prevData) {
@@ -702,6 +811,9 @@ class Tracker {
     }
   }
 
+  /**
+   * Downloads the tracker data as a JSON file.
+   */
   DownloadTrackerData() {
     let link = document.createElement('a');
     let data = this.GetTrackerData();
@@ -711,15 +823,26 @@ class Tracker {
     link.click();
   }
 
+  /**
+   * Saves the tracker data to local storage.
+   * @param {Object} data - The data to be saved.
+   */
   SaveTrackerData(data) {
     localStorage.setItem(constants.project_id, JSON.stringify(data));
   }
 
+  /**
+   * Retrieves tracker data from local storage.
+   * @returns {Object} The tracker data.
+   */
   GetTrackerData() {
     let data = JSON.parse(localStorage.getItem(constants.project_id));
     return data;
   }
 
+  /**
+   * Removes the project_id from localStorage, clears the tracking data, and sets up new data.
+   */
   Delete() {
     localStorage.removeItem(constants.project_id);
     this.data = null;
@@ -731,6 +854,10 @@ class Tracker {
     this.DataSetup();
   }
 
+  /**
+   * Logs an event with various properties to the tracker data.
+   * @param {Event} e - The event to log.
+   */
   LogEvent(e) {
     let eventToLog = {};
 
@@ -950,6 +1077,11 @@ class Tracker {
     this.SaveTrackerData(data);
   }
 
+  /**
+   * Checks if the given item is undefined or null.
+   * @param {*} item - The item to check.
+   * @returns {boolean} - Returns true if the item is undefined or null, else false.
+   */
   isUndefinedOrNull(item) {
     try {
       return item === undefined || item === null;
@@ -959,9 +1091,17 @@ class Tracker {
   }
 }
 
+/**
+ * Represents a Review object.
+ * @class
+ */
 class Review {
   constructor() {}
 
+  /**
+   * Toggles the review mode on or off.
+   * @param {boolean} [onoff=true] - Whether to turn review mode on or off. Default is true.
+   */
   ToggleReviewMode(onoff = true) {
     // true means on or show
     if (onoff) {
@@ -984,17 +1124,33 @@ class Review {
   }
 }
 
+/**
+ * Represents a class for logging errors.
+ */
 class LogError {
   constructor() {}
 
+  /**
+   * Logs the absent element and turns off visual highlighting.
+   * @param {string} a - The absent element to log.
+   */
   LogAbsentElement(a) {
     console.log(a, 'not found. Visual highlighting is turned off.');
   }
 
+  /**
+   * Logs a critical element and indicates that MAIDR is unable to run.
+   * @param {string} a - The critical element to log.
+   */
   LogCriticalElement(a) {
     consolelog(a, 'is critical. MAIDR unable to run');
   }
 
+  /**
+   * Logs a message indicating that two values do not have the same length.
+   * @param {*} a - The first value to compare.
+   * @param {*} b - The second value to compare.
+   */
   LogDifferentLengths(a, b) {
     console.log(
       a,
@@ -1004,6 +1160,11 @@ class LogError {
     );
   }
 
+  /**
+   * Logs a message indicating that too many elements were found and only the first n elements will be highlighted.
+   * @param {string} a - The type of element being highlighted.
+   * @param {number} b - The maximum number of elements to highlight.
+   */
   LogTooManyElements(a, b) {
     console.log(
       'Too many',
@@ -1014,6 +1175,10 @@ class LogError {
     );
   }
 
+  /**
+   * Logs a message indicating that the provided parameter is not an array.
+   * @param {*} a - The parameter that is not an array.
+   */
   LogNotArray(a) {
     console.log(a, 'is not an array. Visual highlighting is turned off.');
   }

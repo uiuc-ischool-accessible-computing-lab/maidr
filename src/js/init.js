@@ -72,6 +72,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
   }
 });
 
+/**
+ * Initializes the Maidr chart with the given configuration.
+ * @param {Object} thisMaidr - The configuration object for the Maidr chart.
+ */
 function InitMaidr(thisMaidr) {
   // just in case
   if (typeof constants != 'undefined') {
@@ -113,6 +117,10 @@ function InitMaidr(thisMaidr) {
   }
 }
 
+/**
+ * Determines whether to initialize Maidr based on certain conditions.
+ * @param {Object} thisMaidr - The Maidr object to be initialized.
+ */
 function ShouldWeInitMaidr(thisMaidr) {
   // conditions:
   // - maidr isn't enabled (check if singleMaidr is undefined or false)
@@ -132,6 +140,11 @@ function ShouldWeInitMaidr(thisMaidr) {
   }
 }
 
+/**
+ * Determines whether Maidr should be destroyed based on the tab movement.
+ * If tab movement is 0, do nothing. If tab movement is 1 or -1, move to before/after and then destroy.
+ * @param {Event} e - The blur event.
+ */
 function ShouldWeDestroyMaidr(e) {
   // conditions: we've tabbed away from the chart or any component
 
@@ -151,6 +164,12 @@ function ShouldWeDestroyMaidr(e) {
   }, 0);
 }
 
+/**
+ * Creates a temporary div element and sets focus on it before or after the main container based on the tab movement direction.
+ * @function
+ * @name FocusBeforeOrAfter
+ * @returns {void}
+ */
 function FocusBeforeOrAfter() {
   // Tab / forward
   if (constants.tabMovement == 1) {
@@ -171,10 +190,19 @@ function FocusBeforeOrAfter() {
   }
 }
 
+/**
+ * Removes all events, global variables, and chart components associated with Maidr.
+ */
 function DestroyMaidr() {
   // chart cleanup
   if (constants.chartType == 'bar' || constants.chartType == 'hist') {
-    plot.DeselectAll();
+    // deselect, if possible
+    if (typeof plot.DeselectAll === 'function') {
+      plot.DeselectAll();
+    }
+    if (typeof plot.UnSelectPrevious === 'function') {
+      plot.UnSelectPrevious();
+    }
   }
 
   // remove events
@@ -224,6 +252,10 @@ function DestroyMaidr() {
   window.audio = null;
   window.singleMaidr = null;
 }
+/**
+ * Kills autoplay if the user presses the control key (Windows) or command key (Mac).
+ * @param {KeyboardEvent} e - The keyboard event object.
+ */
 function KillAutoplayEvent(e) {
   // Kill autoplay
   if (
@@ -236,6 +268,9 @@ function KillAutoplayEvent(e) {
   }
 }
 
+/**
+ * Adds all events and post load events to the DOM elements.
+ */
 function SetEvents() {
   // add all events
   for (let i = 0; i < constants.events.length; i++) {
@@ -274,6 +309,12 @@ function SetEvents() {
   }, 100);
 }
 
+/**
+ * Initializes the chart components by creating a structure with a main container and a chart container,
+ * updating the parents from just chart to main container > chart container > chart, and setting various
+ * page elements and attributes. Also creates a braille input, an info aria live region, announcements,
+ * an end chime audio element, and a review mode form field.
+ */
 function CreateChartComponents() {
   // init html stuff. aria live regions, braille input, etc
 
@@ -327,12 +368,13 @@ function CreateChartComponents() {
     );
 
   // end chime audio element
-  document
-    .getElementById(constants.info_id)
-    .insertAdjacentHTML(
-      'afterend',
-      '<div class="hidden"> <audio src="../src/terminalBell.mp3" id="end_chime"></audio> </div>'
-    );
+  // TODO: external media file is not working as a stereo audio so commenting this out until we find a solution
+  // document
+  // .getElementById(constants.info_id)
+  // .insertAdjacentHTML(
+  // 'afterend',
+  // '<div class="hidden"> <audio src="../src/terminalBell.mp3" id="end_chime"></audio> </div>'
+  // );
 
   // review mode form field
   document
@@ -372,6 +414,12 @@ function CreateChartComponents() {
   window.description = new Description(); // developement on hold
 }
 
+/**
+ * Removes all chart components from the DOM and resets related variables to null.
+ * @function
+ * @name DestroyChartComponents
+ * @returns {void}
+ */
 function DestroyChartComponents() {
   // remove html stuff
   if (constants.chart_container != null) {
