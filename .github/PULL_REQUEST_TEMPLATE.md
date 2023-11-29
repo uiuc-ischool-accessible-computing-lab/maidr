@@ -14,12 +14,15 @@
 [Include any relevant screenshots or images to help visualize the changes.]
 
 ## Checklist
-- [ ] I have tested the changes locally following `ManualTestingProcess.md`.
-- [ ] I have reviewed the code and ensured it follows the project's coding standards.
-- [ ] I have updated the documentation, if necessary.
+- [ ] I have read the [Contributor Guidelines](../CONTRIBUTING.md).
+- [ ] I have updated the [CHANGELOG](../CHANGELOG.md).
+- [ ] I have performed a self-review of my own code and ensured it follows the project's coding standards.
+- [ ] I have tested the changes locally following `ManualTestingProcess.md`, and all tests related to this pull request pass.
+- [ ] I have commented my code, particularly in hard-to-understand areas.
+- [ ] I have updated the documentation, if applicable.
 - [ ] I have added appropriate unit tests, if applicable.
-- [ ] I have updated the `CHANGELOG.md `file.
-
 
 ## Additional Notes
 [Add any additional notes or comments here.]
+
+[comment]: # (Template credit: This pull request template is based on Embedded Artistry {https://github.com/embeddedartistry/templates/blob/master/.github/PULL_REQUEST_TEMPLATE.md}, Clowder {https://github.com/clowder-framework/clowder/blob/develop/.github/PULL_REQUEST_TEMPLATE.md}, and TalAter {https://github.com/TalAter/open-source-templates} templates.)
