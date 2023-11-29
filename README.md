@@ -9,7 +9,7 @@ maidr is a system for non-visual access and control of statistical plots. It aim
 3. [Braille Generation](#braille-generation)
 4. [License](#license)
 5. [Contact](#contact)
-6. [Acknowledgements](#acknowledgements)
+6. [Acknowledgments](#acknowledgments)
 
 ## Usage
 
