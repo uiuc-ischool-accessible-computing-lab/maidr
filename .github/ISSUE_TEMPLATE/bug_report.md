@@ -33,6 +33,6 @@ If applicable, add screenshots to help explain the problem.
 - Browser: [e.g. Chrome, Firefox]
 - Version: [e.g. 1.0.0]
 
-### Additional Information
+## Additional Information
 
 Add any other relevant information about the problem here.
