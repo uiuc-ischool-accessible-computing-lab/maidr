@@ -3,31 +3,31 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-## Bug Report
+# Bug Report
 
-### Description
+## Description
 
 Please provide a clear and concise description of the bug.
 
-### Steps to Reproduce
+## Steps to Reproduce
 
 1. Step 1
 2. Step 2
 3. Step 3
 
-### Expected Behavior
+## Expected Behavior
 
 Please describe what you expected to happen.
 
-### Actual Behavior
+## Actual Behavior
 
 Please describe what actually happened.
 
-### Screenshots
+## Screenshots
 
 If applicable, add screenshots to help explain the problem.
 
-### Environment
+## Environment
 
 - Operating System: [e.g. Windows 10]
 - Browser: [e.g. Chrome, Firefox]
