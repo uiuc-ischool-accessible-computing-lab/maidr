@@ -14,6 +14,10 @@
 [Include any relevant screenshots or images to help visualize the changes.]
 
 ## Checklist
+[Please select all applicable options.]
+
+[comment]: # (To select your options, please put an 'x' in the all boxes that apply.)
+
 - [ ] I have read the [Contributor Guidelines](../CONTRIBUTING.md).
 - [ ] I have updated the [CHANGELOG](../CHANGELOG.md).
 - [ ] I have performed a self-review of my own code and ensured it follows the project's coding standards.
