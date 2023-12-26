@@ -1,0 +1,47 @@
+[
+    {
+        "bin_maxbins_10_IMDB Rating": 6,
+        "bin_maxbins_10_IMDB Rating_end": 7,
+        "count": 985
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 3,
+        "bin_maxbins_10_IMDB Rating_end": 4,
+        "count": 100
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 7,
+        "bin_maxbins_10_IMDB Rating_end": 8,
+        "count": 741
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 5,
+        "bin_maxbins_10_IMDB Rating_end": 6,
+        "count": 633
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 8,
+        "bin_maxbins_10_IMDB Rating_end": 9,
+        "count": 204
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 2,
+        "bin_maxbins_10_IMDB Rating_end": 3,
+        "count": 43
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 4,
+        "bin_maxbins_10_IMDB Rating_end": 5,
+        "count": 273
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 9,
+        "bin_maxbins_10_IMDB Rating_end": 10,
+        "count": 4
+    },
+    {
+        "bin_maxbins_10_IMDB Rating": 1,
+        "bin_maxbins_10_IMDB Rating_end": 2,
+        "count": 5
+    }
+]

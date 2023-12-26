@@ -1,0 +1,47 @@
+[
+    {
+        "Cylinders": 8,
+        "Origin": "USA",
+        "mean_Horsepower": 158.45370370370372
+    },
+    {
+        "Cylinders": 4,
+        "Origin": "Europe",
+        "mean_Horsepower": 78.90625
+    },
+    {
+        "Cylinders": 4,
+        "Origin": "Japan",
+        "mean_Horsepower": 75.57971014492753
+    },
+    {
+        "Cylinders": 6,
+        "Origin": "USA",
+        "mean_Horsepower": 99.6712328767123
+    },
+    {
+        "Cylinders": 4,
+        "Origin": "USA",
+        "mean_Horsepower": 80.95652173913042
+    },
+    {
+        "Cylinders": 3,
+        "Origin": "Japan",
+        "mean_Horsepower": 99.25
+    },
+    {
+        "Cylinders": 6,
+        "Origin": "Japan",
+        "mean_Horsepower": 115.83333333333333
+    },
+    {
+        "Cylinders": 6,
+        "Origin": "Europe",
+        "mean_Horsepower": 113.5
+    },
+    {
+        "Cylinders": 5,
+        "Origin": "Europe",
+        "mean_Horsepower": 82.33333333333333
+    }
+]

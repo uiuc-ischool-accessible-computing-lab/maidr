@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "Species": "Adelie",
+            "lower_box_Body Mass (g)": 3350,
+            "upper_box_Body Mass (g)": 4000,
+            "mid_box_Body Mass (g)": 3700,
+            "min_Body Mass (g)": 2850,
+            "max_Body Mass (g)": 4775
+        },
+        {
+            "Species": "Chinstrap",
+            "lower_box_Body Mass (g)": 3487.5,
+            "upper_box_Body Mass (g)": 3950,
+            "mid_box_Body Mass (g)": 3700,
+            "min_Body Mass (g)": 2700,
+            "max_Body Mass (g)": 4800
+        },
+        {
+            "Species": "Gentoo",
+            "lower_box_Body Mass (g)": 4700,
+            "upper_box_Body Mass (g)": 5500,
+            "mid_box_Body Mass (g)": 5000,
+            "min_Body Mass (g)": 3950,
+            "max_Body Mass (g)": 6300
+        }
+    ]
+}
