@@ -37,7 +37,8 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jsdoc": "^4.0.2",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "semantic-release": "^22.0.12"
   },
   "dependencies": {
     "mi": "^1.0.0",
@@ -46,5 +47,24 @@
   },
   "jest": {
     "testEnvironment": "jsdom"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "CHANGELOG.md"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
   }
 }
