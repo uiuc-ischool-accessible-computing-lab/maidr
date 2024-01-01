@@ -2,7 +2,7 @@ name: Daily Release
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # This means the action will run at 00:00 (midnight) UTC every day.
+    - cron: '0 0 * * *'  # This runs the action at 00:00 (midnight) UTC every day.
 
 jobs:
   release:
@@ -10,12 +10,28 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 'lts/*'  # Replace with your Node.js version
+          node-version: 'lts/*'  # Use the LTS version of Node.js
+
       - name: Install Dependencies
         run: yarn install
+
+      - name: Build Project
+        run: yarn build
+
+      - name: Commit Built Files
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add -f dist/
+          git commit -m "chore: build for release"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
