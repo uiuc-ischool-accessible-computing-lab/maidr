@@ -70,7 +70,6 @@ Please follow these guidelines when contributing to the project:
 - Write clear and concise commit messages.
 - Follow the code style and formatting guidelines.
 - Write tests for new features and bug fixes.
-- Update the documentation as needed in `CHANGELOG.md`.
 
 ## Code Style and Formatting
 

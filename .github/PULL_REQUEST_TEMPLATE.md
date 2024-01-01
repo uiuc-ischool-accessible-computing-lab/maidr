@@ -20,7 +20,6 @@
 <!-- To select your options, please put an 'x' in the all boxes that apply. -->
 
 - [ ] I have read the [Contributor Guidelines](../CONTRIBUTING.md).
-- [ ] I have updated the [CHANGELOG](../CHANGELOG.md).
 - [ ] I have performed a self-review of my own code and ensured it follows the project's coding standards.
 - [ ] I have tested the changes locally following `ManualTestingProcess.md`, and all tests related to this pull request pass.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
