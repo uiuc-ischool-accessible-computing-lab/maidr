@@ -11,18 +11,34 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      # Check for meaningful new commits since the last release
+      - name: Check for Meaningful Commits
+        id: check-commits
+        run: |
+          LAST_RELEASE_TAG=$(git describe --tags --abbrev=0)
+          COMMIT_MESSAGES=$(git log $LAST_RELEASE_TAG..HEAD --pretty=format:%s | tr '[:upper:]' '[:lower:]')
+          if echo "$COMMIT_MESSAGES" | grep -E '^(feat|fix|perf|docs|refactor)'; then
+            echo "Meaningful changes detected since the last release."
+          else
+            echo "No meaningful changes since the last release. Skipping release process."
+            echo "::set-output name=skip_release::true"
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 'lts/*'  # Use the LTS version of Node.js
+          node-version: 'lts/*'
 
       - name: Install Dependencies
+        if: steps.check-commits.outputs.skip_release != 'true'
         run: yarn install
 
       - name: Build Project
+        if: steps.check-commits.outputs.skip_release != 'true'
         run: yarn build
 
       - name: Commit Built Files
+        if: steps.check-commits.outputs.skip_release != 'true'
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
@@ -33,7 +49,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run semantic-release
+        if: steps.check-commits.outputs.skip_release != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn semantic-release
+        
