@@ -2,16 +2,17 @@ name: Daily Release
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # This runs the action at 00:00 (midnight) UTC every day.
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day.
+  workflow_dispatch:
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Check for meaningful new commits since the last release
       - name: Check for Meaningful Commits
         id: check-commits
         run: |
@@ -58,4 +59,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn semantic-release
-        
