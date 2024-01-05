@@ -33,6 +33,10 @@ jobs:
         if: steps.check-commits.outputs.skip_release != 'true'
         run: yarn install
 
+      - name: Generate Documentation
+        if: steps.check-commits.outputs.skip_release != 'true'
+        run: yarn docs
+
       - name: Build Project
         if: steps.check-commits.outputs.skip_release != 'true'
         run: yarn build
