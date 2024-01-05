@@ -77,9 +77,9 @@ class Constants {
 
   // LLM settings
   hasChatLLM = true;
-  LLMDebugMode = true; // true = use fake data, false = use real data
+  LLMDebugMode = 0; // 0 = use real data, 1 = all fake, 2 = real data but no image
   authKey = null; // OpenAI authentication key, set in menu
-  LLMmaxResponseTokens = 200; // max tokens to send to LLM, 20 for testing, 200 ish for real
+  LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
 
   // user controls (not exposed to menu, with shortcuts usually)
@@ -672,6 +672,11 @@ class ChatLLM {
                         </div>
                         <div id="chatLLM_content">
                           <p><input type="text" id="chatLLM_input" class="form-control" name="chatLLM_input" aria-labelledby="chatLLM_title" size="50"></p>
+                          <p class="LLM_suggestions">
+                            <button type="button">What is the title?</button>
+                            <button type="button">What are the high and low values?</button>
+                            <button type="button">What is the general shape of the chart?</button>
+                          </p>
                           <p><button type="button" id="chatLLM_submit">Submit</button></p>
                         </div>
                     </div>
@@ -744,6 +749,22 @@ class ChatLLM {
         }
       },
     ]);
+
+    // ChatLLM suggestion events
+    let suggestions = document.querySelectorAll(
+      '#chatLLM .LLM_suggestions button'
+    );
+    for (let i = 0; i < suggestions.length; i++) {
+      constants.events.push([
+        suggestions[i],
+        'click',
+        function (e) {
+          let text = e.target.innerHTML;
+          chatLLM.DisplayChatMessage('User', text);
+          chatLLM.Submit(text);
+        },
+      ]);
+    }
   }
 
   /**
@@ -765,8 +786,16 @@ class ChatLLM {
 
     let xhr = new XMLHttpRequest();
 
-    if (constants.LLMDebugMode) {
-      chatLLM.ProcessLLMResponse(this.fakeLLMResponseData());
+    // start waiting sound
+    if (constants.sonifMode != 'off') {
+      chatLLM.WaitingSound(true);
+    }
+
+    if (constants.LLMDebugMode == 1) {
+      // do the below with a 5 sec delay
+      setTimeout(function () {
+        chatLLM.ProcessLLMResponse(chatLLM.fakeLLMResponseData());
+      }, 5000);
     } else {
       fetch(url, {
         method: 'POST',
@@ -781,9 +810,48 @@ class ChatLLM {
           chatLLM.ProcessLLMResponse(data);
         })
         .catch((error) => {
+          chatLLM.WaitingSound(false);
           console.error('Error:', error);
           // also todo: handle errors somehow
         });
+    }
+  }
+
+  /*
+   * Sets a waiting sound to play while waiting for the LLM to respond.
+   * @function
+   * @name SetWaitingSound
+   * @memberof module:constants
+   * @onoff {boolean} - Whether to turn the waiting sound on or off. Defaults to true (on).
+   * @returns {void}
+   */
+  WaitingSound(onoff = true) {
+    // clear old intervals and timeouts
+    if (constants.waitingInterval) {
+      // destroy old waiting sound
+      clearInterval(constants.waitingInterval);
+      constants.waitingSound = null;
+    }
+    if (constants.waitingSoundOverride) {
+      clearTimeout(constants.waitingSoundOverride);
+      constants.waitingSoundOverride = null;
+    }
+
+    // assuming we're turning it on, start playing a new waiting sound
+    if (onoff) {
+      // create new waiting sound
+      let delay = 1000;
+      let freq = 440; // a440 babee
+      constants.waitingInterval = setInterval(function () {
+        if (audio) {
+          audio.playOscillator(freq, 0.2, 0);
+        }
+      }, delay);
+
+      // clear automatically after 30 sec, assuming no response
+      constants.waitingSoundOverride = setTimeout(function () {
+        chatLLM.WaitingSound(false);
+      }, 30000);
     }
   }
 
@@ -793,7 +861,8 @@ class ChatLLM {
    * @returns {void}
    */
   ProcessLLMResponse(data) {
-    console.log('LLM response: ' + data);
+    chatLLM.WaitingSound(false);
+    console.log('LLM response: ', data);
     let text = data.choices[0].message.content;
     chatLLM.DisplayChatMessage('LLM', text);
   }
@@ -868,19 +937,23 @@ class ChatLLM {
     if (!this.requestJson) {
       this.requestJson = {};
       this.requestJson.model = 'gpt-4-vision-preview';
-      //this.requestJson.max_tokens = constants.LLMmaxResponseTokens;
+      this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
       //this.requestJson.detail = constants.LLMDetail;
       this.requestJson.messages = [];
       this.requestJson.messages[0] = {};
       this.requestJson.messages[0].role = 'system';
       this.requestJson.messages[0].content =
-        'You are a helpful assistant describing the chart to a blind user';
+        'You are a helpful assistant describing the chart to a blind person';
     }
 
     let i = this.requestJson.messages.length;
     this.requestJson.messages[i] = {};
     this.requestJson.messages[i].role = 'user';
-    if (img) {
+    if (constants.LLMDebugMode == 2) {
+      // test message only, no image
+      this.requestJson.messages[i].content =
+        'Describe bar charts to a blind person';
+    } else if (img) {
       let image_url = img;
       this.requestJson.messages[i].content = [
         {

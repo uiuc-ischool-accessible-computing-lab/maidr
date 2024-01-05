@@ -299,3 +299,9 @@ textarea {
 .chatLLM_message_other {
   align-self: flex-start;
 }
+
+.LLM_suggestions > button {
+  font-weight: normal;
+  border-radius: 0.5rem;
+  border: none;
+}

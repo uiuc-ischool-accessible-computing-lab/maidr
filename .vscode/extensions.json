@@ -18,7 +18,7 @@
     "mhutchie.git-graph",
     "eamodio.gitlens",
     "ms-edgedevtools.vscode-edge-devtools",
-    "codium.codium",
+    // "codium.codium",
     "ms-vscode.vscode-speech",
     "vivaxy.vscode-conventional-commits",
     "joshbolduc.commitlint"

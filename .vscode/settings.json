@@ -86,6 +86,7 @@
     "sonification",
     "llm",
     "ui",
-    "api"
+    "api",
+    "release"
   ]
 }
