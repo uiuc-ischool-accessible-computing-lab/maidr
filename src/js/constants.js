@@ -77,7 +77,6 @@ class Constants {
   playLLMWaitingSound = true;
 
   // LLM settings
-  hasChatLLM = true;
   LLMDebugMode = 0; // 0 = use real data, 1 = all fake, 2 = real data but no image
   authKey = null; // OpenAI authentication key, set in menu
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
@@ -406,11 +405,7 @@ class Menu {
                               }><label for="aria_mode_polite">Polite</label></p>
                               </fieldset></div>
                             <h5 class="modal-title">LLM Settings</h5>
-                              ${
-                                constants.hasChatLLM
-                                  ? '<p><input type="password" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>'
-                                  : ''
-                              }
+                            <p><input type="password" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -1142,7 +1137,16 @@ class ChatLLM {
     //let img = await this.ConvertSVGtoImg(singleMaidr.id);
     let img = await this.ConvertSVGtoJPG(singleMaidr.id);
     //this.downloadJPEG(img, 'test.jpg'); // test download
-    let text = 'Describe this chart. Here is chart in png format';
+    let text = 'Describe this chart to a blind person';
+    if (constants.skillLevel) {
+      text +=
+        ' who has a ' +
+        constants.skillLevel +
+        ' understanding of statistical charts. ';
+    } else {
+      text += ' who has a basic understanding of statistical charts. ';
+    }
+    text += 'Here is chart in png format';
     if (singleMaidr) {
       text += ' and raw data in json format: \n';
       text += JSON.stringify(singleMaidr);
