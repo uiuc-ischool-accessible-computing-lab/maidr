@@ -1127,7 +1127,12 @@ class ChatLLM {
     //let img = await this.ConvertSVGtoImg(singleMaidr.id);
     let img = await this.ConvertSVGtoJPG(singleMaidr.id);
     //this.downloadJPEG(img, 'test.jpg'); // test download
-    let text = 'Describe this chart';
+    let text = 'Describe this chart. Here is chart in png format';
+    if (singleMaidr) {
+      text += ' and raw data in json format: \n';
+      text += JSON.stringify(singleMaidr);
+    }
+
     chatLLM.Submit(text, img);
   }
 }
