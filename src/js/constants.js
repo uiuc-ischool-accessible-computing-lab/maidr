@@ -82,6 +82,7 @@ class Constants {
   authKey = null; // OpenAI authentication key, set in menu
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
+  skillLevel = 'basic'; // basic / intermediate / expert
 
   // user controls (not exposed to menu, with shortcuts usually)
   showDisplay = 1; // true / false
@@ -404,15 +405,24 @@ class Menu {
                                 constants.ariaMode == 'polite' ? 'checked' : ''
                               }><label for="aria_mode_polite">Polite</label></p>
                               </fieldset></div>
+                            <h5 class="modal-title">LLM Settings</h5>
                               ${
                                 constants.hasChatLLM
-                                  ? '<p><input type="text" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>'
+                                  ? '<p><input type="password" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>'
                                   : ''
                               }
+                            <p>
+                                <select id="skill_level">
+                                    <option value="basic">Basic</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                                <label for="skill_level">Level of skill in statistical charts</label>
+                            </p>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="save_and_close_menu">Save and close</button>
+                        <button type="button" id="save_and_close_menu">Save and Close</button>
                         <button type="button" id="close_menu">Close</button>
                     </div>
                 </div>
@@ -544,6 +554,7 @@ class Menu {
     if (typeof constants.authKey == 'string') {
       document.getElementById('chatLLM_auth_key').value = constants.authKey;
     }
+    document.getElementById('skill_level').value = constants.skillLevel;
 
     // aria mode
     if (constants.ariaMode == 'assertive') {
@@ -571,6 +582,7 @@ class Menu {
     constants.keypressInterval =
       document.getElementById('keypress_interval').value;
     constants.authKey = document.getElementById('chatLLM_auth_key').value;
+    constants.skillLevel = document.getElementById('skill_level').value;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -617,6 +629,7 @@ class Menu {
     data.keypressInterval = constants.keypressInterval;
     data.ariaMode = constants.ariaMode;
     data.authKey = constants.authKey;
+    data.skillLevel = constants.skillLevel;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -635,6 +648,7 @@ class Menu {
       constants.keypressInterval = data.keypressInterval;
       constants.ariaMode = data.ariaMode;
       constants.authKey = data.authKey;
+      constants.skillLevel = data.skillLevel;
     }
     this.PopulateData();
     this.UpdateHtml();
