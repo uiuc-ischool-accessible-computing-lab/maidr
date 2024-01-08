@@ -74,6 +74,7 @@ class Constants {
   visualBraille = false; // do we want to represent braille based on what's visually there or actually there. Like if we have 2 outliers with the same position, do we show 1 (visualBraille true) or 2 (false)
   globalMinMax = true;
   ariaMode = 'assertive'; // assertive (default) / polite
+  playLLMWaitingSound = true;
 
   // LLM settings
   hasChatLLM = true;
@@ -787,7 +788,7 @@ class ChatLLM {
     let xhr = new XMLHttpRequest();
 
     // start waiting sound
-    if (constants.sonifMode != 'off') {
+    if (constants.playLLMWaitingSound) {
       chatLLM.WaitingSound(true);
     }
 
