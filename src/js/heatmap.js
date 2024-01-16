@@ -137,8 +137,21 @@ class HeatMap {
     if (constants.hasRect) {
       for (let i = 0; i < this.plots.length; i++) {
         if (this.plots[i]) {
-          x_coord_check.push(parseFloat(this.plots[i].getAttribute('x')));
-          y_coord_check.push(parseFloat(this.plots[i].getAttribute('y')));
+          // heatmap SVG containing path element instead of rect
+          if (this.plots[i] instanceof SVGPathElement) {
+            // Assuming the path data is in the format "M x y L x y L x y L x y"
+            const path_d = this.plots[i].getAttribute('d');
+            const coords = path_d.match(/[\d\.]+/g).map(Number);
+
+            const x = coords[0];
+            const y = coords[1];
+
+            x_coord_check.push(parseFloat(x));
+            y_coord_check.push(parseFloat(y));
+          } else {
+            x_coord_check.push(parseFloat(this.plots[i].getAttribute('x')));
+            y_coord_check.push(parseFloat(this.plots[i].getAttribute('y')));
+          }
         }
       }
 
