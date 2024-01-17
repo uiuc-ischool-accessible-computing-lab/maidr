@@ -78,7 +78,8 @@ class Constants {
 
   // LLM settings
   LLMDebugMode = 0; // 0 = use real data, 1 = all fake, 2 = real data but no image
-  authKey = null; // OpenAI authentication key, set in menu
+  openAIAuthKey = null; // OpenAI authentication key, set in menu
+  geminiAuthKey = null; // Gemini authentication key, set in menu
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   LLMModel = 'openai'; // openai (default) / gemini
@@ -414,7 +415,8 @@ class Menu {
                                 </select>
                                 <label for="LLM_model">LLM Model</label>
                             </p>
-                            <p><input type="password" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>
+                            <p id="openai_auth_key_container" class="hidden"><input type="password" id="openai_auth_key"> <label for="openai_auth_key">OpenAI Authentication Key</label></p>
+                            <p id="gemini_auth_key_container" class="hidden"><input type="password" id="gemini_auth_key"> <label for="gemini_auth_key">Gemini Authentication Key</label></p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -487,6 +489,29 @@ class Menu {
           return;
         } else if (e.key == 'h') {
           menu.Toggle(true);
+        }
+      },
+    ]);
+
+    // toggle auth key fields
+    constants.events.push([
+      document.getElementById('LLM_model'),
+      'change',
+      function (e) {
+        if (e.target.value == 'openai') {
+          document
+            .getElementById('openai_auth_key_container')
+            .classList.remove('hidden');
+          document
+            .getElementById('gemini_auth_key_container')
+            .classList.add('hidden');
+        } else if (e.target.value == 'gemini') {
+          document
+            .getElementById('openai_auth_key_container')
+            .classList.add('hidden');
+          document
+            .getElementById('gemini_auth_key_container')
+            .classList.remove('hidden');
         }
       },
     ]);
@@ -577,8 +602,13 @@ class Menu {
     document.getElementById('max_freq').value = constants.MAX_FREQUENCY;
     document.getElementById('keypress_interval').value =
       constants.keypressInterval;
-    if (typeof constants.authKey == 'string') {
-      document.getElementById('chatLLM_auth_key').value = constants.authKey;
+    if (typeof constants.openAIAuthKey == 'string') {
+      document.getElementById('openai_auth_key').value =
+        constants.openAIAuthKey;
+    }
+    if (typeof constants.geminiAuthKey == 'string') {
+      document.getElementById('gemini_auth_key').value =
+        constants.geminiAuthKey;
     }
     document.getElementById('skill_level').value = constants.skillLevel;
     if (constants.skillLevelOther) {
@@ -594,6 +624,22 @@ class Menu {
     } else {
       document.getElementById('aria_mode_polite').checked = true;
       document.getElementById('aria_mode_assertive').checked = false;
+    }
+    // hide either openai or gemini auth key field
+    if (constants.LLMModel == 'openai') {
+      document
+        .getElementById('openai_auth_key_container')
+        .classList.remove('hidden');
+      document
+        .getElementById('gemini_auth_key_container')
+        .classList.add('hidden');
+    } else if (constants.LLMModel == 'gemini') {
+      document
+        .getElementById('openai_auth_key_container')
+        .classList.add('hidden');
+      document
+        .getElementById('gemini_auth_key_container')
+        .classList.remove('hidden');
     }
     // skill level other
     if (constants.skillLevel == 'other') {
@@ -618,7 +664,8 @@ class Menu {
     constants.MAX_FREQUENCY = document.getElementById('max_freq').value;
     constants.keypressInterval =
       document.getElementById('keypress_interval').value;
-    constants.authKey = document.getElementById('chatLLM_auth_key').value;
+    constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
+    constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
     constants.skillLevel = document.getElementById('skill_level').value;
     constants.skillLevelOther =
       document.getElementById('skill_level_other').value;
@@ -668,7 +715,8 @@ class Menu {
     data.MAX_FREQUENCY = constants.MAX_FREQUENCY;
     data.keypressInterval = constants.keypressInterval;
     data.ariaMode = constants.ariaMode;
-    data.authKey = constants.authKey;
+    data.openAIAuthKey = constants.openAIAuthKey;
+    data.geminiAuthKey = constants.geminiAuthKey;
     data.skillLevel = constants.skillLevel;
     data.skillLevelOther = constants.skillLevelOther;
     data.LLMModel = constants.LLMModel;
@@ -689,7 +737,8 @@ class Menu {
       constants.MAX_FREQUENCY = data.MAX_FREQUENCY;
       constants.keypressInterval = data.keypressInterval;
       constants.ariaMode = data.ariaMode;
-      constants.authKey = data.authKey;
+      constants.openAIAuthKey = data.openAIAuthKey;
+      constants.geminiAuthKey = data.geminiAuthKey;
       constants.skillLevel = data.skillLevel;
       constants.skillLevelOther = data.skillLevelOther;
       constants.LLMModel = data.LLMModel ? data.LLMModel : constants.LLMModel;
@@ -837,13 +886,19 @@ class ChatLLM {
    */
   Submit(text, img = null) {
     // send text to LLM
-    let url = 'https://api.openai.com/v1/chat/completions';
-    //let url = 'temp';
+    let url = '';
+    let auth = '';
+    if (constants.LLMModel == 'openai') {
+      url = 'https://api.openai.com/v1/chat/completions';
+      auth = constants.openAIAuthKey;
+    } else if (constants.LLMModel == 'gemini') {
+      url =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
+      url += constants.geminiAuthKey;
+    }
 
     let requestJson = this.GetLLMJRequestJson(text, img);
     console.log(requestJson);
-
-    let xhr = new XMLHttpRequest();
 
     // start waiting sound
     if (constants.playLLMWaitingSound) {
@@ -860,7 +915,7 @@ class ChatLLM {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + constants.authKey,
+          Authorization: 'Bearer ' + auth,
         },
         body: JSON.stringify(requestJson),
       })
@@ -871,6 +926,7 @@ class ChatLLM {
         .catch((error) => {
           chatLLM.WaitingSound(false);
           console.error('Error:', error);
+          chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
           // also todo: handle errors somehow
         });
     }
@@ -922,8 +978,36 @@ class ChatLLM {
   ProcessLLMResponse(data) {
     chatLLM.WaitingSound(false);
     console.log('LLM response: ', data);
-    let text = data.choices[0].message.content;
-    chatLLM.DisplayChatMessage('LLM', text);
+    let text = '';
+
+    if (constants.LLMModel == 'openai') {
+      text = data.choices[0].message.content;
+      let i = this.requestJson.messages.length;
+      this.requestJson.messages[i] = {};
+      this.requestJson.messages[i].role = 'assistant';
+      this.requestJson.messages[i].content = text;
+
+      if (data.error) {
+        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+      } else {
+        chatLLM.DisplayChatMessage('LLM', text);
+      }
+    } else if (constants.LLMModel == 'gemini') {
+      let i = this.requestJson.contents.length;
+      this.requestJson.contents[i] = {
+        role: 'model',
+        parts: [
+          {
+            text: text,
+          },
+        ],
+      };
+      if (data.error) {
+        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+      } else {
+        // todo: display actual response
+      }
+    }
   }
 
   /**
@@ -993,40 +1077,113 @@ class ChatLLM {
    * @returns {json}
    */
   GetLLMJRequestJson(text, img) {
-    if (!this.requestJson) {
-      this.requestJson = {};
-      this.requestJson.model = 'gpt-4-vision-preview';
-      this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
-      //this.requestJson.detail = constants.LLMDetail;
-      this.requestJson.messages = [];
-      this.requestJson.messages[0] = {};
-      this.requestJson.messages[0].role = 'system';
-      this.requestJson.messages[0].content =
-        'You are a helpful assistant describing the chart to a blind person';
-    }
+    // data to use
+    let model = constants.LLMModel;
+    let max_tokens = constants.LLMmaxResponseTokens;
+    let sysMessage =
+      'You are a helpful assistant describing the chart to a blind person';
+    let backupMessage =
+      'Describe ' + singleMaidr.type + ' charts to a blind person';
 
-    let i = this.requestJson.messages.length;
-    this.requestJson.messages[i] = {};
-    this.requestJson.messages[i].role = 'user';
-    if (constants.LLMDebugMode == 2) {
-      // test message only, no image
-      this.requestJson.messages[i].content =
-        'Describe bar charts to a blind person';
-    } else if (img) {
-      let image_url = img;
-      this.requestJson.messages[i].content = [
-        {
-          type: 'text',
-          text: text,
-        },
-        {
-          type: 'image_url',
-          image_url: { url: image_url },
-        },
-      ];
-    } else {
-      // just the text
-      this.requestJson.messages[i].content = text;
+    if (constants.LLMModel == 'openai') {
+      // headers and sys message
+      if (!this.requestJson) {
+        this.requestJson = {};
+        this.requestJson.model = 'gpt-4-vision-preview';
+        this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
+
+        // sys message
+        this.requestJson.messages = [];
+        this.requestJson.messages[0] = {};
+        this.requestJson.messages[0].role = 'system';
+        this.requestJson.messages[0].content = sysMessage;
+      }
+
+      // user message
+      // if we have an image (first time only), send the image and the text, otherwise just the text
+      let i = this.requestJson.messages.length;
+      this.requestJson.messages[i] = {};
+      this.requestJson.messages[i].role = 'user';
+      if (constants.LLMDebugMode == 2) {
+        // backup message only, no image
+        this.requestJson.messages[i].content = backupMessage;
+      } else if (img) {
+        // first message, include the img
+        this.requestJson.messages[i].content = [
+          {
+            type: 'text',
+            text: text,
+          },
+          {
+            type: 'image_url',
+            image_url: { url: img },
+          },
+        ];
+      } else {
+        // just the text
+        this.requestJson.messages[i].content = text;
+      }
+    } else if (constants.LLMModel == 'gemini') {
+      // headers etc
+      if (!this.requestJson) {
+        this.requestJson = {};
+        this.requestJson.model = 'gemini-pro-vision';
+        //this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
+
+        // sys message
+        this.requestJson.contents = [];
+        this.requestJson.contents[0] = {};
+        this.requestJson.contents[0].role = 'system';
+        this.requestJson.contents[0].parts = [
+          {
+            text: sysMessage,
+          },
+        ];
+      }
+
+      // user message
+      // if we have an image (first time only), send the image and the text, otherwise just the text
+      let i = this.requestJson.contents.length;
+      this.requestJson.contents[i] = {};
+      this.requestJson.contents[i].role = 'user';
+      if (constants.LLMDebugMode == 2) {
+        // backup message only, no image
+        this.requestJson.contents[i] = {
+          role: 'user',
+          parts: [
+            {
+              text: backupMessage,
+            },
+          ],
+        };
+      } else if (img) {
+        // first message, include the img
+        this.requestJson.contents[i] = {
+          role: 'user',
+          parts: [
+            {
+              text: text,
+            },
+            {
+              inline_data: {
+                mimeType: 'image/jpeg',
+                data: img,
+                // bookmark: image data being sent is bad
+              },
+            },
+          ],
+        };
+      } else {
+        // just the text
+        this.requestJson.contents[i] = {
+          role: 'user',
+          parts: [
+            {
+              text: text,
+            },
+          ],
+        };
+      }
     }
 
     return this.requestJson;
