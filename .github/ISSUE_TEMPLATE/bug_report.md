@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG] "
+title: "fix: "
 labels: bug
 assignees: ''
 ---
@@ -17,11 +17,11 @@ assignees: ''
 2. Step 2
 3. Step 3
 
-## Expected Behavior
-<!-- Please describe what you expected to happen. -->
-
 ## Actual Behavior
 <!-- Please describe what actually happened. -->
+
+## Expected Behavior
+<!-- Please describe what you expected to happen. -->
 
 ## Screenshots
 <!-- If applicable, add screenshots to help explain the problem. -->
