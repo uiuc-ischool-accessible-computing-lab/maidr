@@ -81,6 +81,7 @@ class Constants {
   authKey = null; // OpenAI authentication key, set in menu
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
+  LLMModel = 'openai'; // openai (default) / gemini
   skillLevel = 'basic'; // basic / intermediate / expert
   skillLevelOther = ''; // custom skill level
 
@@ -406,6 +407,13 @@ class Menu {
                               }><label for="aria_mode_polite">Polite</label></p>
                               </fieldset></div>
                             <h5 class="modal-title">LLM Settings</h5>
+                            <p>
+                                <select id="LLM_model">
+                                    <option value="openai">OpenAI Vision</option>
+                                    <option value="gemini">Gemini Pro Vision</option>
+                                </select>
+                                <label for="LLM_model">LLM Model</label>
+                            </p>
                             <p><input type="password" id="chatLLM_auth_key"> <label for="chatLLM_auth_key">OpenAI Authentication Key</label></p>
                             <p>
                                 <select id="skill_level">
@@ -577,6 +585,7 @@ class Menu {
       document.getElementById('skill_level_other').value =
         constants.skillLevelOther;
     }
+    document.getElementById('LLM_model').value = constants.LLMModel;
 
     // aria mode
     if (constants.ariaMode == 'assertive') {
@@ -613,6 +622,7 @@ class Menu {
     constants.skillLevel = document.getElementById('skill_level').value;
     constants.skillLevelOther =
       document.getElementById('skill_level_other').value;
+    constants.LLMModel = document.getElementById('LLM_model').value;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -661,6 +671,7 @@ class Menu {
     data.authKey = constants.authKey;
     data.skillLevel = constants.skillLevel;
     data.skillLevelOther = constants.skillLevelOther;
+    data.LLMModel = constants.LLMModel;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -681,6 +692,7 @@ class Menu {
       constants.authKey = data.authKey;
       constants.skillLevel = data.skillLevel;
       constants.skillLevelOther = data.skillLevelOther;
+      constants.LLMModel = data.LLMModel ? data.LLMModel : constants.LLMModel;
     }
     this.PopulateData();
     this.UpdateHtml();
