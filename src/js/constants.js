@@ -82,6 +82,7 @@ class Constants {
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   skillLevel = 'basic'; // basic / intermediate / expert
+  skillLevelOther = ''; // custom skill level
 
   // user controls (not exposed to menu, with shortcuts usually)
   showDisplay = 1; // true / false
@@ -411,9 +412,11 @@ class Menu {
                                     <option value="basic">Basic</option>
                                     <option value="intermediate">Intermediate</option>
                                     <option value="expert">Expert</option>
+                                    <option value="other">other</option>
                                 </select>
                                 <label for="skill_level">Level of skill in statistical charts</label>
                             </p>
+                            <p id="skill_level_other_container" class="hidden"><input type="text" id="skill_level_other"> <label for="skill_level_other">"I have a(n) [X] understanding of statistical charts"</label></p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -471,8 +474,28 @@ class Menu {
       document,
       'keyup',
       function (e) {
-        if (e.key == 'h') {
+        // don't fire on input elements
+        if (e.target.tagName.toLowerCase() == 'input') {
+          return;
+        } else if (e.key == 'h') {
           menu.Toggle(true);
+        }
+      },
+    ]);
+
+    // Skill level other events
+    constants.events.push([
+      document.getElementById('skill_level'),
+      'change',
+      function (e) {
+        if (e.target.value == 'other') {
+          document
+            .getElementById('skill_level_other_container')
+            .classList.remove('hidden');
+        } else {
+          document
+            .getElementById('skill_level_other_container')
+            .classList.add('hidden');
         }
       },
     ]);
@@ -550,6 +573,10 @@ class Menu {
       document.getElementById('chatLLM_auth_key').value = constants.authKey;
     }
     document.getElementById('skill_level').value = constants.skillLevel;
+    if (constants.skillLevelOther) {
+      document.getElementById('skill_level_other').value =
+        constants.skillLevelOther;
+    }
 
     // aria mode
     if (constants.ariaMode == 'assertive') {
@@ -558,6 +585,12 @@ class Menu {
     } else {
       document.getElementById('aria_mode_polite').checked = true;
       document.getElementById('aria_mode_assertive').checked = false;
+    }
+    // skill level other
+    if (constants.skillLevel == 'other') {
+      document
+        .getElementById('skill_level_other_container')
+        .classList.remove('hidden');
     }
   }
 
@@ -578,6 +611,8 @@ class Menu {
       document.getElementById('keypress_interval').value;
     constants.authKey = document.getElementById('chatLLM_auth_key').value;
     constants.skillLevel = document.getElementById('skill_level').value;
+    constants.skillLevelOther =
+      document.getElementById('skill_level_other').value;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -625,6 +660,7 @@ class Menu {
     data.ariaMode = constants.ariaMode;
     data.authKey = constants.authKey;
     data.skillLevel = constants.skillLevel;
+    data.skillLevelOther = constants.skillLevelOther;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -644,6 +680,7 @@ class Menu {
       constants.ariaMode = data.ariaMode;
       constants.authKey = data.authKey;
       constants.skillLevel = data.skillLevel;
+      constants.skillLevelOther = data.skillLevelOther;
     }
     this.PopulateData();
     this.UpdateHtml();
@@ -1133,16 +1170,28 @@ class ChatLLM {
     document.body.removeChild(link);
   }
 
+  /**
+   * RunDefaultPrompt is an asynchronous function that generates a prompt for describing a chart to a blind person.
+   * It converts the chart to a JPG image using the ConvertSVGtoJPG method and then submits the prompt to the chatLLM function.
+   * The prompt includes information about the blind person's skill level and the chart's image and raw data, if available.
+   */
   async RunDefaultPrompt() {
     //let img = await this.ConvertSVGtoImg(singleMaidr.id);
     let img = await this.ConvertSVGtoJPG(singleMaidr.id);
     //this.downloadJPEG(img, 'test.jpg'); // test download
     let text = 'Describe this chart to a blind person';
     if (constants.skillLevel) {
-      text +=
-        ' who has a ' +
-        constants.skillLevel +
-        ' understanding of statistical charts. ';
+      if (constants.skillLevel == 'other' && constants.skillLevelOther) {
+        text +=
+          ' who has a ' +
+          constants.skillLevelOther +
+          ' understanding of statistical charts. ';
+      } else {
+        text +=
+          ' who has a ' +
+          constants.skillLevel +
+          ' understanding of statistical charts. ';
+      }
     } else {
       text += ' who has a basic understanding of statistical charts. ';
     }
