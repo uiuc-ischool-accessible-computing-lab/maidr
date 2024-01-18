@@ -1,0 +1,25 @@
+{
+    "type": "bar",
+    "id": "bar",
+    "title": "The Number of Tips by Day",
+    "axes": {
+        "x": {
+            "label": "Day",
+            "level": [
+                "Sat",
+                "Sun",
+                "Thur",
+                "Fri"
+            ]
+        },
+        "y": {
+            "label": "Count"
+        }
+    },
+    "data": [
+        87,
+        76,
+        62,
+        19
+    ]
+}
