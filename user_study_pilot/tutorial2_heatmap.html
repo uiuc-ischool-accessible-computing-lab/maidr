@@ -1246,6 +1246,12 @@
         id: 'heatmap1',
         title: 'Penguin Species by Island',
         selector: 'g[id^="geom_rect"] > rect',
+        labels: {
+          x: 'Island',
+          y: 'Species',
+          fill: 'Count',
+          title: 'Penguin Species by Island',
+        },
         axes: {
           x: {
             label: 'Island',
