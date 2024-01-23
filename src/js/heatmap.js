@@ -141,8 +141,10 @@ class HeatMap {
           if (this.plots[i] instanceof SVGPathElement) {
             // Assuming the path data is in the format "M x y L x y L x y L x y"
             const path_d = this.plots[i].getAttribute('d');
-            const coords = path_d.match(/[\d\.]+/g).map(Number);
+            const regex = /[ML]\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g;
+            const match = regex.exec(path_d);
 
+            const coords = [Number(match[1]), Number(match[3])];
             const x = coords[0];
             const y = coords[1];
 
