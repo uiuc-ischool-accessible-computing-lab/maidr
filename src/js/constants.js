@@ -83,6 +83,8 @@ class Constants {
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   LLMModel = 'openai'; // openai (default) / gemini
+  LLMSystemMessage =
+    'You are a helpful assistant describing the chart to a blind person';
   skillLevel = 'basic'; // basic / intermediate / expert
   skillLevelOther = ''; // custom skill level
 
@@ -964,15 +966,14 @@ class ChatLLM {
         chatLLM.DisplayChatMessage('LLM', text);
       }
     } else if (constants.LLMModel == 'gemini') {
-      let i = this.requestJson.contents.length;
-      this.requestJson.contents[i] = {
-        role: 'model',
-        parts: [
-          {
-            text: text,
-          },
-        ],
-      };
+      if (data.text()) {
+        text = data.text();
+        chatLLM.DisplayChatMessage('LLM', text);
+      } else {
+        if (!data.error) {
+          data.error = 'Error processing request.';
+        }
+      }
       if (data.error) {
         chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
       } else {
@@ -1048,17 +1049,9 @@ class ChatLLM {
    * @returns {json}
    */
   OpenAIPrompt(text, img) {
-    // send text to LLM
-    let url = '';
-    let auth = '';
-    if (constants.LLMModel == 'openai') {
-      url = 'https://api.openai.com/v1/chat/completions';
-      auth = constants.openAIAuthKey;
-    } else if (constants.LLMModel == 'gemini') {
-      url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
-      url += constants.geminiAuthKey;
-    }
+    // request init
+    let url = 'https://api.openai.com/v1/chat/completions';
+    let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
     console.log('LLM request: ', requestJson);
 
@@ -1082,8 +1075,7 @@ class ChatLLM {
       });
   }
   OpenAIJson(text, img) {
-    let sysMessage =
-      'You are a helpful assistant describing the chart to a blind person';
+    let sysMessage = constants.LLMSystemMessage;
     let backupMessage =
       'Describe ' + singleMaidr.type + ' charts to a blind person';
     // headers and sys message
@@ -1139,7 +1131,7 @@ class ChatLLM {
 
       const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
-      const prompt = text; // Use the text parameter as the prompt
+      const prompt = constants.LLMSystemMessage + '\n\n' + text; // Use the text parameter as the prompt
       const image = {
         inlineData: {
           data: imgBase64, // Use the base64 image string
@@ -1147,12 +1139,14 @@ class ChatLLM {
         },
       };
 
+      console.log('LLM request: ', prompt, image);
       const result = await model.generateContent([prompt, image]);
       console.log(result.response.text());
+      chatLLM.ProcessLLMResponse(result.response);
 
       return result.response.text(); // You can return this value or handle it as needed
     } catch (error) {
-      console.error('Error in initializeGenerativeAI:', error);
+      console.error('Error in GeminiPrompt:', error);
       throw error; // Rethrow the error for further handling if necessary
     }
   }
