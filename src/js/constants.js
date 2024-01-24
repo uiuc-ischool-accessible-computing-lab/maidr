@@ -952,8 +952,10 @@ class ChatLLM {
     chatLLM.WaitingSound(false);
     console.log('LLM response: ', data);
     let text = '';
+    let LLMName = '';
 
     if (constants.LLMModel == 'openai') {
+      LLMName = 'OpenAI';
       text = data.choices[0].message.content;
       let i = this.requestJson.messages.length;
       this.requestJson.messages[i] = {};
@@ -961,21 +963,22 @@ class ChatLLM {
       this.requestJson.messages[i].content = text;
 
       if (data.error) {
-        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.');
       } else {
-        chatLLM.DisplayChatMessage('LLM', text);
+        chatLLM.DisplayChatMessage(LLMName, text);
       }
     } else if (constants.LLMModel == 'gemini') {
+      LLMName = 'Gemini';
       if (data.text()) {
         text = data.text();
-        chatLLM.DisplayChatMessage('LLM', text);
+        chatLLM.DisplayChatMessage(LLMName, text);
       } else {
         if (!data.error) {
           data.error = 'Error processing request.';
         }
       }
       if (data.error) {
-        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.');
       } else {
         // todo: display actual response
       }
@@ -1229,8 +1232,9 @@ class ChatLLM {
 
       // first time, send default query
       if (this.firstTime) {
+        let LLMName = constants.LLMModel == 'openai' ? 'OpenAI' : 'Gemini';
         this.firstTime = false;
-        this.DisplayChatMessage('LLM', 'Processing Chart...');
+        this.DisplayChatMessage(LLMName, 'Processing Chart...');
         this.RunDefaultPrompt();
       }
     } else {
@@ -1288,41 +1292,6 @@ class ChatLLM {
     });
   }
 
-  // Converts a File object to a GoogleGenerativeAI.Part object.
-  fileToGenerativePart(file) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () =>
-        resolve({
-          inlineData: {
-            data: reader.result.split(',')[1],
-            mimeType: file.type,
-          },
-        });
-      reader.readAsDataURL(file);
-    });
-  }
-
-  downloadJPEG(base64Data, filename) {
-    // Create a link element
-    var link = document.createElement('a');
-
-    // Set the download attribute with a filename
-    link.download = filename;
-
-    // Convert Base64 data to a data URL and set it as the href
-    link.href = base64Data;
-
-    // Append the link to the body (required for Firefox)
-    document.body.appendChild(link);
-
-    // Trigger the download
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-  }
-
   /**
    * RunDefaultPrompt is an asynchronous function that generates a prompt for describing a chart to a blind person.
    * It converts the chart to a JPG image using the ConvertSVGtoJPG method and then submits the prompt to the chatLLM function.
@@ -1331,7 +1300,6 @@ class ChatLLM {
   async RunDefaultPrompt() {
     //let img = await this.ConvertSVGtoImg(singleMaidr.id);
     let img = await this.ConvertSVGtoJPG(singleMaidr.id);
-    //this.downloadJPEG(img, 'test.jpg'); // test download
     let text = 'Describe this chart to a blind person';
     if (constants.skillLevel) {
       if (constants.skillLevel == 'other' && constants.skillLevelOther) {
