@@ -1120,17 +1120,25 @@ class ChatLLM {
   }
 
   // Assuming this function is part of your existing JavaScript file
-  async GeminiPrompt(text, imgBase64) {
+  async GeminiPrompt(text, imgBase64 = null) {
     try {
+      // Save the image for next time
+      if (imgBase64 == null) {
+        imgBase64 = constants.LLMImage;
+      } else {
+        constants.LLMImage = imgBase64;
+      }
+      constants.LLMImage = imgBase64;
+
+      // Import the module
       const { GoogleGenerativeAI } = await import(
         'https://esm.run/@google/generative-ai'
       );
-
       const API_KEY = constants.geminiAuthKey;
       const genAI = new GoogleGenerativeAI(API_KEY);
-
       const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
+      // Create the prompt
       const prompt = constants.LLMSystemMessage + '\n\n' + text; // Use the text parameter as the prompt
       const image = {
         inlineData: {
@@ -1139,12 +1147,13 @@ class ChatLLM {
         },
       };
 
+      // Generate the content
       console.log('LLM request: ', prompt, image);
       const result = await model.generateContent([prompt, image]);
       console.log(result.response.text());
-      chatLLM.ProcessLLMResponse(result.response);
 
-      return result.response.text(); // You can return this value or handle it as needed
+      // Process the response
+      chatLLM.ProcessLLMResponse(result.response);
     } catch (error) {
       console.error('Error in GeminiPrompt:', error);
       throw error; // Rethrow the error for further handling if necessary
