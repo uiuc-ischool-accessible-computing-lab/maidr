@@ -451,6 +451,7 @@ class HeatMapRect {
       this.squareIndex = 0;
       this.rectStrokeWidth = 4; // px
       this.height = Math.abs(plot.y_coord[1] - plot.y_coord[0]);
+      this.width = Math.abs(plot.x_coord[1] - plot.x_coord[0]);
     }
   }
 
@@ -487,7 +488,7 @@ class HeatMapRect {
     rect.setAttribute('id', 'highlight_rect');
     rect.setAttribute('x', this.x);
     rect.setAttribute('y', this.y);
-    rect.setAttribute('width', this.height);
+    rect.setAttribute('width', this.width);
     rect.setAttribute('height', this.height);
     rect.setAttribute('stroke', constants.colorSelected);
     rect.setAttribute('stroke-width', this.rectStrokeWidth);

@@ -619,6 +619,7 @@ class Menu {
     }
     document.getElementById('LLM_model').value = constants.LLMModel;
 
+
     // aria mode
     if (constants.ariaMode == 'assertive') {
       document.getElementById('aria_mode_assertive').checked = true;
