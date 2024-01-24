@@ -1078,112 +1078,118 @@ class ChatLLM {
    */
   GetLLMJRequestJson(text, img) {
     // data to use
-    let model = constants.LLMModel;
-    let max_tokens = constants.LLMmaxResponseTokens;
     let sysMessage =
       'You are a helpful assistant describing the chart to a blind person';
     let backupMessage =
       'Describe ' + singleMaidr.type + ' charts to a blind person';
 
     if (constants.LLMModel == 'openai') {
-      // headers and sys message
-      if (!this.requestJson) {
-        this.requestJson = {};
-        this.requestJson.model = 'gpt-4-vision-preview';
-        this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
+      return chatLLM.GetOpenAIRequestJson(text, img, sysMessage, backupMessage);
+    } else if (constants.LLMModel == 'gemini') {
+      return chatLLM.GetGeminiRequestJson(text, img, sysMessage, backupMessage);
+    }
+  }
+  GetOpenAIRequestJson(text, img, sysMessage, backupMessage) {
+    // headers and sys message
+    if (!this.requestJson) {
+      this.requestJson = {};
+      this.requestJson.model = 'gpt-4-vision-preview';
+      this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
 
-        // sys message
-        this.requestJson.messages = [];
-        this.requestJson.messages[0] = {};
-        this.requestJson.messages[0].role = 'system';
-        this.requestJson.messages[0].content = sysMessage;
-      }
+      // sys message
+      this.requestJson.messages = [];
+      this.requestJson.messages[0] = {};
+      this.requestJson.messages[0].role = 'system';
+      this.requestJson.messages[0].content = sysMessage;
+    }
 
-      // user message
-      // if we have an image (first time only), send the image and the text, otherwise just the text
-      let i = this.requestJson.messages.length;
-      this.requestJson.messages[i] = {};
-      this.requestJson.messages[i].role = 'user';
-      if (constants.LLMDebugMode == 2) {
-        // backup message only, no image
-        this.requestJson.messages[i].content = backupMessage;
-      } else if (img) {
-        // first message, include the img
-        this.requestJson.messages[i].content = [
+    // user message
+    // if we have an image (first time only), send the image and the text, otherwise just the text
+    let i = this.requestJson.messages.length;
+    this.requestJson.messages[i] = {};
+    this.requestJson.messages[i].role = 'user';
+    if (constants.LLMDebugMode == 2) {
+      // backup message only, no image
+      this.requestJson.messages[i].content = backupMessage;
+    } else if (img) {
+      // first message, include the img
+      this.requestJson.messages[i].content = [
+        {
+          type: 'text',
+          text: text,
+        },
+        {
+          type: 'image_url',
+          image_url: { url: img },
+        },
+      ];
+    } else {
+      // just the text
+      this.requestJson.messages[i].content = text;
+    }
+
+    return this.requestJson;
+  }
+
+  GetGeminiRequestJson(text, img, sysMessage, backupMessage) {
+    // headers etc
+    if (!this.requestJson) {
+      this.requestJson = {};
+      this.requestJson.model = 'gemini-pro-vision';
+      //this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
+
+      // sys message
+      this.requestJson.contents = [];
+      this.requestJson.contents[0] = {};
+      this.requestJson.contents[0].role = 'system';
+      this.requestJson.contents[0].parts = [
+        {
+          text: sysMessage,
+        },
+      ];
+    }
+
+    // user message
+    // if we have an image (first time only), send the image and the text, otherwise just the text
+    let i = this.requestJson.contents.length;
+    this.requestJson.contents[i] = {};
+    this.requestJson.contents[i].role = 'user';
+    if (constants.LLMDebugMode == 2) {
+      // backup message only, no image
+      this.requestJson.contents[i] = {
+        role: 'user',
+        parts: [
           {
-            type: 'text',
+            text: backupMessage,
+          },
+        ],
+      };
+    } else if (img) {
+      // first message, include the img
+      this.requestJson.contents[i] = {
+        role: 'user',
+        parts: [
+          {
             text: text,
           },
           {
-            type: 'image_url',
-            image_url: { url: img },
+            inline_data: {
+              mimeType: 'image/jpeg',
+              data: img,
+            },
           },
-        ];
-      } else {
-        // just the text
-        this.requestJson.messages[i].content = text;
-      }
-    } else if (constants.LLMModel == 'gemini') {
-      // headers etc
-      if (!this.requestJson) {
-        this.requestJson = {};
-        this.requestJson.model = 'gemini-pro-vision';
-        //this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
-
-        // sys message
-        this.requestJson.contents = [];
-        this.requestJson.contents[0] = {};
-        this.requestJson.contents[0].role = 'system';
-        this.requestJson.contents[0].parts = [
+        ],
+      };
+    } else {
+      // just the text
+      this.requestJson.contents[i] = {
+        role: 'user',
+        parts: [
           {
-            text: sysMessage,
+            text: text,
           },
-        ];
-      }
-
-      // user message
-      // if we have an image (first time only), send the image and the text, otherwise just the text
-      let i = this.requestJson.contents.length;
-      this.requestJson.contents[i] = {};
-      this.requestJson.contents[i].role = 'user';
-      if (constants.LLMDebugMode == 2) {
-        // backup message only, no image
-        this.requestJson.contents[i] = {
-          role: 'user',
-          parts: [
-            {
-              text: backupMessage,
-            },
-          ],
-        };
-      } else if (img) {
-        // first message, include the img
-        this.requestJson.contents[i] = {
-          role: 'user',
-          parts: [
-            {
-              text: text,
-            },
-            {
-              inline_data: {
-                mimeType: 'image/jpeg',
-                data: img,
-                // bookmark: image data being sent is bad
-              },
-            },
-          ],
-        };
-      } else {
-        // just the text
-        this.requestJson.contents[i] = {
-          role: 'user',
-          parts: [
-            {
-              text: text,
-            },
-          ],
-        };
-      }
+        ],
+      };
     }
 
     return this.requestJson;
@@ -1278,36 +1284,30 @@ class ChatLLM {
   async ConvertSVGtoJPG(id) {
     let svgElement = document.getElementById(id);
     return new Promise((resolve, reject) => {
-      // Create a canvas
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
 
-      // Get dimensions from the SVG element
-      var svgRect = svgElement.getBoundingClientRect();
-      canvas.width = svgRect.width;
-      canvas.height = svgRect.height;
-
-      // Create an image to draw the SVG
-      var img = new Image();
-
-      // Convert SVG element to a data URL
       var svgData = new XMLSerializer().serializeToString(svgElement);
-      var svgBlob = new Blob([svgData], {
-        type: 'image/svg+xml;charset=utf-8',
-      });
-      var url = URL.createObjectURL(svgBlob);
+      if (!svgData.startsWith('<svg xmlns')) {
+        svgData = `<svg xmlns="http://www.w3.org/2000/svg" ${svgData.slice(4)}`;
+      }
 
+      var svgSize =
+        svgElement.viewBox.baseVal || svgElement.getBoundingClientRect();
+      canvas.width = svgSize.width;
+      canvas.height = svgSize.height;
+
+      var img = new Image();
       img.onload = function () {
-        // Draw the SVG on the canvas
-        ctx.drawImage(img, 0, 0, svgRect.width, svgRect.height);
-
-        // Convert the canvas to JPEG
-        var jpegData = canvas.toDataURL('image/jpeg');
-
-        // Resolve the promise with the Base64 JPEG data
-        resolve(jpegData);
-
-        // Clean up
+        ctx.drawImage(img, 0, 0, svgSize.width, svgSize.height);
+        var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
+        if (constants.LLMModel == 'openai') {
+          resolve(jpegData);
+        } else if (constants.LLMModel == 'gemini') {
+          let base64Data = jpegData.split(',')[1];
+          resolve(base64Data);
+          //resolve(jpegData);
+        }
         URL.revokeObjectURL(url);
       };
 
@@ -1315,7 +1315,26 @@ class ChatLLM {
         reject(new Error('Error loading SVG'));
       };
 
+      var svgBlob = new Blob([svgData], {
+        type: 'image/svg+xml;charset=utf-8',
+      });
+      var url = URL.createObjectURL(svgBlob);
       img.src = url;
+    });
+  }
+
+  // Converts a File object to a GoogleGenerativeAI.Part object.
+  fileToGenerativePart(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () =>
+        resolve({
+          inlineData: {
+            data: reader.result.split(',')[1],
+            mimeType: file.type,
+          },
+        });
+      reader.readAsDataURL(file);
     });
   }
 
