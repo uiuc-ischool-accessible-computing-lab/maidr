@@ -885,21 +885,6 @@ class ChatLLM {
    * @returns {void}
    */
   Submit(text, img = null) {
-    // send text to LLM
-    let url = '';
-    let auth = '';
-    if (constants.LLMModel == 'openai') {
-      url = 'https://api.openai.com/v1/chat/completions';
-      auth = constants.openAIAuthKey;
-    } else if (constants.LLMModel == 'gemini') {
-      url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
-      url += constants.geminiAuthKey;
-    }
-
-    let requestJson = this.GetLLMJRequestJson(text, img);
-    console.log(requestJson);
-
     // start waiting sound
     if (constants.playLLMWaitingSound) {
       chatLLM.WaitingSound(true);
@@ -910,25 +895,11 @@ class ChatLLM {
       setTimeout(function () {
         chatLLM.ProcessLLMResponse(chatLLM.fakeLLMResponseData());
       }, 5000);
-    } else {
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth,
-        },
-        body: JSON.stringify(requestJson),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          chatLLM.ProcessLLMResponse(data);
-        })
-        .catch((error) => {
-          chatLLM.WaitingSound(false);
-          console.error('Error:', error);
-          chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
-          // also todo: handle errors somehow
-        });
+      return;
+    } else if (constants.LLMModel == 'gemini') {
+      chatLLM.GeminiPrompt(text, img);
+    } else if (constants.LLMModel == 'openai') {
+      chatLLM.OpenAIPrompt(text, img);
     }
   }
 
@@ -1072,24 +1043,49 @@ class ChatLLM {
   /**
    * Gets running prompt info, appends the latest request, and packages it into a JSON object for the LLM.
    * @function
-   * @name GetLLMJRequestJson
+   * @name OpenAIPrompt
    * @memberof module:constants
    * @returns {json}
    */
-  GetLLMJRequestJson(text, img) {
-    // data to use
+  OpenAIPrompt(text, img) {
+    // send text to LLM
+    let url = '';
+    let auth = '';
+    if (constants.LLMModel == 'openai') {
+      url = 'https://api.openai.com/v1/chat/completions';
+      auth = constants.openAIAuthKey;
+    } else if (constants.LLMModel == 'gemini') {
+      url =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
+      url += constants.geminiAuthKey;
+    }
+    let requestJson = chatLLM.OpenAIJson(text, img);
+    console.log('LLM request: ', requestJson);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth,
+      },
+      body: JSON.stringify(requestJson),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        chatLLM.ProcessLLMResponse(data);
+      })
+      .catch((error) => {
+        chatLLM.WaitingSound(false);
+        console.error('Error:', error);
+        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+        // also todo: handle errors somehow
+      });
+  }
+  OpenAIJson(text, img) {
     let sysMessage =
       'You are a helpful assistant describing the chart to a blind person';
     let backupMessage =
       'Describe ' + singleMaidr.type + ' charts to a blind person';
-
-    if (constants.LLMModel == 'openai') {
-      return chatLLM.GetOpenAIRequestJson(text, img, sysMessage, backupMessage);
-    } else if (constants.LLMModel == 'gemini') {
-      return chatLLM.GetGeminiRequestJson(text, img, sysMessage, backupMessage);
-    }
-  }
-  GetOpenAIRequestJson(text, img, sysMessage, backupMessage) {
     // headers and sys message
     if (!this.requestJson) {
       this.requestJson = {};
@@ -1131,68 +1127,34 @@ class ChatLLM {
     return this.requestJson;
   }
 
-  GetGeminiRequestJson(text, img, sysMessage, backupMessage) {
-    // headers etc
-    if (!this.requestJson) {
-      this.requestJson = {};
-      this.requestJson.model = 'gemini-pro-vision';
-      //this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
+  // Assuming this function is part of your existing JavaScript file
+  async GeminiPrompt(text, imgBase64) {
+    try {
+      const { GoogleGenerativeAI } = await import(
+        'https://esm.run/@google/generative-ai'
+      );
 
-      // sys message
-      this.requestJson.contents = [];
-      this.requestJson.contents[0] = {};
-      this.requestJson.contents[0].role = 'system';
-      this.requestJson.contents[0].parts = [
-        {
-          text: sysMessage,
+      const API_KEY = constants.geminiAuthKey;
+      const genAI = new GoogleGenerativeAI(API_KEY);
+
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+
+      const prompt = text; // Use the text parameter as the prompt
+      const image = {
+        inlineData: {
+          data: imgBase64, // Use the base64 image string
+          mimeType: 'image/png', // Or the appropriate mime type of your image
         },
-      ];
-    }
+      };
 
-    // user message
-    // if we have an image (first time only), send the image and the text, otherwise just the text
-    let i = this.requestJson.contents.length;
-    this.requestJson.contents[i] = {};
-    this.requestJson.contents[i].role = 'user';
-    if (constants.LLMDebugMode == 2) {
-      // backup message only, no image
-      this.requestJson.contents[i] = {
-        role: 'user',
-        parts: [
-          {
-            text: backupMessage,
-          },
-        ],
-      };
-    } else if (img) {
-      // first message, include the img
-      this.requestJson.contents[i] = {
-        role: 'user',
-        parts: [
-          {
-            text: text,
-          },
-          {
-            inline_data: {
-              mimeType: 'image/jpeg',
-              data: img,
-            },
-          },
-        ],
-      };
-    } else {
-      // just the text
-      this.requestJson.contents[i] = {
-        role: 'user',
-        parts: [
-          {
-            text: text,
-          },
-        ],
-      };
-    }
+      const result = await model.generateContent([prompt, image]);
+      console.log(result.response.text());
 
-    return this.requestJson;
+      return result.response.text(); // You can return this value or handle it as needed
+    } catch (error) {
+      console.error('Error in initializeGenerativeAI:', error);
+      throw error; // Rethrow the error for further handling if necessary
+    }
   }
 
   /**
