@@ -1,6 +1,6 @@
 # maidr: Multimodal Access and Interactive Data Representation
 
-maidr is a system for non-visual access and control of statistical plots. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification (BTS). This comprehensive approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization. Check out the current build: [maidr Demo](https://uiuc-ischool-accessible-computing-lab.github.io/maidr/user_study_pilot/intro.html). You may also clone or download the github repo, navigate to the ./user_study_pilot folder, and open any of the html files in your browser.
+maidr is a system for non-visual access and control of statistical plots. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification (BTS). This comprehensive approach enhances the accessibility of data visualization and encourages a multi-modal exploration on visualization. Check out the current build: [maidr Demo](https://uiuc-ischool-accessible-computing-lab.github.io/maidr/user_study_pilot/intro.html). You may also clone or download the GitHub repo, navigate to the ./user_study_pilot folder, and open any of the html files in your browser.
 
 ## Table of Contents
 
@@ -243,8 +243,8 @@ Note that this control scheme can be used by any plot with multiple types.
 
 In the various segmented bar plots (stacked bar, dodged bar, and normalized stacked bar), Up Down Left Right controls function similar to a grid:
 
-- Left and Right arrows move between different bars or points on the x axis.
-- Up and Down arrows move between different layers of the same bar or point on the x axis.
+- Left and Right arrows move between different bars or points on the x-axis.
+- Up and Down arrows move between different layers of the same bar or point on the x-axis.
 
 Note that there are also pseudo layers at the top of each layer stack: a Summary layer representing a sum of all that bar's values, and a Combined layer that plays a separated or combined run of tones of all the layers. The standard 'S' key that controls sonification now has an extra setting to play either combined tones or separated tones.
 
@@ -271,7 +271,7 @@ In the Braille representation of a heatmap, values are depicted based on their r
 - ⠒ represents values from 33% to 66%
 - ⠉ represents values from 66% to 100%
 - "⠀" (braille space) represents null or empty values
-- "⢳" represents a row seperator
+- "⢳" represents a row separator
 
 ### Boxplot
 
@@ -327,11 +327,11 @@ In the Braille representation of a scatterplot, the encoding is performed only f
 
 Stacked bar, dodged bar, and normalized stacked bar all share the same system:
 
-In the braille representation of segmented bar plots, braille depends on where you are. There are typically multiple levels to a segmented bar plot, and as you move (Up and Down arrow keys) between levels, the braille changes to represent your current level. At the top, there is also a Summary pseudo layer of all levels added together, and a Combined pseudo layer of each layer seperately.
+In the braille representation of segmented bar plots, braille depends on where you are. There are typically multiple levels to a segmented bar plot, and as you move (Up and Down arrow keys) between levels, the braille changes to represent your current level. At the top, there is also a Summary pseudo layer of all levels added together, and a Combined pseudo layer of each layer separately.
 
 - Regular layers: Braille appears similar to a bar plot, with braille values corresponding to the magnitude of the layer's value for this point.
 - Summary layer: Same as regular layers, but values now reflect the combined magnitude of all layers' values for this point.
-- Combined layer: Similar to heatmap, where there are groups of magnitudes for each point separated by a ⢳ character. The first group has braille characters for each layer for the first point, then a seperator, then the second group has braille characters for each layer in the second point, then a seperator, and so on.
+- Combined layer: Similar to heatmap, where there are groups of magnitudes for each point separated by a ⢳ character. The first group has braille characters for each layer for the first point, then a separator, then the second group has braille characters for each layer in the second point, then a separator, and so on.
 
 ### Lineplot
 
