@@ -1,0 +1,383 @@
+{
+    "data": [
+        {
+            "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 3,
+            "__count_start": 121,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+            "weather": "rain",
+            "__count": 65,
+            "__count_start": 33,
+            "__count_end": 98
+        },
+        {
+            "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+            "weather": "sun",
+            "__count": 25,
+            "__count_start": 0,
+            "__count_end": 25
+        },
+        {
+            "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+            "weather": "snow",
+            "__count": 8,
+            "__count_start": 25,
+            "__count_end": 33
+        },
+        {
+            "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 9,
+            "__count_start": 115,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+            "weather": "sun",
+            "__count": 29,
+            "__count_start": 0,
+            "__count_end": 29
+        },
+        {
+            "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+            "weather": "rain",
+            "__count": 73,
+            "__count_start": 33,
+            "__count_end": 106
+        },
+        {
+            "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 4,
+            "__count_start": 109,
+            "__count_end": 113
+        },
+        {
+            "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+            "weather": "snow",
+            "__count": 4,
+            "__count_start": 29,
+            "__count_end": 33
+        },
+        {
+            "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+            "weather": "rain",
+            "__count": 73,
+            "__count_start": 42,
+            "__count_end": 115
+        },
+        {
+            "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+            "weather": "sun",
+            "__count": 36,
+            "__count_start": 0,
+            "__count_end": 36
+        },
+        {
+            "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+            "weather": "snow",
+            "__count": 6,
+            "__count_start": 36,
+            "__count_end": 42
+        },
+        {
+            "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 3,
+            "__count_start": 121,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 53,
+            "__count_start": 0,
+            "__count_end": 53
+        },
+        {
+            "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 60,
+            "__count_start": 54,
+            "__count_end": 114
+        },
+        {
+            "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+            "weather": "snow",
+            "__count": 1,
+            "__count_start": 53,
+            "__count_end": 54
+        },
+        {
+            "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 3,
+            "__count_start": 117,
+            "__count_end": 120
+        },
+        {
+            "month_date": "Tue, 01 May 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 41,
+            "__count_start": 77,
+            "__count_end": 118
+        },
+        {
+            "month_date": "Tue, 01 May 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 77,
+            "__count_start": 0,
+            "__count_end": 77
+        },
+        {
+            "month_date": "Tue, 01 May 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 1,
+            "__count_start": 123,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Fri, 01 Jun 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 41,
+            "__count_start": 76,
+            "__count_end": 117
+        },
+        {
+            "month_date": "Fri, 01 Jun 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 76,
+            "__count_start": 0,
+            "__count_end": 76
+        },
+        {
+            "month_date": "Fri, 01 Jun 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 2,
+            "__count_start": 118,
+            "__count_end": 120
+        },
+        {
+            "month_date": "Sun, 01 Jul 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 15,
+            "__count_start": 90,
+            "__count_end": 105
+        },
+        {
+            "month_date": "Sun, 01 Jul 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 90,
+            "__count_start": 0,
+            "__count_end": 90
+        },
+        {
+            "month_date": "Sun, 01 Jul 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 9,
+            "__count_start": 115,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Sun, 01 Jul 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 10,
+            "__count_start": 105,
+            "__count_end": 115
+        },
+        {
+            "month_date": "Wed, 01 Aug 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 86,
+            "__count_start": 0,
+            "__count_end": 86
+        },
+        {
+            "month_date": "Wed, 01 Aug 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 25,
+            "__count_start": 86,
+            "__count_end": 111
+        },
+        {
+            "month_date": "Wed, 01 Aug 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 7,
+            "__count_start": 117,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Sat, 01 Sep 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 64,
+            "__count_start": 0,
+            "__count_end": 64
+        },
+        {
+            "month_date": "Sat, 01 Sep 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 36,
+            "__count_start": 64,
+            "__count_end": 100
+        },
+        {
+            "month_date": "Sat, 01 Sep 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 15,
+            "__count_start": 100,
+            "__count_end": 115
+        },
+        {
+            "month_date": "Sat, 01 Sep 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 5,
+            "__count_start": 115,
+            "__count_end": 120
+        },
+        {
+            "month_date": "Mon, 01 Oct 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 37,
+            "__count_start": 0,
+            "__count_end": 37
+        },
+        {
+            "month_date": "Mon, 01 Oct 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 4,
+            "__count_start": 120,
+            "__count_end": 124
+        },
+        {
+            "month_date": "Mon, 01 Oct 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 64,
+            "__count_start": 37,
+            "__count_end": 101
+        },
+        {
+            "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+            "weather": "rain",
+            "__count": 75,
+            "__count_start": 34,
+            "__count_end": 109
+        },
+        {
+            "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+            "weather": "sun",
+            "__count": 33,
+            "__count_start": 0,
+            "__count_end": 33
+        },
+        {
+            "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+            "weather": "drizzle",
+            "__count": 3,
+            "__count_start": 117,
+            "__count_end": 120
+        },
+        {
+            "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 8,
+            "__count_start": 109,
+            "__count_end": 117
+        },
+        {
+            "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+            "weather": "rain",
+            "__count": 73,
+            "__count_start": 40,
+            "__count_end": 113
+        },
+        {
+            "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+            "weather": "sun",
+            "__count": 34,
+            "__count_start": 0,
+            "__count_end": 34
+        },
+        {
+            "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+            "weather": "snow",
+            "__count": 6,
+            "__count_start": 34,
+            "__count_end": 40
+        },
+        {
+            "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+            "weather": "fog",
+            "__count": 6,
+            "__count_start": 115,
+            "__count_end": 121
+        },
+        {
+            "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 3,
+            "__count_start": 114,
+            "__count_end": 117
+        },
+        {
+            "month_date": "Tue, 01 May 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 5,
+            "__count_start": 118,
+            "__count_end": 123
+        },
+        {
+            "month_date": "Wed, 01 Aug 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 6,
+            "__count_start": 111,
+            "__count_end": 117
+        },
+        {
+            "month_date": "Mon, 01 Oct 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 19,
+            "__count_start": 101,
+            "__count_end": 120
+        },
+        {
+            "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+            "weather": "fog",
+            "__count": 17,
+            "__count_start": 98,
+            "__count_end": 115
+        },
+
+        {
+            "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+            "weather": "snow",
+            "__count": 1,
+            "__count_start": 33,
+            "__count_end": 34
+        },
+        {
+            "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+            "weather": "fog",
+            "__count": 8,
+            "__count_start": 113,
+            "__count_end": 121
+        },
+        {
+            "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+            "weather": "fog",
+            "__count": 3,
+            "__count_start": 106,
+            "__count_end": 109
+        },
+        {
+            "month_date": "Fri, 01 Jun 2012 05:00:00 GMT",
+            "weather": "fog",
+            "__count": 1,
+            "__count_start": 117,
+            "__count_end": 118
+        }
+    ]
+}

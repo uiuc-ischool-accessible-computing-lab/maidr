@@ -1,0 +1,62 @@
+[
+    {
+        "month_date": "Sat, 01 Dec 2012 06:00:00 GMT",
+        "month_date_end": "Tue, 01 Jan 2013 06:00:00 GMT",
+        "mean_precipitation": 4.866129032258064
+    },
+    {
+        "month_date": "Sun, 01 Jan 2012 06:00:00 GMT",
+        "month_date_end": "Wed, 01 Feb 2012 06:00:00 GMT",
+        "mean_precipitation": 3.897580645161291
+    },
+    {
+        "month_date": "Wed, 01 Feb 2012 06:00:00 GMT",
+        "month_date_end": "Thu, 01 Mar 2012 06:00:00 GMT",
+        "mean_precipitation": 3.6221238938053095
+    },
+    {
+        "month_date": "Thu, 01 Mar 2012 06:00:00 GMT",
+        "month_date_end": "Sun, 01 Apr 2012 05:00:00 GMT",
+        "mean_precipitation": 4.904838709677419
+    },
+    {
+        "month_date": "Sun, 01 Apr 2012 05:00:00 GMT",
+        "month_date_end": "Tue, 01 May 2012 05:00:00 GMT",
+        "mean_precipitation": 3.0775
+    },
+    {
+        "month_date": "Tue, 01 May 2012 05:00:00 GMT",
+        "month_date_end": "Fri, 01 Jun 2012 05:00:00 GMT",
+        "mean_precipitation": 1.7596774193548383
+    },
+    {
+        "month_date": "Fri, 01 Jun 2012 05:00:00 GMT",
+        "month_date_end": "Sun, 01 Jul 2012 05:00:00 GMT",
+        "mean_precipitation": 1.014166666666667
+    },
+    {
+        "month_date": "Sun, 01 Jul 2012 05:00:00 GMT",
+        "month_date_end": "Wed, 01 Aug 2012 05:00:00 GMT",
+        "mean_precipitation": 0.3887096774193549
+    },
+    {
+        "month_date": "Wed, 01 Aug 2012 05:00:00 GMT",
+        "month_date_end": "Sat, 01 Sep 2012 05:00:00 GMT",
+        "mean_precipitation": 1.3669354838709682
+    },
+    {
+        "month_date": "Sat, 01 Sep 2012 05:00:00 GMT",
+        "month_date_end": "Mon, 01 Oct 2012 05:00:00 GMT",
+        "mean_precipitation": 1.9800000000000006
+    },
+    {
+        "month_date": "Mon, 01 Oct 2012 05:00:00 GMT",
+        "month_date_end": "Thu, 01 Nov 2012 05:00:00 GMT",
+        "mean_precipitation": 4.295967741935483
+    },
+    {
+        "month_date": "Thu, 01 Nov 2012 05:00:00 GMT",
+        "month_date_end": "Sat, 01 Dec 2012 06:00:00 GMT",
+        "mean_precipitation": 5.204999999999999
+    }
+]
