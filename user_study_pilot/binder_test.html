@@ -487,9 +487,7 @@
         type: 'bar',
         id: 'plot',
         title: {},
-        elements: document.querySelectorAll(
-          'svg g:nth-last-of-type(2) > rect:not(:first-child)'
-        ),
+        selector: 'svg g:nth-last-of-type(2) > rect:not(:first-child)',
         axes: {
           x: {
             label: 'class',
