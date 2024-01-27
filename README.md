@@ -43,7 +43,7 @@ To use maidr, follow these steps:
 
    ```javascript
    // a single plot
-   var maidr = {
+   let maidr = {
      type: 'box',
      id: 'myboxplot',
      title: 'Highway Mileage by Car Class.',
@@ -62,12 +62,12 @@ To use maidr, follow these steps:
        },
        x: { label: 'Highway Milage' },
      },
-     'selector': '#boxplot1 g[id^="panel"] > g[id^="geom_boxplot.gTree"]',
+     selector: '#boxplot1 g[id^="panel"] > g[id^="geom_boxplot.gTree"]',
      data: ...
    }
    
    // or, multiple charts
-   var maidr = [
+   let maidr = [
      {
        type: 'box',
        id: 'myboxplot',
@@ -327,11 +327,11 @@ In the Braille representation of a scatterplot, the encoding is performed only f
 
 Stacked bar, dodged bar, and normalized stacked bar all share the same system:
 
-In the braille representation of segmented bar plots, braille depends on where you are. There are typically multiple levels to a segmented bar plot, and as you move (Up and Down arrow keys) between levels, the braille changes to represent your current level. At the top, there is also a Summary pseudo layer of all levels added together, and a Combined pseudo layer of each layer separately.
+In the braille representation of segmented bar plots, braille depends on where you are. There are typically multiple levels to a segmented bar plot, and as you move (Up and Down arrow keys) between levels, the braille changes to represent your current level. At the top, there is also a Summary pseudo level of all levels added together, and a Combined pseudo level of each level separately.
 
-- Regular layers: Braille appears similar to a bar plot, with braille values corresponding to the magnitude of the layer's value for this point.
-- Summary layer: Same as regular layers, but values now reflect the combined magnitude of all layers' values for this point.
-- Combined layer: Similar to heatmap, where there are groups of magnitudes for each point separated by a ⢳ character. The first group has braille characters for each layer for the first point, then a separator, then the second group has braille characters for each layer in the second point, then a separator, and so on.
+- Regular level: Braille appears similar to a bar plot, with braille values corresponding to the magnitude of the level's value for this point.
+- Summary level: Same as regular level, but values now reflect the combined magnitude of all levels' values for this point.
+- Combined level: Similar to heatmap, where there are groups of magnitudes for each point separated by a ⢳ character. The first group has braille characters for each level for the first point, then a separator, then the second group has braille characters for each level in the second point, then a separator, and so on.
 
 ### Lineplot
 
