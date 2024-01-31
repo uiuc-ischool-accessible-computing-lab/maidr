@@ -223,6 +223,7 @@ class Segmented {
       if (constants.sonifMode == 'on') {
         // we play a run of tones
         position.z = 0;
+        constants.KillSepPlay();
         constants.sepPlayId = setInterval(
           function () {
             // play this tone
