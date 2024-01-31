@@ -828,7 +828,7 @@ class ChatLLM {
       document,
       'keyup',
       function (e) {
-        if (e.key == '?') {
+        if (e.key == '?' && (e.ctrlKey || e.metaKey)) {
           chatLLM.Toggle(true);
         }
       },
