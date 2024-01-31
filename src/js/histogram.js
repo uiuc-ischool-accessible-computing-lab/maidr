@@ -21,6 +21,8 @@ class Histogram {
     this.bars = null;
     if ('selector' in singleMaidr) {
       this.bars = document.querySelectorAll(singleMaidr.selector);
+    } else if ('elements' in singleMaidr) {
+      this.bars = singleMaidr.elements;
     }
 
     // labels (optional)
