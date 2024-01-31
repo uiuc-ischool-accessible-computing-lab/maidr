@@ -9,7 +9,6 @@ class Segmented {
    */
   constructor() {
     // initialize variables level, data, and elements
-    let level = null;
     let fill = null;
     let data = null;
     let elements = null;
@@ -17,17 +16,17 @@ class Segmented {
       //axes.x.level
       if ('x' in singleMaidr.axes) {
         if ('level' in singleMaidr.axes.x) {
-          level = singleMaidr.axes.x.level;
+          this.level = singleMaidr.axes.x.level;
         }
       } else if ('y' in singleMaidr.axes) {
         if ('level' in singleMaidr.axes.y) {
-          level = singleMaidr.axes.y.level;
+          this.level = singleMaidr.axes.y.level;
         }
       }
       // axes.fill
       if ('fill' in singleMaidr.axes) {
         if ('level' in singleMaidr.axes.fill) {
-          fill = singleMaidr.axes.fill.level;
+          this.fill = singleMaidr.axes.fill.level;
         }
       }
     }
@@ -45,9 +44,10 @@ class Segmented {
       logError.LogAbsentElement('elements');
       constants.hasRect = 0;
     }
-    if (level != null && fill != null && data != null) {
-      this.level = level;
-      this.fill = fill.reverse(); // typically fill is in reverse order
+    if (data) {
+      if (this.fill) {
+        this.fill = this.fill.reverse(); // typically fill is in reverse order
+      }
       let dataAndELements = this.ParseData(data, elements);
       this.plotData = dataAndELements[0];
       this.elements = dataAndELements[1];
@@ -135,7 +135,12 @@ class Segmented {
     let plotData = [];
     let plotElements = [];
 
-    if (elements.length != data.length) {
+    // override and kill elements if not same length as data
+    if (elements) {
+      if (elements.length != data.length) {
+        plotElements = null;
+      }
+    } else {
       plotElements = null;
     }
 
@@ -165,7 +170,9 @@ class Segmented {
           // set actual values
           if (data[k].x == this.level[i] && data[k].fill == this.fill[j]) {
             plotData[i][j] = data[k].y;
-            plotElements[i][j] = elements[k];
+            if (elements) {
+              plotElements[i][j] = elements[k];
+            }
             break;
           }
         }
