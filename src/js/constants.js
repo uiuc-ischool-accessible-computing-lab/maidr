@@ -427,7 +427,7 @@ class Menu {
                                 </select>
                                 <label for="skill_level">Level of skill in statistical charts</label>
                             </p>
-                            <p id="skill_level_other_container" class="hidden"><input type="text" id="skill_level_other"> <label for="skill_level_other">"I have a(n) [X] understanding of statistical charts"</label></p>
+                            <p id="skill_level_other_container" class="hidden"><input type="text" placeholder="Very basic" id="skill_level_other"> <label for="skill_level_other">Describe your level of skill in statistical charts</label></p>
                         </div>
                     </div>
                     <div class="modal-footer">
