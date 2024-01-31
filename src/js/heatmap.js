@@ -23,100 +23,34 @@ class HeatMap {
         }
       }
     }
-    let data = null;
-    let dataLength = 0;
     if ('data' in singleMaidr) {
-      data = singleMaidr.data;
-      for (let i = 0; i < data.length; i++) {
-        dataLength += data[i].length;
-      }
+      this.data = singleMaidr.data;
+    } else {
+      // critical error, no data
+      console.error('No data found in singleMaidr object');
     }
-    let elements = null;
     if ('selector' in singleMaidr) {
-      elements = document.querySelectorAll(singleMaidr.selector);
+      this.elements = document.querySelectorAll(singleMaidr.selector);
+      constants.hasRect = 1;
+    } else if ('elements' in singleMaidr) {
+      this.elements = singleMaidr.elements;
+      constants.hasRect = 1;
+    } else {
+      this.elements = null;
+      constants.hasRect = 0;
     }
-
-    // if (xlevel && ylevel && data && elements) {
-    //   if (elements.length != dataLength) {
-    //     // I didn't throw an error but give a warning
-    //     constants.hasRect = 0;
-    //     logError.LogDifferentLengths('data', 'elements');
-    //   } else if (ylevel.length != data.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('y level', 'rows');
-    //   } else if (data[0].length != xlevel.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('x level', 'columns');
-    //   } else {
-    //     this.plots = elements;
-    //     constants.hasRect = 1;
-    //   }
-    // } else if (ylevel && data && elements) {
-    //   if (dataLength != elements.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('data', 'elements');
-    //   } else if (ylevel.length != data.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('y level', 'rows');
-    //   } else {
-    //     this.plots = elements;
-    //     constants.hasRect = 1;
-    //   }
-    // } else if (xlevel && data && elements) {
-    //   if (dataLength != elements.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('data', 'elements');
-    //   } else if (xlevel.length != data[0].length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('x level', 'columns');
-    //   } else {
-    //     this.plots = elements;
-    //     constants.hasRect = 1;
-    //   }
-    // }
-    // else if (xlevel && ylevel && data) {
-    //   constants.hasRect = 0;
-    //   if (ylevel.length != data.length) {
-    //     logError.logDifferentLengths('y level', 'rows');
-    //   } else if (data[0].length != xlevel.length) {
-    //     logError.logDifferentLengths('x level', 'columns');
-    //   }
-    //   logError.LogAbsentElement('elements');
-    // }
-    // else if (data && elements) {
-    //   if (dataLength != elements.length) {
-    //     constants.hasRect = 0;
-    //     logError.logDifferentLengths('data', 'elements');
-    //   } else {
-    //     this.plots = elements;
-    //     constants.hasRect = 1;
-    //   }
-    // } else if (data) {
-    //   constants.hasRect = 0;
-    //   if (!xlevel) logError.LogAbsentElement('x level');
-    //   if (!ylevel) logError.LogAbsentElement('y level');
-    //   if (!elements) logError.LogAbsentElement('elements');
-    // }
-
-    this.plots = elements;
-    constants.hasRect = 1;
 
     this.group_labels = this.getGroupLabels();
-    // this.x_labels = this.getXLabels();
-    // this.y_labels = this.getYLabels();
     this.x_labels = xlevel;
     this.y_labels = ylevel;
     this.title = this.getTitle();
     this.fill = this.getFill();
 
-    this.plotData = this.getHeatMapData();
-    this.updateConstants();
+    if (constants.hasRect) {
+      this.SetHeatmapRectData();
+    }
 
-    this.x_coord = this.plotData[0];
-    this.y_coord = this.plotData[1];
-    this.values = this.plotData[2];
-    this.num_rows = this.plotData[3];
-    this.num_cols = this.plotData[4];
+    this.updateConstants();
 
     this.x_group_label = this.group_labels[0].trim();
     this.y_group_label = this.group_labels[1].trim();
@@ -127,113 +61,74 @@ class HeatMap {
    * If 'data' exists in singleMaidr, it returns the norms from the data. Otherwise, it calculates the norms from the unique x and y coordinates.
    * @returns {Array} An array of heatmap data containing unique x and y coordinates, norms, number of rows, and number of columns.
    */
-  getHeatMapData() {
+  SetHeatmapRectData() {
+    // We get a set of x and y coordinates from the heatmap squares,
+    // which is different and only sometimes connected to the actual data
+    // note, only runs if constants.hasRect is true
+
     // get the x_coord and y_coord to check if a square exists at the coordinates
     let x_coord_check = [];
     let y_coord_check = [];
-
     let unique_x_coord = [];
     let unique_y_coord = [];
-    if (constants.hasRect) {
-      for (let i = 0; i < this.plots.length; i++) {
-        if (this.plots[i]) {
-          // heatmap SVG containing path element instead of rect
-          if (this.plots[i] instanceof SVGPathElement) {
-            // Assuming the path data is in the format "M x y L x y L x y L x y"
-            const path_d = this.plots[i].getAttribute('d');
-            const regex = /[ML]\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g;
-            const match = regex.exec(path_d);
+    for (let i = 0; i < this.elements.length; i++) {
+      if (this.elements[i]) {
+        // heatmap SVG containing path element instead of rect
+        if (this.elements[i] instanceof SVGPathElement) {
+          // Assuming the path data is in the format "M x y L x y L x y L x y"
+          const path_d = this.elements[i].getAttribute('d');
+          const regex = /[ML]\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g;
+          const match = regex.exec(path_d);
 
-            const coords = [Number(match[1]), Number(match[3])];
-            const x = coords[0];
-            const y = coords[1];
+          const coords = [Number(match[1]), Number(match[3])];
+          const x = coords[0];
+          const y = coords[1];
 
-            x_coord_check.push(parseFloat(x));
-            y_coord_check.push(parseFloat(y));
-          } else {
-            x_coord_check.push(parseFloat(this.plots[i].getAttribute('x')));
-            y_coord_check.push(parseFloat(this.plots[i].getAttribute('y')));
-          }
+          x_coord_check.push(parseFloat(x));
+          y_coord_check.push(parseFloat(y));
+        } else {
+          x_coord_check.push(parseFloat(this.elements[i].getAttribute('x')));
+          y_coord_check.push(parseFloat(this.elements[i].getAttribute('y')));
         }
       }
-
-      // sort the squares to access from left to right, up to down
-      x_coord_check.sort(function (a, b) {
-        return a - b;
-      }); // ascending
-      y_coord_check.sort(function (a, b) {
-        return a - b;
-      });
-
-      let svgScaler = this.GetSVGScaler();
-      // inverse scale if svg is scaled
-      if (svgScaler[0] == -1) {
-        x_coord_check = x_coord_check.reverse();
-      }
-      if (svgScaler[1] == -1) {
-        y_coord_check = y_coord_check.reverse();
-      }
-
-      // get unique elements from x_coord and y_coord
-      unique_x_coord = [...new Set(x_coord_check)];
-      unique_y_coord = [...new Set(y_coord_check)];
     }
 
-    // get num of rows, num of cols, and total numbers of squares
-    let num_rows = 0;
-    let num_cols = 0;
-    let num_squares = 0;
-    if ('data' in singleMaidr) {
-      num_rows = singleMaidr.data.length;
-      num_cols = singleMaidr.data[0].length;
-    } else {
-      num_rows = unique_y_coord.length;
-      num_cols = unique_x_coord.length;
+    // sort the squares to access from left to right, up to down
+    x_coord_check.sort(function (a, b) {
+      return a - b;
+    }); // ascending
+    y_coord_check.sort(function (a, b) {
+      return a - b;
+    });
+
+    let svgScaler = this.GetSVGScaler();
+    // inverse scale if svg has a negative scale in the actual svg
+    if (svgScaler[0] == -1) {
+      x_coord_check = x_coord_check.reverse();
     }
-    num_squares = num_rows * num_cols;
-
-    let norms = [];
-    if ('data' in singleMaidr) {
-      norms = [...singleMaidr.data];
-    } else {
-      norms = Array(num_rows)
-        .fill()
-        .map(() => Array(num_cols).fill(0));
-      let min_norm = 3 * Math.pow(255, 2);
-      let max_norm = 0;
-
-      for (var i = 0; i < this.plots.length; i++) {
-        var x_index = unique_x_coord.indexOf(x_coord_check[i]);
-        var y_index = unique_y_coord.indexOf(y_coord_check[i]);
-        let norm = this.getRGBNorm(i);
-        norms[y_index][x_index] = norm;
-
-        if (norm < min_norm) min_norm = norm;
-        if (norm > max_norm) max_norm = norm;
-      }
+    if (svgScaler[1] == -1) {
+      y_coord_check = y_coord_check.reverse();
     }
 
-    let plotData = [unique_x_coord, unique_y_coord, norms, num_rows, num_cols];
+    // get unique elements from x_coord and y_coord
+    unique_x_coord = [...new Set(x_coord_check)];
+    unique_y_coord = [...new Set(y_coord_check)];
 
-    return plotData;
+    this.x_coord = unique_x_coord;
+    this.y_coord = unique_y_coord;
   }
 
   /**
    * Updates the constants used in the heatmap.
+   * minX: 0, always
+   * maxX: the x length of the data array
+   *
    */
   updateConstants() {
     constants.minX = 0;
-    constants.maxX = this.plotData[4];
-    constants.minY = this.plotData[2][0][0]; // initial val
-    constants.maxY = this.plotData[2][0][0]; // initial val
-    for (let i = 0; i < this.plotData[2].length; i++) {
-      for (let j = 0; j < this.plotData[2][i].length; j++) {
-        if (this.plotData[2][i][j] < constants.minY)
-          constants.minY = this.plotData[2][i][j];
-        if (this.plotData[2][i][j] > constants.maxY)
-          constants.maxY = this.plotData[2][i][j];
-      }
-    }
+    constants.maxX = this.data[0].length - 1;
+    constants.minY = Math.min(...this.data.map((row) => Math.min(...row)));
+    constants.maxY = Math.max(...this.data.map((row) => Math.max(...row)));
     constants.autoPlayRate = Math.min(
       Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
       constants.MAX_SPEED
@@ -252,7 +147,7 @@ class HeatMap {
   }
 
   /**
-   * Returns an array of the X and Y scales of the first SVG element found in the plots array.
+   * Returns an array of the X and Y scales of the first SVG element found in the elements array.
    * @returns {Array<number>} An array containing the X and Y scales of the SVG element.
    */
   GetSVGScaler() {
@@ -262,7 +157,7 @@ class HeatMap {
 
     // but first, are we even in an svg that can be scaled?
     let isSvg = false;
-    let element = this.plots[0]; // a random start, may as well be the first
+    let element = this.elements[0]; // a random start, may as well be the first
     while (element) {
       if (element.tagName.toLowerCase() == 'body') {
         break;
@@ -274,7 +169,7 @@ class HeatMap {
     }
 
     if (isSvg) {
-      let element = this.plots[0]; // a random start, may as well be the first
+      let element = this.elements[0]; // a random start, may as well be the first
       while (element) {
         if (element.tagName.toLowerCase() == 'body') {
           break;
@@ -306,7 +201,7 @@ class HeatMap {
    * @returns {number} The sum of squared values of the RGB color.
    */
   getRGBNorm(i) {
-    let rgb_string = this.plots[i].getAttribute('fill');
+    let rgb_string = this.elements[i].getAttribute('fill');
     let rgb_array = rgb_string.slice(4, -1).split(',');
     // just get the sum of squared value of rgb, similar without sqrt, save computation
     return rgb_array
@@ -464,10 +359,10 @@ class HeatMapRect {
     this.x = plot.x_coord[position.x];
     this.y = plot.y_coord[position.y];
     // find which square we're on by searching for the x and y coordinates
-    for (let i = 0; i < plot.plots.length; i++) {
+    for (let i = 0; i < plot.elements.length; i++) {
       if (
-        plot.plots[i].getAttribute('x') == this.x &&
-        plot.plots[i].getAttribute('y') == this.y
+        plot.elements[i].getAttribute('x') == this.x &&
+        plot.elements[i].getAttribute('y') == this.y
       ) {
         this.squareIndex = i;
         break;
@@ -495,7 +390,7 @@ class HeatMapRect {
     rect.setAttribute('stroke', constants.colorSelected);
     rect.setAttribute('stroke-width', this.rectStrokeWidth);
     rect.setAttribute('fill', 'none');
-    plot.plots[this.squareIndex].parentNode.appendChild(rect);
+    plot.elements[this.squareIndex].parentNode.appendChild(rect);
     //constants.chart.appendChild(rect);
   }
 }
