@@ -65,8 +65,6 @@ class LinePlot {
     if (constants.autoPlayRate < constants.MIN_SPEED) {
       constants.MIN_SPEED = constants.autoPlayRate;
     }
-
-    // this.gradient = this.GetGradient();
   }
 
   /**
@@ -121,22 +119,6 @@ class LinePlot {
       return;
     }
   }
-
-  // GetGradient() {
-  //   let gradients = [];
-
-  //   for (let i = 0; i < this.pointValuesY.length - 1; i++) {
-  //     let abs_grad = Math.abs(
-  //       (this.pointValuesY[i + 1] - this.pointValuesY[i]) /
-  //         (this.pointValuesX[i + 1] - this.pointValuesX[i])
-  //     ).toFixed(3);
-  //     gradients.push(abs_grad);
-  //   }
-
-  //   gradients.push('end');
-
-  //   return gradients;
-  // }
 
   /**
    * Sets the x and y group labels and title for the line plot based on the axes and title properties of the singleMaidr object.

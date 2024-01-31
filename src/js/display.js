@@ -543,11 +543,11 @@ class Display {
     } else if (constants.chartType == 'line') {
       // line layer
       verboseText +=
-        plot.x_group_label +
+        plot.plotLegend.x +
         ' is ' +
         plot.pointValuesX[position.x] +
         ', ' +
-        plot.y_group_label +
+        plot.plotLegend.y +
         ' is ' +
         plot.pointValuesY[position.x];
 
