@@ -10,57 +10,7 @@ class LinePlot {
   constructor() {
     this.SetLineLayer();
     this.SetAxes();
-
-    let legendX = '';
-    let legendY = '';
-    if ('axes' in singleMaidr) {
-      // legend labels
-      if (singleMaidr.axes.x) {
-        if (singleMaidr.axes.x.label) {
-          if (legendX == '') {
-            legendX = singleMaidr.axes.x.label;
-          }
-        }
-      }
-      if (singleMaidr.axes.y) {
-        if (singleMaidr.axes.y.label) {
-          if (legendY == '') {
-            legendY = singleMaidr.axes.y.label;
-          }
-        }
-      }
-    }
-
-    this.plotLegend = {
-      x: legendX,
-      y: legendY,
-    };
-
-    // title
-    this.title = '';
-    if ('labels' in singleMaidr) {
-      if ('title' in singleMaidr.labels) {
-        this.title = singleMaidr.labels.title;
-      }
-    }
-    if (this.title == '') {
-      if ('title' in singleMaidr) {
-        this.title = singleMaidr.title;
-      }
-    }
-
-    // subtitle
-    if ('labels' in singleMaidr) {
-      if ('subtitle' in singleMaidr.labels) {
-        this.subtitle = singleMaidr.labels.subtitle;
-      }
-    }
-    // caption
-    if ('labels' in singleMaidr) {
-      if ('caption' in singleMaidr.labels) {
-        this.caption = singleMaidr.labels.caption;
-      }
-    }
+    this.UpdateConstants();
   }
 
   /**
@@ -70,12 +20,13 @@ class LinePlot {
     let elements;
     if ('selector' in singleMaidr) {
       elements = document.querySelectorAll(singleMaidr.selector);
+    } else if ('elements' in singleMaidr) {
+      elements = singleMaidr.elements;
     }
 
-    let len = elements.length;
-    this.plotLine = elements[len - 1];
+    if (elements) {
+      this.plotLine = elements[elements.length - 1];
 
-    if (typeof this.plotLine !== 'undefined') {
       let pointCoords = this.GetPointCoords();
       let pointValues = this.GetPoints();
 
@@ -87,35 +38,35 @@ class LinePlot {
 
       this.curveMinY = Math.min(...this.pointValuesY);
       this.curveMaxY = Math.max(...this.pointValuesY);
-      constants.minX = 0;
-      constants.maxX = this.pointValuesX.length - 1;
-      constants.minY = this.curveMinY;
-      constants.maxY = this.curveMaxY;
-
-      constants.autoPlayRate = Math.min(
-        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-        constants.MAX_SPEED
-      );
-      constants.DEFAULT_SPEED = constants.autoPlayRate;
-      if (constants.autoPlayRate < constants.MIN_SPEED) {
-        constants.MIN_SPEED = constants.autoPlayRate;
-      }
-
-      // this.gradient = this.GetGradient();
     }
   }
 
   /**
-   * Sets the minimum and maximum values for the x and y axes of a line plot.
+   * Updates the constants for the line plot.
+   * This includes the minimum and maximum x and y values, the autoplay rate, and the default speed.
    */
-  SetMinMax() {
+  UpdateConstants() {
     constants.minX = 0;
-    constants.maxX = this.pointValuesX.length - 1;
-    constants.minY = this.curveMinY;
-    constants.maxY = this.curveMaxY;
-    constants.autoPlayRate = Math.ceil(
-      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
+    constants.maxX = singleMaidr.data.length - 1;
+    constants.minY = singleMaidr.data.reduce(
+      (min, item) => (item.y < min ? item.y : min),
+      singleMaidr.data[0].y
     );
+    constants.maxY = singleMaidr.data.reduce(
+      (max, item) => (item.y > max ? item.y : max),
+      singleMaidr.data[0].y
+    );
+
+    constants.autoPlayRate = Math.min(
+      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
+      constants.MAX_SPEED
+    );
+    constants.DEFAULT_SPEED = constants.autoPlayRate;
+    if (constants.autoPlayRate < constants.MIN_SPEED) {
+      constants.MIN_SPEED = constants.autoPlayRate;
+    }
+
+    // this.gradient = this.GetGradient();
   }
 
   /**
@@ -191,24 +142,54 @@ class LinePlot {
    * Sets the x and y group labels and title for the line plot based on the axes and title properties of the singleMaidr object.
    */
   SetAxes() {
-    this.x_group_label = '';
-    this.y_group_label = '';
-    this.title = '';
+    let legendX = '';
+    let legendY = '';
     if ('axes' in singleMaidr) {
-      if ('x' in singleMaidr.axes) {
-        if (this.x_group_label == '') {
-          this.x_group_label = singleMaidr.axes.x.label;
+      // legend labels
+      if (singleMaidr.axes.x) {
+        if (singleMaidr.axes.x.label) {
+          if (legendX == '') {
+            legendX = singleMaidr.axes.x.label;
+          }
         }
       }
-      if ('y' in singleMaidr.axes) {
-        if (this.y_group_label == '') {
-          this.y_group_label = singleMaidr.axes.y.label;
+      if (singleMaidr.axes.y) {
+        if (singleMaidr.axes.y.label) {
+          if (legendY == '') {
+            legendY = singleMaidr.axes.y.label;
+          }
         }
       }
     }
-    if ('title' in singleMaidr) {
-      if (this.title == '') {
+
+    this.plotLegend = {
+      x: legendX,
+      y: legendY,
+    };
+
+    // title
+    this.title = '';
+    if ('labels' in singleMaidr) {
+      if ('title' in singleMaidr.labels) {
+        this.title = singleMaidr.labels.title;
+      }
+    }
+    if (this.title == '') {
+      if ('title' in singleMaidr) {
         this.title = singleMaidr.title;
+      }
+    }
+
+    // subtitle
+    if ('labels' in singleMaidr) {
+      if ('subtitle' in singleMaidr.labels) {
+        this.subtitle = singleMaidr.labels.subtitle;
+      }
+    }
+    // caption
+    if ('labels' in singleMaidr) {
+      if ('caption' in singleMaidr.labels) {
+        this.caption = singleMaidr.labels.caption;
       }
     }
   }

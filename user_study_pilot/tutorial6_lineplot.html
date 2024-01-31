@@ -406,8 +406,11 @@
         type: 'line',
         id: 'lineplot1',
         title: 'Unemployment Rate Over Time',
-        selector:
-          'g[clip-path="url(#cpNDcuODN8NzE0LjUyfDM4Ljg1fDUzMC44Nw==)"] > polyline',
+        //selector:
+        //'g[clip-path="url(#cpNDcuODN8NzE0LjUyfDM4Ljg1fDUzMC44Nw==)"] > polyline',
+        elements: document.querySelectorAll(
+          'g[clip-path="url(#cpNDcuODN8NzE0LjUyfDM4Ljg1fDUzMC44Nw==)"] > polyline'
+        ),
         axes: {
           x: {
             label: 'Year',
