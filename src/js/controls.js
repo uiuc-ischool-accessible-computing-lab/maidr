@@ -1493,7 +1493,7 @@ class Control {
         return new Promise((resolve) => setTimeout(resolve, time));
       }
 
-      // helper functions
+      // heat helper functions
       function lockPosition() {
         // lock to min / max postions
         let didLockHappen = false;

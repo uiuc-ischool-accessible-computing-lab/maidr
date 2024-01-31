@@ -25,6 +25,8 @@ class HeatMap {
     }
     if ('data' in singleMaidr) {
       this.data = singleMaidr.data;
+      this.num_rows = this.data.length;
+      this.num_cols = this.data[0].length;
     } else {
       // critical error, no data
       console.error('No data found in singleMaidr object');
@@ -122,6 +124,9 @@ class HeatMap {
    * Updates the constants used in the heatmap.
    * minX: 0, always
    * maxX: the x length of the data array
+   * minY: the minimum value of the data array
+   * maxY: the maximum value of the data array
+   * autoPlayRate: the rate at which the heatmap will autoplay, based on the number of columns
    *
    */
   updateConstants() {
