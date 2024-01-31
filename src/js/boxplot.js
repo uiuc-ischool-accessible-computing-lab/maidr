@@ -8,8 +8,6 @@ class BoxPlot {
    * @constructor
    */
   constructor() {
-    constants.plotOrientation = 'horz'; // default
-
     // the default sections for all boxplots
     this.sections = [
       'lower_outlier',
@@ -21,6 +19,8 @@ class BoxPlot {
       'upper_outlier',
     ];
 
+    // set orientation
+    constants.plotOrientation = 'horz';
     if ('axes' in singleMaidr) {
       if ('x' in singleMaidr.axes) {
         if ('level' in singleMaidr.axes.x) {
@@ -101,7 +101,11 @@ class BoxPlot {
 
     // bounds data
     if ('selector' in singleMaidr) {
-      this.plotBounds = this.GetPlotBounds();
+      let elements = document.querySelector(singleMaidr.selector);
+      this.plotBounds = this.GetPlotBounds(elements);
+      constants.hasRect = true;
+    } else if ('elements' in singleMaidr) {
+      this.plotBounds = this.GetPlotBounds(singleMaidr.elements);
       constants.hasRect = true;
     } else {
       constants.hasRect = false;
@@ -187,7 +191,7 @@ class BoxPlot {
    * Calculates the bounding boxes for all elements in the parent element, including outliers, whiskers, and range.
    * @returns {Array} An array of bounding boxes for all elements.
    */
-  GetPlotBounds() {
+  GetPlotBounds(elements) {
     // we fetch the elements in our parent,
     // and similar to old GetData we run through and get bounding boxes (or blanks) for everything,
     // and store in an identical structure
@@ -195,7 +199,6 @@ class BoxPlot {
     let plotBounds = [];
     let allWeNeed = this.GetAllSegmentTypes();
     let re = /(?:\d+(?:\.\d*)?|\.\d+)/g;
-    let elements = document.querySelector(singleMaidr.selector);
 
     // get initial set of elements, a parent element for all outliers, whiskers, and range
     let initialElemSet = [];

@@ -541,10 +541,8 @@ class Control {
         window.position = new Position(-1, plot.plotData.length);
       }
       let rect;
-      constants.hasRect = false;
-      if ('selector' in singleMaidr) {
+      if (constants.hasRect) {
         rect = new BoxplotRect();
-        constants.hasRect = true;
       }
       let lastPlayed = '';
 
