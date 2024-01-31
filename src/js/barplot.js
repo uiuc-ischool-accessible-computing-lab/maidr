@@ -25,6 +25,8 @@ class BarChart {
     let elements = null;
     if ('selector' in singleMaidr) {
       elements = document.querySelectorAll(singleMaidr.selector);
+    } else if ('elements' in singleMaidr) {
+      elements = singleMaidr.elements;
     }
 
     if (xlevel && data && elements) {
@@ -60,15 +62,6 @@ class BarChart {
       logError.LogAbsentElement('x level');
       logError.LogAbsentElement('elements');
     }
-
-    // bars. The actual bar elements in the SVG. Used to highlight visually
-    // if ('elements' in singleMaidr) {
-    //   this.bars = singleMaidr.elements;
-    //   constants.hasRect = 1;
-    // } else {
-    //   // this.bars = constants.chart.querySelectorAll('g[id^="geom_rect"] > rect'); // if we use plot.plotData.length instead of plot.bars.length, we don't have to include this
-    //   constants.hasRect = 0;
-    // }
 
     // column labels, both legend and tick
     this.columnLabels = [];
@@ -145,10 +138,8 @@ class BarChart {
 
     if (Array.isArray(singleMaidr)) {
       this.plotData = singleMaidr;
-    } else {
-      if ('data' in singleMaidr) {
-        this.plotData = singleMaidr.data;
-      }
+    } else if ('data' in singleMaidr) {
+      this.plotData = singleMaidr.data;
     }
 
     // set the max and min values for the plot
