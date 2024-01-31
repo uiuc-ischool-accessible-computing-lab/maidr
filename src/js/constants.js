@@ -74,13 +74,12 @@ class Constants {
   visualBraille = false; // do we want to represent braille based on what's visually there or actually there. Like if we have 2 outliers with the same position, do we show 1 (visualBraille true) or 2 (false)
   globalMinMax = true;
   ariaMode = 'assertive'; // assertive (default) / polite
-  playLLMWaitingSound = true;
 
   // LLM settings
-  LLMDebugMode = 0; // 0 = use real data, 1 = all fake, 2 = real data but no image
   openAIAuthKey = null; // OpenAI authentication key, set in menu
   geminiAuthKey = null; // Gemini authentication key, set in menu
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
+  playLLMWaitingSound = true;
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   LLMModel = 'openai'; // openai (default) / gemini
   LLMSystemMessage =
@@ -301,7 +300,7 @@ class Menu {
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Menu</h4>
+                        <h2 class="modal-title">Menu</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -768,7 +767,7 @@ class ChatLLM {
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="chatLLM_title" class="modal-title">Ask a Question</h4>
+                        <h2 id="chatLLM_title" class="modal-title">Ask a Question</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -888,13 +887,7 @@ class ChatLLM {
       chatLLM.WaitingSound(true);
     }
 
-    if (constants.LLMDebugMode == 1) {
-      // do the below with a 5 sec delay
-      setTimeout(function () {
-        chatLLM.ProcessLLMResponse(chatLLM.fakeLLMResponseData());
-      }, 5000);
-      return;
-    } else if (constants.LLMModel == 'gemini') {
+    if (constants.LLMModel == 'gemini') {
       chatLLM.GeminiPrompt(text, img);
     } else if (constants.LLMModel == 'openai') {
       chatLLM.OpenAIPrompt(text, img);
@@ -1095,10 +1088,7 @@ class ChatLLM {
     let i = this.requestJson.messages.length;
     this.requestJson.messages[i] = {};
     this.requestJson.messages[i].role = 'user';
-    if (constants.LLMDebugMode == 2) {
-      // backup message only, no image
-      this.requestJson.messages[i].content = backupMessage;
-    } else if (img) {
+    if (img) {
       // first message, include the img
       this.requestJson.messages[i].content = [
         {
@@ -1171,7 +1161,7 @@ class ChatLLM {
       <div class="chatLLM_message ${
         user == 'User' ? 'chatLLM_message_self' : 'chatLLM_message_other'
       }">
-        <p class="chatLLM_message_user">${user}</p>
+        <h3 class="chatLLM_message_user">${user}</h3>
         <p class="chatLLM_message_text">${text}</p>
       </div>
     `;
@@ -1347,7 +1337,7 @@ class Description {
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="desc_title" class="modal-title">Description</h4>
+                        <h2 id="desc_title" class="modal-title">Description</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
