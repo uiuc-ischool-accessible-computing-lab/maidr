@@ -1,0 +1,32 @@
+[
+    {
+        "x": "First",
+        "fill": "Not Survived",
+        "y": 80
+    },
+    {
+        "x": "Second",
+        "fill": "Not Survived",
+        "y": 97
+    },
+    {
+        "x": "Third",
+        "fill": "Not Survived",
+        "y": 372
+    },
+    {
+        "x": "First",
+        "fill": "Survived",
+        "y": 136
+    },
+    {
+        "x": "Second",
+        "fill": "Survived",
+        "y": 87
+    },
+    {
+        "x": "Third",
+        "fill": "Survived",
+        "y": 119
+    }
+]
