@@ -1,0 +1,63 @@
+{
+    "type": "stacked_bar",
+    "id": "stacked_bar",
+    "selector": "TODO: TYPE YOUR STACKED SELECTOR HERE",
+    "labels": {
+        "title": "Passenger Count by Class and Survival Status on the Titanic",
+        "x": "Class",
+        "y": "Number of Passengers",
+        "fill": "Survival Status"
+    },
+    "axes": {
+        "x": {
+            "label": "Class",
+            "level": [
+                "First",
+                "Second",
+                "Third"
+            ]
+        },
+        "y": {
+            "label": "Number of Passengers"
+        },
+        "fill": {
+            "label": "Survival Status",
+            "level": [
+                "Survived",
+                "Not Survived"
+            ]
+        }
+    },
+    "data": [
+        {
+            "x": "First",
+            "fill": "Not Survived",
+            "y": 80
+        },
+        {
+            "x": "Second",
+            "fill": "Not Survived",
+            "y": 97
+        },
+        {
+            "x": "Third",
+            "fill": "Not Survived",
+            "y": 372
+        },
+        {
+            "x": "First",
+            "fill": "Survived",
+            "y": 136
+        },
+        {
+            "x": "Second",
+            "fill": "Survived",
+            "y": 87
+        },
+        {
+            "x": "Third",
+            "fill": "Survived",
+            "y": 119
+        }
+    ]
+}
