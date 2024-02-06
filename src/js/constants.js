@@ -471,7 +471,7 @@ class Menu {
     ]);
     constants.events.push([
       document.getElementById('menu'),
-      'keydown',
+      'keyup',
       function (e) {
         if (e.key == 'Esc') {
           // esc
@@ -813,7 +813,7 @@ class ChatLLM {
     }
     constants.events.push([
       document.getElementById('chatLLM'),
-      'keydown',
+      'keyup',
       function (e) {
         if (e.key == 'Esc') {
           // esc
@@ -822,13 +822,13 @@ class ChatLLM {
       },
     ]);
 
-    // ChatLLM open events
+    // ChatLLM open/close toggle
     constants.events.push([
       document,
       'keyup',
       function (e) {
         if (e.key == '?' && (e.ctrlKey || e.metaKey)) {
-          chatLLM.Toggle(true);
+          chatLLM.Toggle();
         }
       },
     ]);
@@ -845,7 +845,7 @@ class ChatLLM {
     ]);
     constants.events.push([
       document.getElementById('chatLLM_input'),
-      'keydown',
+      'keyup',
       function (e) {
         if (e.key == 'Enter' && !e.shiftKey) {
           let text = document.getElementById('chatLLM_input').value;
@@ -1198,7 +1198,7 @@ class ChatLLM {
    * Toggles the modal on and off.
    * @param {boolean} [onoff=false] - Whether to turn the chatLLM on or off. Defaults to false (close).
    */
-  Toggle(onoff = false) {
+  Toggle(onoff) {
     if (typeof onoff == 'undefined') {
       if (document.getElementById('chatLLM').classList.contains('hidden')) {
         onoff = true;
@@ -1376,7 +1376,7 @@ class Description {
     }
     constants.events.push([
       document.getElementById('description'),
-      'keydown',
+      'keyup',
       function (e) {
         if (e.key == 'Esc') {
           // esc
