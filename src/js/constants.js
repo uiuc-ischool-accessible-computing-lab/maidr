@@ -416,8 +416,8 @@ class Menu {
                                 </select>
                                 <label for="LLM_model">LLM Model</label>
                             </p>
-                            <p id="openai_auth_key_container" class="hidden"><input type="password" id="openai_auth_key"> <label for="openai_auth_key">OpenAI Authentication Key</label></p>
-                            <p id="gemini_auth_key_container" class="hidden"><input type="password" id="gemini_auth_key"> <label for="gemini_auth_key">Gemini Authentication Key</label></p>
+                            <p id="openai_auth_key_container" class="hidden"><input type="password" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label></p>
+                            <p id="gemini_auth_key_container" class="hidden"><input type="password" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label></p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -870,6 +870,22 @@ class ChatLLM {
         },
       ]);
     }
+
+    // Delete OpenAI and Gemini keys
+    constants.events.push([
+      document.getElementById('delete_openai_key'),
+      'click',
+      function (e) {
+        document.getElementById('openai_auth_key').value = '';
+      },
+    ]);
+    constants.events.push([
+      document.getElementById('delete_gemini_key'),
+      'click',
+      function (e) {
+        document.getElementById('gemini_auth_key').value = '';
+      },
+    ]);
   }
 
   /**
