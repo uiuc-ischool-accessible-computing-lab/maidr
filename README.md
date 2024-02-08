@@ -1,3 +1,11 @@
+<div align="center">
+
+<img src="logo/logo.svg" width="350px" alt="maidr logo"/>
+
+<hr style="color:transparent" />
+<br />
+</div>
+
 # maidr: Multimodal Access and Interactive Data Representation
 
 maidr is a system for non-visual access and control of statistical plots. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification (BTS). This comprehensive approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization. Check out the current build: [maidr Demo](https://uiuc-ischool-accessible-computing-lab.github.io/maidr/user_study_pilot/intro.html). You may also clone or download the github repo, navigate to the ./user_study_pilot folder, and open any of the html files in your browser.
