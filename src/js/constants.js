@@ -1,3 +1,5 @@
+const { constants } = require('buffer');
+
 /**
  * A class representing system vars, user config vars, and helper functions used throughout the application.
  *
@@ -428,6 +430,8 @@ class Menu {
                                 <label for="skill_level">Level of skill in statistical charts</label>
                             </p>
                             <p id="skill_level_other_container" class="hidden"><input type="text" placeholder="Very basic" id="skill_level_other"> <label for="skill_level_other">Describe your level of skill in statistical charts</label></p>
+                            <p><label for="LLM_preferences">LLM Preferences</label></p>
+                            <p><textarea id="LLM_preferences" rows="4" cols="50" placeholder="I'm a stats undergrad and work with Python. I prefer a casual tone, and favor information accuracy over creative description; just the facts please!"></textarea></p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -647,6 +651,11 @@ class Menu {
         .getElementById('skill_level_other_container')
         .classList.remove('hidden');
     }
+    // LLM preferences
+    if (constants.LLMPreferences) {
+      document.getElementById('LLM_preferences').value =
+        constants.LLMPreferences;
+    }
   }
 
   /**
@@ -669,6 +678,7 @@ class Menu {
     constants.skillLevelOther =
       document.getElementById('skill_level_other').value;
     constants.LLMModel = document.getElementById('LLM_model').value;
+    constants.LLMPreferences = document.getElementById('LLM_preferences').value;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -718,6 +728,7 @@ class Menu {
     data.skillLevel = constants.skillLevel;
     data.skillLevelOther = constants.skillLevelOther;
     data.LLMModel = constants.LLMModel;
+    data.LLMPreferences = constants.LLMPreferences;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -739,6 +750,7 @@ class Menu {
       constants.skillLevel = data.skillLevel;
       constants.skillLevelOther = data.skillLevelOther;
       constants.LLMModel = data.LLMModel ? data.LLMModel : constants.LLMModel;
+      constants.LLMPreferences = data.LLMPreferences;
     }
     this.PopulateData();
     this.UpdateHtml();
