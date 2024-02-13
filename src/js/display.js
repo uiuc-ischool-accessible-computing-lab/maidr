@@ -271,8 +271,8 @@ class Display {
 
       constants.brailleInput.setSelectionRange(adjustedPos, adjustedPos);
     } else if (
-      singleMaidr.type == 'point' ||
-      singleMaidr.type.includes('point')
+      singleMaidr.type == 'smooth' ||
+      singleMaidr.type.includes('smooth')
     ) {
       constants.brailleInput.setSelectionRange(positionL1.x, positionL1.x);
     }
@@ -469,8 +469,8 @@ class Display {
       else if (constants.textMode == 'terse')
         output = '<p>' + textTerse + '</p>\n';
     } else if (
-      singleMaidr.type == 'point' ||
-      singleMaidr.type.includes('point')
+      [].concat(singleMaidr.type).includes('point') ||
+      [].concat(singleMaidr.type).includes('smooth')
     ) {
       if (constants.chartType == 'point') {
         // point layer
