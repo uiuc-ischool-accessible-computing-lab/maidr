@@ -1,5 +1,3 @@
-const { constants } = require('buffer');
-
 /**
  * A class representing system vars, user config vars, and helper functions used throughout the application.
  *
@@ -85,7 +83,7 @@ class Constants {
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   LLMModel = 'openai'; // openai (default) / gemini
   LLMSystemMessage =
-    'You are a helpful assistant describing the chart to a blind person';
+    'You are a helpful assistant describing the chart to a blind person. ';
   skillLevel = 'basic'; // basic / intermediate / expert
   skillLevelOther = ''; // custom skill level
 
@@ -490,7 +488,10 @@ class Menu {
       'keyup',
       function (e) {
         // don't fire on input elements
-        if (e.target.tagName.toLowerCase() == 'input') {
+        if (
+          e.target.tagName.toLowerCase() == 'input' ||
+          e.target.tagName.toLowerCase() == 'textarea'
+        ) {
           return;
         } else if (e.key == 'h') {
           menu.Toggle(true);
@@ -1109,6 +1110,11 @@ class ChatLLM {
       this.requestJson.messages[0] = {};
       this.requestJson.messages[0].role = 'system';
       this.requestJson.messages[0].content = sysMessage;
+      if (constants.LLMPreferences) {
+        this.requestJson.messages[1] = {};
+        this.requestJson.messages[1].role = 'system';
+        this.requestJson.messages[1].content = constants.LLMPreferences;
+      }
     }
 
     // user message
@@ -1136,7 +1142,6 @@ class ChatLLM {
     return this.requestJson;
   }
 
-  // Assuming this function is part of your existing JavaScript file
   async GeminiPrompt(text, imgBase64 = null) {
     try {
       // Save the image for next time
@@ -1156,7 +1161,11 @@ class ChatLLM {
       const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
       // Create the prompt
-      const prompt = constants.LLMSystemMessage + '\n\n' + text; // Use the text parameter as the prompt
+      let prompt = constants.LLMSystemMessage;
+      if (constants.LLMPreferences) {
+        prompt += constants.LLMPreferences;
+      }
+      prompt += '\n\n' + text; // Use the text parameter as the prompt
       const image = {
         inlineData: {
           data: imgBase64, // Use the base64 image string
