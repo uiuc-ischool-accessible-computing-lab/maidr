@@ -270,6 +270,9 @@ class Resources {
         son_sep: 'Sonification separate',
         son_same: 'Sonification combined',
         empty: 'Empty',
+        openai: 'OpenAI Vision',
+        gemini: 'Gemini Pro Vision',
+        multi: 'Multiple',
       },
     },
   };
@@ -970,7 +973,8 @@ class ChatLLM {
   }
 
   /**
-   * Submits text to the LLM with a REST call, returns the response to the user
+   * Submits text to the LLM with a REST call, returns the response to the user.
+   * Depends on the one or more LLMs being selected in the menu.
    * @function
    * @name Submit
    * @memberof module:constants
@@ -978,16 +982,24 @@ class ChatLLM {
    * @img {string} - The image to send to the LLM in base64 string format. Defaults to null (no image).
    * @returns {void}
    */
-  Submit(text, img = null) {
+  async Submit(text, firsttime = false) {
     // start waiting sound
     if (constants.playLLMWaitingSound) {
       chatLLM.WaitingSound(true);
     }
 
-    if (constants.LLMModel == 'gemini') {
-      chatLLM.GeminiPrompt(text, img);
-    } else if (constants.LLMModel == 'openai') {
+    let img = null;
+    if (constants.LLMOpenAiMulti) {
+      if (firsttime) {
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
+      }
       chatLLM.OpenAIPrompt(text, img);
+    }
+    if (constants.LLMGeminiMulti) {
+      if (firsttime) {
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
+      }
+      chatLLM.GeminiPrompt(text, img);
     }
   }
 
@@ -1034,13 +1046,13 @@ class ChatLLM {
    * @function
    * @returns {void}
    */
-  ProcessLLMResponse(data) {
+  ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
     console.log('LLM response: ', data);
     let text = '';
     let LLMName = '';
 
-    if (constants.LLMModel == 'openai') {
+    if (model == 'openai') {
       LLMName = 'OpenAI';
       text = data.choices[0].message.content;
       let i = this.requestJson.messages.length;
@@ -1053,7 +1065,7 @@ class ChatLLM {
       } else {
         chatLLM.DisplayChatMessage(LLMName, text);
       }
-    } else if (constants.LLMModel == 'gemini') {
+    } else if (model == 'gemini') {
       LLMName = 'Gemini';
       if (data.text()) {
         text = data.text();
@@ -1137,7 +1149,7 @@ class ChatLLM {
    * @memberof module:constants
    * @returns {json}
    */
-  OpenAIPrompt(text, img) {
+  OpenAIPrompt(text, img = null) {
     // request init
     let url = 'https://api.openai.com/v1/chat/completions';
     let auth = constants.openAIAuthKey;
@@ -1154,7 +1166,7 @@ class ChatLLM {
     })
       .then((response) => response.json())
       .then((data) => {
-        chatLLM.ProcessLLMResponse(data);
+        chatLLM.ProcessLLMResponse(data, 'openai');
       })
       .catch((error) => {
         chatLLM.WaitingSound(false);
@@ -1163,7 +1175,7 @@ class ChatLLM {
         // also todo: handle errors somehow
       });
   }
-  OpenAIJson(text, img) {
+  OpenAIJson(text, img = null) {
     let sysMessage = constants.LLMSystemMessage;
     let backupMessage =
       'Describe ' + singleMaidr.type + ' charts to a blind person';
@@ -1247,7 +1259,7 @@ class ChatLLM {
       console.log(result.response.text());
 
       // Process the response
-      chatLLM.ProcessLLMResponse(result.response);
+      chatLLM.ProcessLLMResponse(result.response, 'gemini');
     } catch (error) {
       console.error('Error in GeminiPrompt:', error);
       throw error; // Rethrow the error for further handling if necessary
@@ -1323,10 +1335,12 @@ class ChatLLM {
 
       // first time, send default query
       if (this.firstTime) {
-        let LLMName = constants.LLMModel == 'openai' ? 'OpenAI' : 'Gemini';
+        // get name from resource
+        let LLMName = resources.GetString(constants.LLMModel);
         this.firstTime = false;
         this.DisplayChatMessage(LLMName, 'Processing Chart...');
-        this.RunDefaultPrompt();
+        let defaultPrompt = this.GetDefaultPrompt();
+        this.Submit(defaultPrompt, true);
       }
     } else {
       // close
@@ -1341,7 +1355,7 @@ class ChatLLM {
    * Converts the active chart to a jpg image.
    * @id {string} - The html ID of the chart to convert.
    */
-  async ConvertSVGtoJPG(id) {
+  async ConvertSVGtoJPG(id, model) {
     let svgElement = document.getElementById(id);
     return new Promise((resolve, reject) => {
       var canvas = document.createElement('canvas');
@@ -1361,9 +1375,9 @@ class ChatLLM {
       img.onload = function () {
         ctx.drawImage(img, 0, 0, svgSize.width, svgSize.height);
         var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
-        if (constants.LLMModel == 'openai') {
+        if (model == 'openai') {
           resolve(jpegData);
-        } else if (constants.LLMModel == 'gemini') {
+        } else if (model == 'gemini') {
           let base64Data = jpegData.split(',')[1];
           resolve(base64Data);
           //resolve(jpegData);
@@ -1384,13 +1398,11 @@ class ChatLLM {
   }
 
   /**
-   * RunDefaultPrompt is an asynchronous function that generates a prompt for describing a chart to a blind person.
+   * GetDefaultPrompt is an asynchronous function that generates a prompt for describing a chart to a blind person.
    * It converts the chart to a JPG image using the ConvertSVGtoJPG method and then submits the prompt to the chatLLM function.
    * The prompt includes information about the blind person's skill level and the chart's image and raw data, if available.
    */
-  async RunDefaultPrompt() {
-    //let img = await this.ConvertSVGtoImg(singleMaidr.id);
-    let img = await this.ConvertSVGtoJPG(singleMaidr.id);
+  GetDefaultPrompt() {
     let text = 'Describe this chart to a blind person';
     if (constants.skillLevel) {
       if (constants.skillLevel == 'other' && constants.skillLevelOther) {
@@ -1413,7 +1425,7 @@ class ChatLLM {
       text += JSON.stringify(singleMaidr);
     }
 
-    chatLLM.Submit(text, img);
+    return text;
   }
 }
 /**
