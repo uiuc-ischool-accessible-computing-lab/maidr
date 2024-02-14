@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo/logo.svg" width="350px" alt="A stylized logo for 'MAIDR'. The logo is composed of the word 'MAIDR' in bold, rounded lowercase letters in a deep navy blue color, with the letters connected in a flowing manner. Above the 'i' in 'MAIDR', there is a light blue circle, suggesting a human head or an abstract representation of a person or focal point. To the right of the word, there is a navy blue square with rounded corners featuring five darker blue dots arranged in a Braille pattern that represents the letter 'R'."/>
+<img src="logo/logo.svg" width="350px" alt="A stylized MAIDR logo, with curved characters for M A, a hand pointing for an I, the D character, and R represented in braille."/>
 
 <hr style="color:transparent" />
 <br />
