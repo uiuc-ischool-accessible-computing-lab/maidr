@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     maidrIds.push(maidrId);
     let maidrElemn = document.getElementById(maidrId);
     if (maidrElemn) {
+      maidrElemn.setAttribute('tabindex', '0');
       maidrElemn.addEventListener('focus', function (e) {
         ShouldWeInitMaidr(maidrObjects[i]);
       });
