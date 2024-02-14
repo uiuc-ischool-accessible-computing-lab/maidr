@@ -1050,10 +1050,9 @@ class ChatLLM {
     chatLLM.WaitingSound(false);
     console.log('LLM response: ', data);
     let text = '';
-    let LLMName = '';
+    let LLMName = resources.GetString(model);
 
     if (model == 'openai') {
-      LLMName = 'OpenAI';
       text = data.choices[0].message.content;
       let i = this.requestJson.messages.length;
       this.requestJson.messages[i] = {};
@@ -1066,7 +1065,6 @@ class ChatLLM {
         chatLLM.DisplayChatMessage(LLMName, text);
       }
     } else if (model == 'gemini') {
-      LLMName = 'Gemini';
       if (data.text()) {
         text = data.text();
         chatLLM.DisplayChatMessage(LLMName, text);
