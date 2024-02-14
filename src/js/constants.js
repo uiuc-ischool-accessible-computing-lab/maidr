@@ -413,11 +413,18 @@ class Menu {
                                 <select id="LLM_model">
                                     <option value="openai">OpenAI Vision</option>
                                     <option value="gemini">Gemini Pro Vision</option>
+                                    <option value="multi">Multiple</option>
                                 </select>
                                 <label for="LLM_model">LLM Model</label>
                             </p>
-                            <p id="openai_auth_key_container" class="hidden"><input type="password" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label></p>
-                            <p id="gemini_auth_key_container" class="hidden"><input type="password" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label></p>
+                            <p id="openai_auth_key_container" class="multi_container hidden">
+                              <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
+                              <input type="password" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
+                            </p>
+                            <p id="gemini_auth_key_container" class="multi_container hidden">
+                              <span id="gemini_multi_container" class="hidden"><input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode"></span>
+                              <input type="password" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
+                            </p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -511,6 +518,14 @@ class Menu {
           document
             .getElementById('gemini_auth_key_container')
             .classList.add('hidden');
+          document
+            .getElementById('openai_multi_container')
+            .classList.add('hidden');
+          document
+            .getElementById('gemini_multi_container')
+            .classList.add('hidden');
+          document.getElementById('openai_multi').checked = true;
+          document.getElementById('gemini_multi').checked = false;
         } else if (e.target.value == 'gemini') {
           document
             .getElementById('openai_auth_key_container')
@@ -518,6 +533,29 @@ class Menu {
           document
             .getElementById('gemini_auth_key_container')
             .classList.remove('hidden');
+          document
+            .getElementById('openai_multi_container')
+            .classList.add('hidden');
+          document
+            .getElementById('gemini_multi_container')
+            .classList.add('hidden');
+          document.getElementById('openai_multi').checked = false;
+          document.getElementById('gemini_multi').checked = true;
+        } else if (e.target.value == 'multi') {
+          document
+            .getElementById('openai_auth_key_container')
+            .classList.remove('hidden');
+          document
+            .getElementById('gemini_auth_key_container')
+            .classList.remove('hidden');
+          document
+            .getElementById('openai_multi_container')
+            .classList.remove('hidden');
+          document
+            .getElementById('gemini_multi_container')
+            .classList.remove('hidden');
+          document.getElementById('openai_multi').checked = true;
+          document.getElementById('gemini_multi').checked = true;
         }
       },
     ]);
@@ -645,6 +683,28 @@ class Menu {
       document
         .getElementById('gemini_auth_key_container')
         .classList.remove('hidden');
+    } else if (constants.LLMModel == 'multi') {
+      // multi LLM mode
+      document
+        .getElementById('openai_auth_key_container')
+        .classList.remove('hidden');
+      document
+        .getElementById('gemini_auth_key_container')
+        .classList.remove('hidden');
+      document
+        .getElementById('openai_multi_container')
+        .classList.remove('hidden');
+      document
+        .getElementById('gemini_multi_container')
+        .classList.remove('hidden');
+      document.getElementById('openai_multi').checked = false;
+      if (constants.LLMOpenAiMulti) {
+        document.getElementById('openai_multi').checked = true;
+      }
+      document.getElementById('gemini_multi').checked = false;
+      if (constants.LLMGeminiMulti) {
+        document.getElementById('gemini_multi').checked = true;
+      }
     }
     // skill level other
     if (constants.skillLevel == 'other') {
@@ -673,6 +733,7 @@ class Menu {
     constants.MAX_FREQUENCY = document.getElementById('max_freq').value;
     constants.keypressInterval =
       document.getElementById('keypress_interval').value;
+
     constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
     constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
     constants.skillLevel = document.getElementById('skill_level').value;
@@ -680,6 +741,9 @@ class Menu {
       document.getElementById('skill_level_other').value;
     constants.LLMModel = document.getElementById('LLM_model').value;
     constants.LLMPreferences = document.getElementById('LLM_preferences').value;
+
+    constants.LLMOpenAiMulti = document.getElementById('openai_multi').checked;
+    constants.LLMGeminiMulti = document.getElementById('gemini_multi').checked;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -730,6 +794,8 @@ class Menu {
     data.skillLevelOther = constants.skillLevelOther;
     data.LLMModel = constants.LLMModel;
     data.LLMPreferences = constants.LLMPreferences;
+    data.LLMOpenAiMulti = constants.LLMOpenAiMulti;
+    data.LLMGeminiMulti = constants.LLMGeminiMulti;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -752,6 +818,8 @@ class Menu {
       constants.skillLevelOther = data.skillLevelOther;
       constants.LLMModel = data.LLMModel ? data.LLMModel : constants.LLMModel;
       constants.LLMPreferences = data.LLMPreferences;
+      constants.LLMOpenAiMulti = data.LLMOpenAiMulti;
+      constants.LLMGeminiMulti = data.LLMGeminiMulti;
     }
     this.PopulateData();
     this.UpdateHtml();
