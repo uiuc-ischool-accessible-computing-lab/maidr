@@ -868,10 +868,10 @@ class ChatLLM {
                             <button type="button" id="more_suggestions">More</button>
                           </p>
                           <p id="more_suggestions_container" class="hidden LLM_suggestions">
-                            <button type="button">Please provide the title of this visualization, then provide a description for someone who is blind or low vision. Include general overview of axes and the data at a high-level</button>
-                            <button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extrema, correlations, relational comparisons like greater than OR lesser than</button>
+                            <button type="button">Please provide the title of this visualization, then provide a description for someone who is blind or low vision. Include general overview of axes and the data at a high-level.</button>
+                            <button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extrema, correlations, relational comparisons like greater than OR lesser than.</button>
                             <button type="button">Based on the visualization shared, address the following: Do you observe any unforeseen trends? If yes, what?  Please convey any complex multi-faceted patterns present. Can you identify any noteworthy exceptions that aren't readily apparent through non-visual methods of analysis?</button>
-                            <button type="button">Provide context to help explain the data depicted in this visualization based on domain-specific insight</button>
+                            <button type="button">Provide context to help explain the data depicted in this visualization based on domain-specific insight.</button>
                           </p>
                           <p><button type="button" id="chatLLM_submit">Submit</button></p>
                         </div>
@@ -1006,13 +1006,13 @@ class ChatLLM {
     }
 
     let img = null;
-    if (constants.LLMOpenAiMulti) {
+    if (constants.LLMOpenAiMulti || constants.LLMModel == 'openai') {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
       chatLLM.OpenAIPrompt(text, img);
     }
-    if (constants.LLMGeminiMulti) {
+    if (constants.LLMGeminiMulti || constants.LLMModel == 'gemini') {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
