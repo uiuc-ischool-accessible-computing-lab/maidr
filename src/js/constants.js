@@ -865,6 +865,13 @@ class ChatLLM {
                             <button type="button">What is the title?</button>
                             <button type="button">What are the high and low values?</button>
                             <button type="button">What is the general shape of the chart?</button>
+                            <button type="button" id="more_suggestions">More</button>
+                          </p>
+                          <p id="more_suggestions_container" class="hidden LLM_suggestions">
+                            <button type="button">Please provide the title of this visualization, then provide a description for someone who is blind or low vision. Include general overview of axes and the data at a high-level</button>
+                            <button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extrema, correlations, relational comparisons like greater than OR lesser than</button>
+                            <button type="button">Based on the visualization shared, address the following: Do you observe any unforeseen trends? If yes, what?  Please convey any complex multi-faceted patterns present. Can you identify any noteworthy exceptions that aren't readily apparent through non-visual methods of analysis?</button>
+                            <button type="button">Provide context to help explain the data depicted in this visualization based on domain-specific insight</button>
                           </p>
                           <p><button type="button" id="chatLLM_submit">Submit</button></p>
                         </div>
@@ -941,7 +948,7 @@ class ChatLLM {
 
     // ChatLLM suggestion events
     let suggestions = document.querySelectorAll(
-      '#chatLLM .LLM_suggestions button'
+      '#chatLLM .LLM_suggestions button:not(#more_suggestions)'
     );
     for (let i = 0; i < suggestions.length; i++) {
       constants.events.push([
@@ -954,6 +961,16 @@ class ChatLLM {
         },
       ]);
     }
+    constants.events.push([
+      document.getElementById('more_suggestions'),
+      'click',
+      function (e) {
+        document
+          .getElementById('more_suggestions_container')
+          .classList.toggle('hidden');
+        document.getElementById('more_suggestions').classList.toggle('hidden');
+      },
+    ]);
 
     // Delete OpenAI and Gemini keys
     constants.events.push([
