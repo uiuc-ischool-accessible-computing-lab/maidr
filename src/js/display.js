@@ -666,13 +666,13 @@ class Display {
       let low = constants.minY + range;
       let medium = low + range;
       let high = medium + range;
-      for (let i = 0; i < plot.y_coord.length; i++) {
-        for (let j = 0; j < plot.x_coord.length; j++) {
-          if (plot.values[i][j] == 0) {
+      for (let i = 0; i < plot.data.length; i++) {
+        for (let j = 0; j < plot.data[i].length; j++) {
+          if (plot.data[i][j] == 0) {
             brailleArray.push('⠀');
-          } else if (plot.values[i][j] <= low) {
+          } else if (plot.data[i][j] <= low) {
             brailleArray.push('⠤');
-          } else if (plot.values[i][j] <= medium) {
+          } else if (plot.data[i][j] <= medium) {
             brailleArray.push('⠒');
           } else {
             brailleArray.push('⠉');
