@@ -26,6 +26,14 @@
   clip-path: none;
 }
 
+.invis_button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
 #skip a {
   position: absolute;
   left: -10000px;
@@ -300,16 +308,12 @@ textarea {
   align-self: flex-start;
 }
 
-.LLM_suggestions > button {
+.LLM_suggestions > p > button {
   font-weight: normal;
   border-radius: 0.5rem;
   border: none;
 }
 
-.invis_button {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
+.LLM_suggestions > p {
+  display: inline-block;
 }
