@@ -877,7 +877,8 @@ class ChatLLM {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="close_chatLLM">Close</button>
+                      <button type="button" id="reset_chatLLM">Reset</button>
+                      <button type="button" id="close_chatLLM">Close</button>
                     </div>
                 </div>
             </div>
@@ -888,7 +889,7 @@ class ChatLLM {
   }
 
   /**
-   * Sets events to toggle on and off chat window
+   * Sets events for the chatLLM modal
    */
   SetEvents() {
     // chatLLM close events
@@ -985,6 +986,15 @@ class ChatLLM {
       'click',
       function (e) {
         document.getElementById('gemini_auth_key').value = '';
+      },
+    ]);
+
+    // Reset chatLLM
+    constants.events.push([
+      document.getElementById('reset_chatLLM'),
+      'click',
+      function (e) {
+        chatLLM.ResetChatHistory();
       },
     ]);
   }
@@ -1305,6 +1315,26 @@ class ChatLLM {
     // scroll to bottom
     document.getElementById('chatLLM_chat_history').scrollTop =
       document.getElementById('chatLLM_chat_history').scrollHeight;
+  }
+
+  /**
+   * Resets the chat history window
+   */
+  ResetChatHistory() {
+    // close the window if it's open
+    chatLLM.Toggle(false);
+
+    // clear the main chat history
+    document.getElementById('chatLLM_chat_history').innerHTML = '';
+    // unhide the more button
+    document
+      .getElementById('more_suggestions_container')
+      .classList.add('hidden');
+    document.getElementById('more_suggestions').classList.remove('hidden');
+
+    // reset the data
+    this.requestJson = null;
+    this.firstTime = true;
   }
 
   /**
