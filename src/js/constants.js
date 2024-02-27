@@ -726,6 +726,8 @@ class Menu {
    * Saves the data from the HTML elements into the constants object.
    */
   SaveData() {
+    this.HandleLLMChanges();
+
     constants.vol = document.getElementById('vol').value;
     constants.autoPlayRate = document.getElementById('autoplay_rate').value;
     constants.brailleDisplayLength = document.getElementById(
@@ -773,6 +775,41 @@ class Menu {
     document
       .getElementById(constants.announcement_container_id)
       .setAttribute('aria-live', constants.ariaMode);
+  }
+
+  /**
+   * Handles changes to the LLM model and multi-modal settings.
+   * We reset if we change the LLM model, multi settings, or skill level.
+   */
+  HandleLLMChanges() {
+    let shouldReset = false;
+    if (
+      !shouldReset &&
+      constants.skillLevel != document.getElementById('skill_level').value
+    ) {
+      shouldReset = true;
+    }
+    if (
+      !shouldReset &&
+      constants.LLMModel != document.getElementById('LLM_model').value
+    ) {
+      shouldReset = true;
+    }
+    if (
+      !shouldReset &&
+      (constants.LLMOpenAiMulti !=
+        document.getElementById('openai_multi').checked ||
+        constants.LLMGeminiMulti !=
+          document.getElementById('gemini_multi').checked)
+    ) {
+      shouldReset = true;
+    }
+
+    if (shouldReset) {
+      if (chatLLM) {
+        chatLLM.ResetChatHistory();
+      }
+    }
   }
 
   /**
@@ -994,6 +1031,7 @@ class ChatLLM {
       document.getElementById('reset_chatLLM'),
       'click',
       function (e) {
+        chatLLM.Toggle(false);
         chatLLM.ResetChatHistory();
       },
     ]);
@@ -1321,9 +1359,6 @@ class ChatLLM {
    * Resets the chat history window
    */
   ResetChatHistory() {
-    // close the window if it's open
-    chatLLM.Toggle(false);
-
     // clear the main chat history
     document.getElementById('chatLLM_chat_history').innerHTML = '';
     // unhide the more button
