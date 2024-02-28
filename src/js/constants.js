@@ -272,7 +272,7 @@ class Resources {
         empty: 'Empty',
         openai: 'OpenAI Vision',
         gemini: 'Gemini Pro Vision',
-        multi: 'Multiple',
+        multi: 'Multiple AI',
       },
     },
   };
@@ -873,9 +873,10 @@ class Menu {
  */
 class ChatLLM {
   constructor() {
+    this.firstTime = true;
+    this.firstMulti = true;
     this.CreateComponent();
     this.SetEvents();
-    this.firstTime = true;
   }
 
   /**
@@ -1060,6 +1061,8 @@ class ChatLLM {
     }
 
     let img = null;
+    this.firstMulti = true;
+
     if (constants.LLMOpenAiMulti || constants.LLMModel == 'openai') {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
@@ -1131,7 +1134,7 @@ class ChatLLM {
       this.requestJson.messages[i].content = text;
 
       if (data.error) {
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.');
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
       } else {
         chatLLM.DisplayChatMessage(LLMName, text);
       }
@@ -1145,7 +1148,7 @@ class ChatLLM {
         }
       }
       if (data.error) {
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.');
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
       } else {
         // todo: display actual response
       }
@@ -1240,7 +1243,7 @@ class ChatLLM {
       .catch((error) => {
         chatLLM.WaitingSound(false);
         console.error('Error:', error);
-        chatLLM.DisplayChatMessage('LLM', 'Error processing request.');
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
         // also todo: handle errors somehow
       });
   }
@@ -1342,15 +1345,33 @@ class ChatLLM {
    * @memberof module:constants
    * @returns {void}
    */
-  DisplayChatMessage(user = 'User', text = '') {
+  DisplayChatMessage(user = 'User', text = '', isSystem = false) {
+    let hLevel = 'h3';
+    if (!isSystem && constants.LLMModel == 'multi' && user != 'User') {
+      if (this.firstMulti) {
+        let multiAIName = resources.GetString('multi');
+        let titleHtml = `
+          <div class="chatLLM_message chatLLM_message_other">
+            <h3 class="chatLLM_message_user">${multiAIName} Responses</h3>
+          </div>
+        `;
+        this.RenderChatMessage(titleHtml);
+        this.firstMulti = false;
+      }
+      hLevel = 'h4';
+    }
     let html = `
       <div class="chatLLM_message ${
         user == 'User' ? 'chatLLM_message_self' : 'chatLLM_message_other'
       }">
-        <h3 class="chatLLM_message_user">${user}</h3>
+        <${hLevel} class="chatLLM_message_user">${user}</${hLevel}>
         <p class="chatLLM_message_text">${text}</p>
       </div>
     `;
+
+    this.RenderChatMessage(html);
+  }
+  RenderChatMessage(html) {
     document
       .getElementById('chatLLM_chat_history')
       .insertAdjacentHTML('beforeend', html);
@@ -1424,7 +1445,7 @@ class ChatLLM {
         // get name from resource
         let LLMName = resources.GetString(constants.LLMModel);
         this.firstTime = false;
-        this.DisplayChatMessage(LLMName, 'Processing Chart...');
+        this.DisplayChatMessage(LLMName, 'Processing Chart...', true);
         let defaultPrompt = this.GetDefaultPrompt();
         this.Submit(defaultPrompt, true);
       }
