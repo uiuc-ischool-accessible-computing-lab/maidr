@@ -26,19 +26,21 @@ class LinePlot {
 
     if (elements) {
       this.plotLine = elements[elements.length - 1];
-
-      let pointCoords = this.GetPointCoords();
-      let pointValues = this.GetPoints();
-
-      this.chartLineX = pointCoords[0]; // x coordinates of curve
-      this.chartLineY = pointCoords[1]; // y coordinates of curve
-
-      this.pointValuesX = pointValues[0]; // actual values of x
-      this.pointValuesY = pointValues[1]; // actual values of y
-
-      this.curveMinY = Math.min(...this.pointValuesY);
-      this.curveMaxY = Math.max(...this.pointValuesY);
+    } else {
+      constants.hasRect = 0;
     }
+
+    let pointCoords = this.GetPointCoords();
+    let pointValues = this.GetPoints();
+
+    this.chartLineX = pointCoords[0]; // x coordinates of curve
+    this.chartLineY = pointCoords[1]; // y coordinates of curve
+
+    this.pointValuesX = pointValues[0]; // actual values of x
+    this.pointValuesY = pointValues[1]; // actual values of y
+
+    this.curveMinY = Math.min(...this.pointValuesY);
+    this.curveMaxY = Math.max(...this.pointValuesY);
   }
 
   /**
@@ -73,27 +75,47 @@ class LinePlot {
    */
   GetPointCoords() {
     let svgLineCoords = [[], []];
-    // lineplot SVG containing path element instead of polyline
-    if (this.plotLine instanceof SVGPathElement) {
-      // Assuming the path data is in the format "M x y L x y L x y L x y"
-      const pathD = this.plotLine.getAttribute('d');
-      const regex = /[ML]\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g;
 
-      let match;
-      while ((match = regex.exec(pathD)) !== null) {
-        svgLineCoords[0].push(match[1]); // x coordinate
-        svgLineCoords[1].push(match[3]); // y coordinate
-      }
-    } else {
-      let points = this.plotLine.getAttribute('points').split(' ');
-      for (let i = 0; i < points.length; i++) {
-        if (points[i] !== '') {
-          let point = points[i].split(',');
-          svgLineCoords[0].push(point[0]);
-          svgLineCoords[1].push(point[1]);
+    if (this.plotLine) {
+      // lineplot SVG containing path element instead of polyline
+      if (this.plotLine instanceof SVGPathElement) {
+        // Assuming the path data is in the format "M x y L x y L x y L x y"
+        const pathD = this.plotLine.getAttribute('d');
+        const regex = /[ML]\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g;
+
+        let match;
+        while ((match = regex.exec(pathD)) !== null) {
+          svgLineCoords[0].push(match[1]); // x coordinate
+          svgLineCoords[1].push(match[3]); // y coordinate
+        }
+      } else {
+        let points = this.plotLine.getAttribute('points').split(' ');
+        for (let i = 0; i < points.length; i++) {
+          if (points[i] !== '') {
+            let point = points[i].split(',');
+            svgLineCoords[0].push(point[0]);
+            svgLineCoords[1].push(point[1]);
+          }
         }
       }
+    } else {
+      // fetch from data instead
+      let x_points = [];
+      let y_points = [];
+
+      let data;
+      if ('data' in singleMaidr) {
+        data = singleMaidr.data;
+      }
+      if (typeof data !== 'undefined') {
+        for (let i = 0; i < data.length; i++) {
+          x_points.push(data[i].x);
+          y_points.push(data[i].y);
+        }
+      }
+      return [x_points, y_points];
     }
+
     return svgLineCoords;
   }
 
@@ -115,8 +137,6 @@ class LinePlot {
         y_points.push(data[i].y);
       }
       return [x_points, y_points];
-    } else {
-      return;
     }
   }
 

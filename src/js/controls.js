@@ -3033,7 +3033,7 @@ class Control {
         if (constants.showDisplay) {
           display.displayValues();
         }
-        if (constants.showRect) {
+        if (constants.showRect && constants.hasRect) {
           point.UpdatePointDisplay();
         }
         if (constants.sonifMode != 'off') {
