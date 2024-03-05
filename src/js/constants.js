@@ -1038,7 +1038,6 @@ class ChatLLM {
       document.getElementById('reset_chatLLM'),
       'click',
       function (e) {
-        chatLLM.Toggle(false);
         chatLLM.ResetChatHistory();
       },
     ]);
