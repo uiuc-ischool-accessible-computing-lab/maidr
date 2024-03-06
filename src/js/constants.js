@@ -273,6 +273,7 @@ class Resources {
         openai: 'OpenAI Vision',
         gemini: 'Gemini Pro Vision',
         multi: 'Multiple AI',
+        processing: 'Processing Chart...',
       },
     },
   };
@@ -895,7 +896,10 @@ class ChatLLM {
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div id="chatLLM_chat_history_wrapper">
                         <div id="chatLLM_chat_history" aria-live="${constants.ariaMode}" aria-relevant="additions">
+                        </div>
+                        <p id="chatLLM_copy_all_wrapper"><button id="chatLLM_copy_all">Copy all to clipboard</button></p>
                         </div>
                         <div id="chatLLM_content">
                           <p><input type="text" id="chatLLM_input" class="form-control" name="chatLLM_input" aria-labelledby="chatLLM_title" size="50"></p>
@@ -1042,6 +1046,38 @@ class ChatLLM {
         chatLLM.ResetChatHistory();
       },
     ]);
+
+    // copy to clipboard
+    constants.events.push([
+      document.getElementById('chatLLM_copy_all'),
+      'click',
+      function (e) {
+        let text = document.getElementById('chatLLM_chat_history').innerText;
+        // need newlines instead of paragraphs headings etc
+        text = text.replace(/<p>/g, '\n').replace(/<\/p>/g, '\n');
+        text = text.replace(/<h\d>/g, '\n').replace(/<\/h\d>/g, '\n');
+        text = text.replace(/<.*?>/g, '');
+
+        navigator.clipboard.writeText(text);
+      },
+    ]);
+    constants.events.push([
+      document.getElementById('chatLLM_chat_history'),
+      'click',
+      function (e) {
+        // we're delegating here, so set the event on child .chatLLM_message_copy_button
+        if (e.target.matches('.chatLLM_message_copy_button')) {
+          // get the innerText of the element before the button
+          let text = e.target.closest('p').previousElementSibling.innerText;
+          // need newlines instead of paragraphs headings etc
+          text = text.replace(/<p>/g, '\n').replace(/<\/p>/g, '\n');
+          text = text.replace(/<h\d>/g, '\n').replace(/<\/h\d>/g, '\n');
+          text = text.replace(/<.*?>/g, '');
+
+          navigator.clipboard.writeText(text);
+        }
+      },
+    ]);
   }
 
   /**
@@ -1122,7 +1158,7 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    console.log('LLM response: ', data);
+    //console.log('LLM response: ', data);
     let text = '';
     let LLMName = resources.GetString(model);
 
@@ -1326,9 +1362,9 @@ class ChatLLM {
       };
 
       // Generate the content
-      console.log('LLM request: ', prompt, image);
+      //console.log('LLM request: ', prompt, image);
       const result = await model.generateContent([prompt, image]);
-      console.log(result.response.text());
+      //console.log(result.response.text());
 
       // Process the response
       chatLLM.ProcessLLMResponse(result.response, 'gemini');
@@ -1368,6 +1404,12 @@ class ChatLLM {
         <p class="chatLLM_message_text">${text}</p>
       </div>
     `;
+    // add a copy button to actual messages
+    if (user != 'User' && text != resources.GetString('processing')) {
+      html += `
+        <p class="chatLLM_message_copy"><button class="chatLLM_message_copy_button">Copy</button></p>
+      `;
+    }
 
     this.RenderChatMessage(html);
   }
@@ -1445,7 +1487,11 @@ class ChatLLM {
         // get name from resource
         let LLMName = resources.GetString(constants.LLMModel);
         this.firstTime = false;
-        this.DisplayChatMessage(LLMName, 'Processing Chart...', true);
+        this.DisplayChatMessage(
+          LLMName,
+          resources.GetString('processing'),
+          true
+        );
         let defaultPrompt = this.GetDefaultPrompt();
         this.Submit(defaultPrompt, true);
       }
