@@ -300,193 +300,180 @@ class Menu {
 
   menuHtml = `
     <div id="menu" class="modal hidden" role="dialog" tabindex="-1">
-        <div class="modal-dialog" role="document" tabindex="0">
+      <div class="modal-dialog" role="document" tabindex="0">
       <div class="modal-content">
-          <div class="modal-header" style="text-align: left;">
-        <h2 class="modal-title">Menu</h2>
+        <div class="modal-header" style="text-align: center;">
+        <h4 class="modal-title" style="align:center">Menu</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
-          </div>
-          <div class="modal-body">
-        <div>
-            <h5 class="modal-title">Keyboard Shortcuts</h5>
-            <table>
-          <caption class="sr-only">Keyboard Shortcuts</caption>
-          <thead>
-              <tr>
-            <th scope="col">Function</th>
-            <th scope="col">Key</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-            <td>Move around plot</td>
+        </div>
+        <h5 class="modal-title">Keyboard Shortcuts</h5>
+        <div class="modal-body">
+        <div class="modal-body">
+          <table>
+          <tr>
+            <td><strong>Move around plot:</strong></td>
             <td>Arrow keys</td>
-              </tr>
-              <tr>
-            <td>Go to the very left right up down</td>
+          </tr>
+          <tr>
+            <td><strong>Go to the very left right up down:</strong></td>
             <td>${constants.control} + Arrow key</td>
-              </tr>
-              <tr>
-            <td>Select the first element</td>
+          </tr>
+          <tr>
+            <td><strong>Select the first element:</strong></td>
             <td>${constants.control} + ${constants.home}</td>
-              </tr>
-              <tr>
-            <td>Select the last element</td>
+          </tr>
+          <tr>
+            <td><strong>Select the last element:</strong></td>
             <td>${constants.control} + ${constants.end}</td>
-              </tr>
-              <tr>
-            <td>Toggle Braille Mode</td>
+          </tr>
+          <tr>
+            <td><strong>Toggle Braille Mode:</strong></td>
             <td>b</td>
-              </tr>
-              <tr>
-            <td>Toggle Sonification Mode</td>
+          </tr>
+          <tr>
+            <td><strong>Toggle Sonification Mode:</strong></td>
             <td>s</td>
-              </tr>
-              <tr>
-            <td>Toggle Text Mode</td>
+          </tr>
+          <tr>
+            <td><strong>Toggle Text Mode:</strong></td>
             <td>t</td>
-              </tr>
-              <tr>
-            <td>Repeat current sound</td>
+          </tr>
+          <tr>
+            <td><strong>Repeat current sound:</strong></td>
             <td>Space</td>
-              </tr>
-              <tr>
-            <td>Auto-play outward in direction of arrow</td>
+          </tr>
+          <tr>
+            <td><strong>Auto-play outward in direction of arrow:</strong></td>
             <td>${constants.control} + Shift + Arrow key</td>
-              </tr>
-              <tr>
-            <td>Auto-play inward in direction of arrow</td>
+          </tr>
+          <tr>
+            <td><strong>Auto-play inward in direction of arrow:</strong></td>
             <td>${constants.alt} + Shift + Arrow key</td>
-              </tr>
-              <tr>
-            <td>Stop Auto-play</td>
-            <td>${constants.control}</td>
-              </tr>
-              <tr>
-            <td>Auto-play speed up</td>
-            <td>Period</td>
-              </tr>
-              <tr>
-            <td>Auto-play speed down</td>
-            <td>Comma</td>
-              </tr>
-          </tbody>
-            </table>
+          </tr>
+          <tr>
+            <td><strong>Stop Auto
+        <td>${constants.control}</td>
+        </tr>
+        <tr>
+        <td><strong>Auto-play speed up:</strong></td>
+        <td>Period</td>
+        </tr>
+        <tr>
+        <td><strong>Auto-play speed down:</strong></td>
+        <td>Comma</td>
+        </tr>
+        </table>
+        </div>
         </div>
 
-        <div>
-            <h5 class="modal-title">Settings</h5>
-            <table>
-          <caption class="sr-only">Settings</caption>
-          <tbody>
-              <tr>
-            <td><label for="vol">Volume</label></td>
-            <td><input type="range" id="vol" name="vol" min="0" max="1" step=".05"></td>
-              </tr>
-              <tr>
-            <td><label for="braille_display_length">Braille Display Size</label></td>
-            <td><input type="number" min="4" max="2000" step="1" id="braille_display_length" name="braille_display_length"></td>
-              </tr>
-              <tr>
-            <td><label for="autoplay_rate">Autoplay Rate</label></td>
-            <td><input type="number" min="${constants.MIN_SPEED}" max="500" step="${constants.INTERVAL}" id="autoplay_rate" name="autoplay_rate"></td>
-              </tr>
-              <tr>
-            <td><label for="color_selected">Outline Color</label></td>
-            <td><input type="color" id="color_selected" name="color_selected"></td>
-              </tr>
-              <tr>
-            <td><label for="min_freq">Min Frequency (Hz)</label></td>
-            <td><input type="number" min="10" max="2000" step="10" id="min_freq" name="min_freq"></td>
-              </tr>
-              <tr>
-            <td><label for="max_freq">Max Frequency (Hz)</label></td>
-            <td><input type="number" min="20" max="2010" step="10" id="max_freq" name="max_freq"></td>
-              </tr>
-              <tr>
-            <td><label for="keypress_interval">Keypress Interval (ms)</label></td>
-            <td><input type="number" min="500" max="5000" step="500" id="keypress_interval" name="keypress_interval"></td>
-              </tr>
-              <tr>
-            <td><label for="aria_mode">Aria Mode</label></td>
-            <td>
-                <fieldset>
-              <legend>Aria Mode</legend>
-              <p>
-                  <input type="radio" id="aria_mode_assertive" name="aria_mode" value="assertive" ${constants.ariaMode == 'assertive' ? 'checked' : ''}>
-                  <label for="aria_mode_assertive">Assertive</label>
-              </p>
-              <p>
-                  <input type="radio" id="aria_mode_polite" name="aria_mode" value="polite" ${constants.ariaMode == 'polite' ? 'checked' : ''}>
-                  <label for="aria_mode_polite">Polite</label>
-              </p>
-                </fieldset>
-            </td>
-              </tr>
-              </table>
-              <h5 class="modal-title">LLM Settings</h5>
-              <table>
-              <tr>
-            <td><label for="LLM_model">LLM Model</label></td>
-            <td>
-                <select id="LLM_model">
+        <div class="setting" style="align-items: center;">
+          <h5 class="modal-title">Settings</h5>
+          <div style="display: flex; align-items: center;">
+          <label for="vol" style="margin-right: 100px;">Volume</label>
+          <input type="range" id="vol" name="vol" min="0" max="1" step=".05" style="margin-right: 160px; margin-left: auto;">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="braille_display_length" style="margin-right: 10px;">Braille Display Size</label>
+          <input type="number" min="4" max="2000" step="1" id="braille_display_length" name="braille_display_length" style="margin-right: 25%; margin-left: auto;">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="autoplay_rate" style="margin-right: 10px;">Autoplay Rate</label>
+          <input type="number" min="${constants.MIN_SPEED}" max="500" step="${
+    constants.INTERVAL
+  }" id="autoplay_rate" name="autoplay_rate" style="margin-right: 26%; margin-left: auto;">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="color_selected" style="margin-right: 10px;">Outline Color</label>
+          <input type="color" id="color_selected" name="color_selected" style="margin-right: 28%; margin-left: auto;"">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="min_freq" style="margin-right: 10px;">Min Frequency (Hz)</label>
+          <input type="number" min="10" max="2000" step="10" id="min_freq" name="min_freq"  style="margin-right: 25%; margin-left: auto;">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="max_freq" style="margin-right: 10px;">Max Frequency (Hz)</label>
+          <input type="number" min="20" max="2010" step="10" id="max_freq" name="max_freq"  style="margin-right: 25%; margin-left: auto;">
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 30px">
+          <label for="keypress_interval" style="margin-right: 10px;">Keypress Interval (ms)</label>
+          <input type="number" min="500" max="5000" step="500" id="keypress_interval" name="keypress_interval" style="margin-right: 25%; margin-left: auto;">
+          </div>
+          <div style="margin-top: 30px; margin-right: 160px; margin-left:10px">
+          <fieldset>
+            <legend>Aria Mode</legend>
+            <p>
+            <input type="radio" id="aria_mode_assertive" name="aria_mode" value="assertive" ${
+              constants.ariaMode == 'assertive' ? 'checked' : ''
+            }>
+            <label for="aria_mode_assertive">Assertive</label>
+            </p>
+            <p>
+            <input type="radio" id="aria_mode_polite" name="aria_mode" value="polite" ${
+              constants.ariaMode == 'polite' ? 'checked' : ''
+            }>
+            <label for="aria_mode_polite">Polite</label>
+            </p>
+          </fieldset>
+          </div>
+        </div>
+
+
+        <div class="setting" style="align-items: center;">
+          <h5 class="modal-title"> LLM Settings</h5>
+          <div style="display: flex; align-items: center;">
+            <label for="LLM_model">LLM Model</label>
+            <select id="LLM_model" style="margin-right: 21%; margin-left: auto;">
               <option value="openai">OpenAI Vision</option>
               <option value="gemini">Gemini Pro Vision</option>
               <option value="multi">Multiple</option>
-                </select>
-            </td>
-              </tr>
-              <tr id="openai_auth_key_container" class="multi_container hidden">
-            <td><label for="openai_auth_key">OpenAI Authentication Key</label></td>
-            <td>
-                <span id="openai_multi_container" class="hidden">
+            </select>
+          </div>
+          <div id="openai_auth_key_container" class="multi_container hidden" style="margin-top: 30px" >
+            <label for="openai_auth_key">OpenAI Authentication Key</label>
+            <span id="openai_multi_container" class="hidden">
               <input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode">
-                </span>
-                <input type="password" id="openai_auth_key">
-                <button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button>
-            </td>
-              </tr>
-              <tr id="gemini_auth_key_container" class="multi_container hidden">
-            <td><label for="gemini_auth_key">Gemini Authentication Key</label></td>
-            <td>
-                <span id="gemini_multi_container" class="hidden">
+            </span>
+            <input type="password" id="openai_auth_key" style="margin-left: 29.5%; margin-right: auto;">
+            <button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button>
+          </div>
+          <div id="gemini_auth_key_container" class="multi_container hidden" style="margin-top: 30px" >
+            <label for="gemini_auth_key">Gemini Authentication Key</label>
+            <span id="gemini_multi_container" class="hidden">
               <input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode">
-                </span>
-                <input type="password" id="gemini_auth_key">
-                <button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button>
-            </td>
-              </tr>
-              <tr>
-            <td><label for="skill_level">Level of skill in statistical charts</label></td>
-            <td>
-                <select id="skill_level">
+            </span>
+            <input type="password" id="gemini_auth_key" style="margin-left: 29.5%; margin-right: auto;">
+            <button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button>
+          </div>
+          <div style="margin-top: 30px" >
+            <label for="skill_level">Level of skill in statistical charts</label>
+            <select id="skill_level" style="margin-left: 26%; margin-right: auto;">
               <option value="basic">Basic</option>
               <option value="intermediate">Intermediate</option>
               <option value="expert">Expert</option>
               <option value="other">other</option>
-                </select>
-            </td>
-              </tr>
-              <tr id="skill_level_other_container" class="hidden">
-            <td><label for="skill_level_other">Describe your level of skill in statistical charts</label></td>
-            <td><input type="text" placeholder="Very basic" id="skill_level_other"></td>
-              </tr>
-              <tr>
-            <td><label for="LLM_preferences">LLM Preferences</label></td>
-            <td><textarea id="LLM_preferences" rows="4" cols="50" placeholder="I'm a stats undergrad and work with Python. I prefer a casual tone, and favor information accuracy over creative description; just the facts please!"></textarea></td>
-              </tr>
-          </tbody>
-            </table>
-        </div>
+            </select>
           </div>
+          <div id="skill_level_other_container" class="hidden" style="margin-top: 30px" >
+            <label for="skill_level_other">Describe your level of skill in statistical charts</label>
+            <input type="text" placeholder="Very basic" id="skill_level_other" style="margin-right: 25%; margin-left: auto;">
+          </div>
+          <div style="margin-top: 30px" >
+            <label for="LLM_preferences" styles="margin-right: 50px">LLM Preferences</label>
+            <textarea id="LLM_preferences" rows="4" cols="50" placeholder="I'm a stats undergrad and work with Python. I prefer a casual tone, and favor information accuracy over creative description; just the facts please!"></textarea>
+          </div>
+
           <div class="modal-footer">
-        <button type="button" id="save_and_close_menu">Save and Close</button>
-        <button type="button" id="close_menu">Close</button>
+            <button type="button" id="save_and_close_menu">Save and Close</button>
+            <button type="button" id="close_menu">Close</button>
           </div>
-      </div>
+
         </div>
+        </div>
+        
+      </div>
+      </div>
     </div>
     <div id="menu_modal_backdrop" class="modal-backdrop hidden"></div>
     `;
