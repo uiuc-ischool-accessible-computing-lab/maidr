@@ -907,8 +907,10 @@ class ChatLLM {
   constructor() {
     this.firstTime = true;
     this.firstMulti = true;
+    this.shown = false;
     this.CreateComponent();
     this.SetEvents();
+    this.InitChatMessage();
   }
 
   /**
@@ -1077,6 +1079,14 @@ class ChatLLM {
       },
     ]);
 
+    // bookmark:
+    //
+    // have LLM run on init (#425)
+    // quiet first, but if they open window, it does the beep and aria live alert
+    // make toggle in settings to yes / no auto initiate LLM (or wait for window to open)
+    // as part of this, fix reset so it loads the LLM again without refreshing the window,
+    // left undone from the other request
+
     // copy to clipboard
     constants.events.push([
       document.getElementById('chatLLM_copy_all'),
@@ -1123,7 +1133,7 @@ class ChatLLM {
   async Submit(text, firsttime = false) {
     // start waiting sound
     if (constants.playLLMWaitingSound) {
-      chatLLM.WaitingSound(true);
+      this.WaitingSound(true);
     }
 
     let img = null;
@@ -1169,7 +1179,7 @@ class ChatLLM {
       let delay = 1000;
       let freq = 440; // a440 babee
       constants.waitingInterval = setInterval(function () {
-        if (audio) {
+        if (audio && chatLLM.shown) {
           audio.playOscillator(freq, 0.2, 0);
         }
       }, delay);
@@ -1179,6 +1189,15 @@ class ChatLLM {
         chatLLM.WaitingSound(false);
       }, 30000);
     }
+  }
+
+  InitChatMessage() {
+    // get name from resource
+    let LLMName = resources.GetString(constants.LLMModel);
+    this.firstTime = false;
+    this.DisplayChatMessage(LLMName, resources.GetString('processing'), true);
+    let defaultPrompt = this.GetDefaultPrompt();
+    this.Submit(defaultPrompt, true);
   }
 
   /**
@@ -1502,6 +1521,7 @@ class ChatLLM {
         onoff = false;
       }
     }
+    chatLLM.shown = onoff;
     if (onoff) {
       // open
       this.whereWasMyFocus = document.activeElement;
@@ -1511,20 +1531,6 @@ class ChatLLM {
         .getElementById('chatLLM_modal_backdrop')
         .classList.remove('hidden');
       document.querySelector('#chatLLM .close').focus();
-
-      // first time, send default query
-      if (this.firstTime) {
-        // get name from resource
-        let LLMName = resources.GetString(constants.LLMModel);
-        this.firstTime = false;
-        this.DisplayChatMessage(
-          LLMName,
-          resources.GetString('processing'),
-          true
-        );
-        let defaultPrompt = this.GetDefaultPrompt();
-        this.Submit(defaultPrompt, true);
-      }
     } else {
       // close
       document.getElementById('chatLLM').classList.add('hidden');
