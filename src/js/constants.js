@@ -430,6 +430,9 @@ class Menu {
                               <span id="gemini_multi_container" class="hidden"><input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode"></span>
                               <input type="password" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
                             </p>
+                            <p><input type="checkbox" ${
+                              constants.autoInitLLM ? 'checked' : ''
+                            } id="init_llm_on_load" name="init_llm_on_load"><label for="init_llm_on_load">Start first LLM chat chart load</label></p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -761,9 +764,9 @@ class Menu {
       document.getElementById('skill_level_other').value;
     constants.LLMModel = document.getElementById('LLM_model').value;
     constants.LLMPreferences = document.getElementById('LLM_preferences').value;
-
     constants.LLMOpenAiMulti = document.getElementById('openai_multi').checked;
     constants.LLMGeminiMulti = document.getElementById('gemini_multi').checked;
+    constants.autoInitLLM = document.getElementById('init_llm_on_load').checked;
 
     // aria
     if (document.getElementById('aria_mode_assertive').checked) {
@@ -796,6 +799,8 @@ class Menu {
     document
       .getElementById(constants.announcement_container_id)
       .setAttribute('aria-live', constants.ariaMode);
+
+    document.getElementById('init_llm_on_load').checked = constants.autoInitLLM;
   }
 
   /**
@@ -875,6 +880,7 @@ class Menu {
     data.LLMPreferences = constants.LLMPreferences;
     data.LLMOpenAiMulti = constants.LLMOpenAiMulti;
     data.LLMGeminiMulti = constants.LLMGeminiMulti;
+    data.autoInitLLM = constants.autoInitLLM;
     localStorage.setItem('settings_data', JSON.stringify(data));
   }
   /**
@@ -899,6 +905,7 @@ class Menu {
       constants.LLMPreferences = data.LLMPreferences;
       constants.LLMOpenAiMulti = data.LLMOpenAiMulti;
       constants.LLMGeminiMulti = data.LLMGeminiMulti;
+      constants.autoInitLLM = data.autoInitLLM;
     }
     this.PopulateData();
     this.UpdateHtml();
