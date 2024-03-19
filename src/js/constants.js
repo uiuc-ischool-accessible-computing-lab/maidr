@@ -86,6 +86,7 @@ class Constants {
     'You are a helpful assistant describing the chart to a blind person. ';
   skillLevel = 'basic'; // basic / intermediate / expert
   skillLevelOther = ''; // custom skill level
+  autoInitLLM = true; // auto initialize LLM on page load
 
   // user controls (not exposed to menu, with shortcuts usually)
   showDisplay = 1; // true / false
@@ -740,7 +741,7 @@ class Menu {
    * Saves the data from the HTML elements into the constants object.
    */
   SaveData() {
-    this.HandleLLMChanges();
+    let shouldReset = this.ShouldLLMReset();
 
     constants.vol = document.getElementById('vol').value;
     constants.autoPlayRate = document.getElementById('autoplay_rate').value;
@@ -773,6 +774,12 @@ class Menu {
 
     this.SaveDataToLocalStorage();
     this.UpdateHtml();
+
+    if (shouldReset) {
+      if (chatLLM) {
+        chatLLM.ResetLLM();
+      }
+    }
   }
 
   /**
@@ -797,6 +804,10 @@ class Menu {
   NotifyOfLLMReset() {
     let html =
       '<p id="LLM_reset_notification">Note: Changes in LLM settings will reset any existing conversation.</p>';
+
+    if (document.getElementById('LLM_reset_notification')) {
+      document.getElementById('LLM_reset_notification').remove();
+    }
     document
       .getElementById('save_and_close_menu')
       .insertAdjacentHTML('beforebegin', html);
@@ -813,7 +824,7 @@ class Menu {
    * Handles changes to the LLM model and multi-modal settings.
    * We reset if we change the LLM model, multi settings, or skill level.
    */
-  HandleLLMChanges() {
+  ShouldLLMReset() {
     let shouldReset = false;
     if (
       !shouldReset &&
@@ -837,11 +848,7 @@ class Menu {
       shouldReset = true;
     }
 
-    if (shouldReset) {
-      if (chatLLM) {
-        chatLLM.ResetChatHistory();
-      }
-    }
+    return shouldReset;
   }
 
   /**
@@ -910,7 +917,9 @@ class ChatLLM {
     this.shown = false;
     this.CreateComponent();
     this.SetEvents();
-    this.InitChatMessage();
+    if (constants.autoInitLLM) {
+      this.InitChatMessage();
+    }
   }
 
   /**
@@ -1075,7 +1084,7 @@ class ChatLLM {
       document.getElementById('reset_chatLLM'),
       'click',
       function (e) {
-        chatLLM.ResetChatHistory();
+        chatLLM.ResetLLM();
       },
     ]);
 
@@ -1411,9 +1420,9 @@ class ChatLLM {
       };
 
       // Generate the content
-      //console.log('LLM request: ', prompt, image);
+      console.log('LLM request: ', prompt, image);
       const result = await model.generateContent([prompt, image]);
-      //console.log(result.response.text());
+      console.log(result.response.text());
 
       // Process the response
       chatLLM.ProcessLLMResponse(result.response, 'gemini');
@@ -1476,7 +1485,7 @@ class ChatLLM {
   /**
    * Resets the chat history window
    */
-  ResetChatHistory() {
+  ResetLLM() {
     // clear the main chat history
     document.getElementById('chatLLM_chat_history').innerHTML = '';
     // unhide the more button
@@ -1488,6 +1497,11 @@ class ChatLLM {
     // reset the data
     this.requestJson = null;
     this.firstTime = true;
+
+    // and start over, if enabled
+    if (constants.autoInitLLM) {
+      chatLLM.InitChatMessage();
+    }
   }
 
   /**
