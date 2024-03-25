@@ -245,6 +245,7 @@ class BoxPlot {
         midPercent =
           (midPoints[0] - rangePoints[2]) / (rangePoints[0] - rangePoints[2]);
       }
+      midPercent = Number.isNaN(midPercent) ? 0 : midPercent;
       let midSize = 0;
       if (constants.plotOrientation == 'vert') {
         midSize = rangeBounds.height * midPercent;
