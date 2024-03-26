@@ -1,0 +1,211 @@
+{
+  "type": "box",
+  "id": "box",
+  "title": "Price Distribution by Brand",
+  "axes": {
+    "x": {
+      "label": "Brand",
+      "level": [
+        "Apple",
+        "Asus",
+        "Blackberry",
+        "CAT",
+        "Google",
+        "Huawei",
+        "LG",
+        "Motorola",
+        "Nokia",
+        "OnePlus",
+        "Oppo",
+        "Realme",
+        "Samsung",
+        "Sony",
+        "Vivo",
+        "Xiaomi"
+      ]
+    },
+    "y": {
+      "label": "Price ($)"
+    }
+  },
+  "data": [
+    {
+      "lower_outlier": [],
+      "min": 399.0,
+      "q1": 524.0,
+      "q2": 699.0,
+      "q3": 974.0,
+      "max": 1299.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [
+        699.0
+      ],
+      "min": 849.0,
+      "q1": 849.0,
+      "q2": 899.0,
+      "q3": 924.0,
+      "max": 999.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 399.0,
+      "q1": 399.0,
+      "q2": 399.0,
+      "q3": 549.0,
+      "max": 699.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 299.0,
+      "q1": 299.0,
+      "q2": 299.0,
+      "q3": 299.0,
+      "max": 299.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [
+        499.0
+      ],
+      "min": 699.0,
+      "q1": 699.0,
+      "q2": 699.0,
+      "q3": 749.0,
+      "max": 799.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 199.0,
+      "q1": 344.0,
+      "q2": 849.0,
+      "q3": 1099.0,
+      "max": 1399.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 349.0,
+      "q1": 424.0,
+      "q2": 499.0,
+      "q3": 749.0,
+      "max": 999.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 99.0,
+      "q1": 199.0,
+      "q2": 249.0,
+      "q3": 299.0,
+      "max": 399.0,
+      "upper_outlier": [
+        699.0,
+        499.0
+      ]
+    },
+    {
+      "lower_outlier": [],
+      "min": 99.0,
+      "q1": 146.5,
+      "q2": 189.0,
+      "q3": 299.0,
+      "max": 499.0,
+      "upper_outlier": [
+        549.0,
+        549.0
+      ]
+    },
+    {
+      "lower_outlier": [],
+      "min": 299.0,
+      "q1": 399.0,
+      "q2": 729.0,
+      "q3": 824.0,
+      "max": 999.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 139.0,
+      "q1": 214.0,
+      "q2": 299.0,
+      "q3": 404.0,
+      "max": 659.0,
+      "upper_outlier": [
+        849.0,
+        899.0,
+        699.0,
+        799.0,
+        799.0,
+        1199.0,
+        699.0,
+        799.0,
+        799.0
+      ]
+    },
+    {
+      "lower_outlier": [],
+      "min": 99.0,
+      "q1": 144.0,
+      "q2": 179.0,
+      "q3": 279.0,
+      "max": 399.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 129.0,
+      "q1": 224.0,
+      "q2": 349.0,
+      "q3": 624.0,
+      "max": 1199.0,
+      "upper_outlier": [
+        1999.0,
+        1299.0,
+        1399.0
+      ]
+    },
+    {
+      "lower_outlier": [],
+      "min": 1299.0,
+      "q1": 1299.0,
+      "q2": 1299.0,
+      "q3": 1299.0,
+      "max": 1299.0,
+      "upper_outlier": []
+    },
+    {
+      "lower_outlier": [],
+      "min": 139.0,
+      "q1": 184.0,
+      "q2": 269.0,
+      "q3": 334.0,
+      "max": 499.0,
+      "upper_outlier": [
+        999.0,
+        799.0,
+        1199.0
+      ]
+    },
+    {
+      "lower_outlier": [],
+      "min": 119.0,
+      "q1": 199.0,
+      "q2": 249.0,
+      "q3": 329.0,
+      "max": 429.0,
+      "upper_outlier": [
+        529.0,
+        599.0,
+        749.0,
+        599.0,
+        1199.0
+      ]
+    }
+  ]
+}
