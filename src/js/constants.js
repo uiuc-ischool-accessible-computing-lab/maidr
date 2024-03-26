@@ -1097,55 +1097,62 @@ class ChatLLM {
 
     // copy to clipboard
     constants.events.push([
-      document.getElementById('chatLLM_copy_all'),
+      document.getElementById('chatLLM'),
       'click',
       function (e) {
         chatLLM.CopyChatHistory(e);
       },
     ]);
     constants.events.push([
-      document.getElementById('chatLLM_chat_history'),
-      'click',
+      document.getElementById('chatLLM'),
+      'keyup',
       function (e) {
         chatLLM.CopyChatHistory(e);
-        // we're delegating here, so set the event on child .chatLLM_message_copy_button
-        if (e.target.matches('.chatLLM_message_copy_button')) {
-          // get the innerText of the element before the button
-          let text = e.target.closest('p').previousElementSibling.innerText;
-          // need newlines instead of paragraphs headings etc
-          text = text.replace(/<p>/g, '\n').replace(/<\/p>/g, '\n');
-          text = text.replace(/<h\d>/g, '\n').replace(/<\/h\d>/g, '\n');
-          text = text.replace(/<.*?>/g, '');
-
-          navigator.clipboard.writeText(text);
-        }
       },
     ]);
   }
 
   CopyChatHistory(e) {
     let text = '';
-    if (e.target.id == 'chatLLM_copy_all') {
-      // get html of the full chat history
-      text = document.getElementById('chatLLM_chat_history').innerHTML;
-    } else if (e.target.matches('.chatLLM_message_copy_button')) {
-      // get the text of the element before the button
-      text = e.target.closest('p').previousElementSibling.innerHTML;
+    // check for buttons
+    if (e.type == 'click') {
+      if (e.target.id == 'chatLLM_copy_all') {
+        // get html of the full chat history
+        text = document.getElementById('chatLLM_chat_history').innerHTML;
+      } else if (e.target.classList.contains('chatLLM_message_copy_button')) {
+        // get the text of the element before the button
+        text = e.target.closest('p').previousElementSibling.innerHTML;
+      }
+    } else if (e.type == 'keyup') {
+      // check for alt shift c
+      if (e.key == 'C' && (e.altKey || e.metaKey) && e.shiftKey) {
+        // get the last message
+        let elem = document.querySelector(
+          '#chatLLM_chat_history > .chatLLM_message_other:last-of-type'
+        );
+        if (elem) {
+          text = elem.innerHTML;
+        }
+      }
     }
 
-    // clear the html, removing buttons etc
-    let cleanElems = document.createElement('div');
-    cleanElems.innerHTML = text;
-    let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
-    removeThese.forEach((elem) => elem.remove());
+    if (text == '') {
+      return;
+    } else {
+      // clear the html, removing buttons etc
+      let cleanElems = document.createElement('div');
+      cleanElems.innerHTML = text;
+      let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
+      removeThese.forEach((elem) => elem.remove());
 
-    // convert to markdown
-    let markdown = this.htmlToMarkdown(cleanElems);
+      // convert to markdown
+      let markdown = this.htmlToMarkdown(cleanElems);
 
-    // kill more than 2 newlines in a row
-    markdown = markdown.replace(/\n{3,}/g, '\n\n');
+      // kill more than 2 newlines in a row
+      markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
-    navigator.clipboard.writeText(markdown);
+      navigator.clipboard.writeText(markdown);
+    }
   }
 
   htmlToMarkdown(element) {
