@@ -1570,8 +1570,8 @@ class ChatLLM {
     this.requestJson = null;
     this.firstTime = true;
 
-    // and start over, if enabled
-    if (constants.autoInitLLM) {
+    // and start over, if enabled, or window is open
+    if (constants.autoInitLLM || chatLLM.shown) {
       chatLLM.InitChatMessage();
     }
   }
@@ -1617,6 +1617,10 @@ class ChatLLM {
         .getElementById('chatLLM_modal_backdrop')
         .classList.remove('hidden');
       document.querySelector('#chatLLM .close').focus();
+
+      if (this.firstTime) {
+        this.InitChatMessage();
+      }
     } else {
       // close
       document.getElementById('chatLLM').classList.add('hidden');
