@@ -1116,8 +1116,12 @@ class ChatLLM {
 
   CopyChatHistory(e) {
     let text = '';
-    // check for buttons
-    if (e.type == 'click') {
+    if (typeof e == 'undefined') {
+      // check for passthrough
+      // get html of the full chat history
+      text = document.getElementById('chatLLM_chat_history').innerHTML;
+    } else if (e.type == 'click') {
+      // check for buttons
       if (e.target.id == 'chatLLM_copy_all') {
         // get html of the full chat history
         text = document.getElementById('chatLLM_chat_history').innerHTML;
@@ -1149,11 +1153,11 @@ class ChatLLM {
 
       // convert to markdown
       let markdown = this.htmlToMarkdown(cleanElems);
-
       // kill more than 2 newlines in a row
       markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
       navigator.clipboard.writeText(markdown);
+      return markdown;
     }
   }
 
@@ -1320,6 +1324,12 @@ class ChatLLM {
       } else {
         // todo: display actual response
       }
+    }
+
+    // if we're tracking, log the data
+    if (constants.isTracking) {
+      let chatHist = chatLLM.CopyChatHistory();
+      tracker.SetData('ChatHistory', chatHist);
     }
   }
 
@@ -2292,8 +2302,16 @@ class Tracker {
 
     //console.log("x_tickmark: '", x_tickmark, "', y_tickmark: '", y_tickmark, "', x_label: '", x_label, "', y_label: '", y_label, "', value: '", value, "', fill_value: '", fill_value);
 
+    this.SetData('events', eventToLog);
+  }
+
+  SetData(key, value) {
     let data = this.GetTrackerData();
-    data.events.push(eventToLog);
+    if (key == 'events') {
+      data[key].push(value);
+    } else {
+      data[key] = value;
+    }
     this.SaveTrackerData(data);
   }
 
