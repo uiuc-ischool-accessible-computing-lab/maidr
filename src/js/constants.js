@@ -448,8 +448,10 @@ class Menu {
                         </div>
                     </div>
                     <div class="modal-footer">
+                      <p>
                         <button type="button" id="save_and_close_menu" aria-labelledby="save_and_close_text"><span id="save_and_close_text">Save and Close</span></button>
                         <button type="button" id="close_menu">Close</button>
+                      </p>
                     </div>
                 </div>
             </div>
@@ -815,7 +817,7 @@ class Menu {
     }
     document
       .getElementById('save_and_close_menu')
-      .insertAdjacentHTML('beforebegin', html);
+      .parentElement.insertAdjacentHTML('afterend', html);
 
     // add to aria button text
     document
@@ -1570,8 +1572,8 @@ class ChatLLM {
     this.requestJson = null;
     this.firstTime = true;
 
-    // and start over, if enabled
-    if (constants.autoInitLLM) {
+    // and start over, if enabled, or window is open
+    if (constants.autoInitLLM || chatLLM.shown) {
       chatLLM.InitChatMessage();
     }
   }
@@ -1617,6 +1619,10 @@ class ChatLLM {
         .getElementById('chatLLM_modal_backdrop')
         .classList.remove('hidden');
       document.querySelector('#chatLLM .close').focus();
+
+      if (this.firstTime) {
+        this.InitChatMessage();
+      }
     } else {
       // close
       document.getElementById('chatLLM').classList.add('hidden');
