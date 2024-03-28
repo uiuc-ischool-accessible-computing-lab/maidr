@@ -6,15 +6,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
   // create global vars
   window.constants = new Constants();
   window.resources = new Resources();
-  window.tracker = new Tracker();
   window.logError = new LogError();
 
   // set focus events for all charts matching maidr ids
   let maidrObjects = [];
-  if (!Array.isArray(maidr)) {
-    maidrObjects.push(maidr);
-  } else {
-    maidrObjects = maidr;
+  if (typeof maidr != 'undefined') {
+    if (!Array.isArray(maidr)) {
+      maidrObjects.push(maidr);
+    } else {
+      maidrObjects = maidr;
+    }
   }
   // set focus events for all maidr ids
   DestroyMaidr(); // just in case
@@ -34,13 +35,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // events etc for user study page
   // run tracker stuff only on user study page
-  if (document.getElementById('download_data_trigger')) {
-    // download data button
-    document
-      .getElementById('download_data_trigger')
-      .addEventListener('click', function (e) {
-        tracker.DownloadTrackerData();
-      });
+  if (constants.canTrack) {
+    window.tracker = new Tracker();
+    if (document.getElementById('download_data_trigger')) {
+      // we're on the intro page, so enable the download data button
+      document
+        .getElementById('download_data_trigger')
+        .addEventListener('click', function (e) {
+          tracker.DownloadTrackerData();
+        });
+    }
 
     // general events
     document.addEventListener('keydown', function (e) {
@@ -55,14 +59,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
         location.reload(true);
       }
 
-      // Tracker
-      if (constants.isTracking) {
-        if (e.key == 'F10') {
-          //tracker.DownloadTrackerData();
-        } else {
-          if (plot) {
-            tracker.LogEvent(e);
-          }
+      // main event tracker, built for individual charts
+      if (e.key == 'F10') {
+        tracker.DownloadTrackerData();
+      } else {
+        if (plot) {
+          tracker.LogEvent(e);
         }
       }
 

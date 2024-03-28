@@ -70,7 +70,8 @@ class Constants {
   autoPlayOutlierRate = 50; // ms per tone
   autoPlayPointsRate = 50; // time between tones in a run
   colorUnselected = '#595959'; // deprecated, todo: find all instances replace with storing old color method
-  isTracking = 1; // 0 / 1, is tracking on or off
+  canTrack = 1; // 0 / 1, can we track user data
+  isTracking = 1; // 0 / 1, is tracking currently on or off
   visualBraille = false; // do we want to represent braille based on what's visually there or actually there. Like if we have 2 outliers with the same position, do we show 1 (visualBraille true) or 2 (false)
   globalMinMax = true;
   ariaMode = 'assertive'; // assertive (default) / polite
@@ -2020,6 +2021,7 @@ class Helper {
 class Tracker {
   constructor() {
     this.DataSetup();
+    constants.isTracking = true;
   }
 
   /**
@@ -2303,6 +2305,7 @@ class Tracker {
     //console.log("x_tickmark: '", x_tickmark, "', y_tickmark: '", y_tickmark, "', x_label: '", x_label, "', y_label: '", y_label, "', value: '", value, "', fill_value: '", fill_value);
 
     this.SetData('events', eventToLog);
+    console.log('logged an event');
   }
 
   SetData(key, value) {
