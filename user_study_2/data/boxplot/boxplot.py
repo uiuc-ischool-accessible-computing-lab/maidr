@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import seaborn as sns
+import maidr
 import matplotlib.pyplot as plt
 
 
@@ -21,11 +22,16 @@ def main():
     df['Price ($)'] = df['Price ($)'].replace({'\$': '', ',': ''}, regex=True).astype(float)
     # Sort the DataFrame by 'Brand' alphabetically
     df = df.sort_values(by='Brand')
+    # List of brands to include
+    selected_brands = ['Apple', 'Samsung', 'Sony', 'Google', 'Huawei', 'Oneplus', 'Motorola']
+
+    # Filter the DataFrame for selected brands and sort
+    df = df[df['Brand'].isin(selected_brands)].sort_values(by='Brand')
 
 
 # Create a box plot
     plt.figure(figsize=(12, 6))  # Adjust the figure size as needed
-    sns.boxplot(x='Brand', y='Price ($)', data=df)
+    box = sns.boxplot(x='Brand', y='Price ($)', data=df)
 
     plt.xticks(rotation=45)  # Rotate brand names for better readability
     plt.title('Price Distribution by Brand')  # Add a title to the plot
@@ -34,8 +40,9 @@ def main():
 
     # Show the plot
     plt.tight_layout()  # Adjust subplot parameters to give some padding
-    output = get_filepath("python-boxplot.svg")
-    plt.savefig(output, format='svg')
+    output = get_filepath("test.html")
+    box_maidr = maidr.box(box)
+    box_maidr.save(output)
 
     plt.show()
 
