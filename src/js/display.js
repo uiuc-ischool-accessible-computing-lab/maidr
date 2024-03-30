@@ -576,6 +576,7 @@ class Display {
     } else if (constants.textMode == 'terse') {
       output = terseText;
     }
+    constants.verboseText = verboseText;
 
     if (constants.infoDiv) constants.infoDiv.innerHTML = output;
     if (constants.review) {

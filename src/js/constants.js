@@ -88,6 +88,7 @@ class Constants {
   skillLevel = 'basic'; // basic / intermediate / expert
   skillLevelOther = ''; // custom skill level
   autoInitLLM = true; // auto initialize LLM on page load
+  verboseText = '';
 
   // user controls (not exposed to menu, with shortcuts usually)
   showDisplay = 1; // true / false
@@ -924,6 +925,7 @@ class ChatLLM {
   constructor() {
     this.firstTime = true;
     this.firstMulti = true;
+    this.firstOpen = true;
     this.shown = false;
     this.CreateComponent();
     this.SetEvents();
@@ -1157,7 +1159,11 @@ class ChatLLM {
       // kill more than 2 newlines in a row
       markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
-      navigator.clipboard.writeText(markdown);
+      try {
+        navigator.clipboard.writeText(markdown);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
       return markdown;
     }
   }
@@ -1219,13 +1225,29 @@ class ChatLLM {
    * @returns {void}
    */
   async Submit(text, firsttime = false) {
+    // misc init
+    let img = null;
+    this.firstMulti = true;
+
+    // if this is the user's first message (or we're gemini, in which case we need to send every time), prepend prompt with user position
+    if (
+      (this.firstOpen || constants.LLMModel == 'gemini') &&
+      !firsttime &&
+      constants.verboseText.length > 0
+    ) {
+      text =
+        "Here is the current position in the chart; no response necessarily needed, use this info only if it's relevant to future questions: " +
+        constants.verboseText +
+        '. My question is: ' +
+        text;
+
+      this.firstOpen = false;
+    }
+
     // start waiting sound
     if (constants.playLLMWaitingSound) {
       this.WaitingSound(true);
     }
-
-    let img = null;
-    this.firstMulti = true;
 
     if (constants.LLMOpenAiMulti || constants.LLMModel == 'openai') {
       if (firsttime) {
@@ -1640,6 +1662,7 @@ class ChatLLM {
       document.getElementById('chatLLM_modal_backdrop').classList.add('hidden');
       this.whereWasMyFocus.focus();
       this.whereWasMyFocus = null;
+      this.firstOpen = true;
     }
   }
 
@@ -2305,7 +2328,7 @@ class Tracker {
     //console.log("x_tickmark: '", x_tickmark, "', y_tickmark: '", y_tickmark, "', x_label: '", x_label, "', y_label: '", y_label, "', value: '", value, "', fill_value: '", fill_value);
 
     this.SetData('events', eventToLog);
-    console.log('logged an event');
+    //console.log('logged an event');
   }
 
   SetData(key, value) {
