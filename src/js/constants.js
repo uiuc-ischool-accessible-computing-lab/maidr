@@ -1134,7 +1134,8 @@ class ChatLLM {
       }
     } else if (e.type == 'keyup') {
       // check for alt shift c
-      if (e.key == 'C' && (e.altKey || e.metaKey) && e.shiftKey) {
+      if (e.key == 'C' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+        e.preventDefault();
         // get the last message
         let elem = document.querySelector(
           '#chatLLM_chat_history > .chatLLM_message_other:last-of-type'
@@ -1142,6 +1143,10 @@ class ChatLLM {
         if (elem) {
           text = elem.innerHTML;
         }
+      } else if (e.key == 'A' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+        e.preventDefault();
+        // get html of the full chat history
+        text = document.getElementById('chatLLM_chat_history').innerHTML;
       }
     }
 
