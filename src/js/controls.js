@@ -244,6 +244,9 @@ class Control {
             // caption
             display.displayInfo('caption', plot.caption);
             pressedL = false;
+          } else if (e.key == 'f') {
+            display.displayInfo('fill', plot.fill);
+            pressedL = false;
           } else if (e.key != 'l') {
             pressedL = false;
           }
