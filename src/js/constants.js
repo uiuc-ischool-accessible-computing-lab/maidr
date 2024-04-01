@@ -1015,7 +1015,7 @@ class ChatLLM {
       document,
       'keyup',
       function (e) {
-        if (e.key == '?' && (e.ctrlKey || e.metaKey)) {
+        if (e.key == '?' && (e.ctrlKey || e.metaKey) || e.key == '¿') {
           chatLLM.Toggle();
         }
       },
