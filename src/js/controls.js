@@ -203,13 +203,13 @@ class Control {
           if (e.key == 'x') {
             // X: x label
             let xlabel = '';
-            if (constants.chartType == 'bar') {
+            if (constants.chartType == 'bar' ||
+              singleMaidr.type == 'line') {
               xlabel = plot.plotLegend.x;
             } else if (
               constants.chartType == 'heat' ||
               constants.chartType == 'box' ||
               singleMaidr.type == 'point' ||
-              singleMaidr.type == 'line' ||
               singleMaidr.type.includes('point')
             ) {
               xlabel = plot.x_group_label;
@@ -219,7 +219,8 @@ class Control {
           } else if (e.key == 'y') {
             // Y: y label
             let ylabel = '';
-            if (constants.chartType == 'bar') {
+            if (constants.chartType == 'bar' ||
+              singleMaidr.type == 'line') {
               ylabel = plot.plotLegend.y;
             } else if (
               constants.chartType == 'heat' ||
