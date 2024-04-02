@@ -203,8 +203,7 @@ class Control {
           if (e.key == 'x') {
             // X: x label
             let xlabel = '';
-            if (constants.chartType == 'bar' ||
-              singleMaidr.type == 'line') {
+            if (constants.chartType == 'bar' || singleMaidr.type == 'line') {
               xlabel = plot.plotLegend.x;
             } else if (
               constants.chartType == 'heat' ||
@@ -219,8 +218,7 @@ class Control {
           } else if (e.key == 'y') {
             // Y: y label
             let ylabel = '';
-            if (constants.chartType == 'bar' ||
-              singleMaidr.type == 'line') {
+            if (constants.chartType == 'bar' || singleMaidr.type == 'line') {
               ylabel = plot.plotLegend.y;
             } else if (
               constants.chartType == 'heat' ||

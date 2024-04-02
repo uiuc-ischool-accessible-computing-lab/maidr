@@ -386,6 +386,20 @@ class Menu {
                                         <td>Auto-play speed down</td>
                                         <td>Comma</td>
                                     </tr>
+                                    <tr>
+                                        <td>Open GenAI Chat</td>
+                                        <td>${
+                                          constants.control
+                                        } + Shift + ?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Copy last chat message</td>
+                                        <td>${constants.alt} + Shift + C</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Copy full chat history</td>
+                                        <td>${constants.alt} + Shift + A</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1015,7 +1029,12 @@ class ChatLLM {
       document,
       'keyup',
       function (e) {
-        if (e.key == '?' && (e.ctrlKey || e.metaKey) || e.key == '¿') {
+        if (
+          ((e.ctrlKey || e.metaKey) &&
+            e.shiftKey &&
+            (e.key == '?' || e.key == '¿')) ||
+          (e.metaKey && e.altKey && (e.key == '?' || e.key == '¿'))
+        ) {
           chatLLM.Toggle();
         }
       },
@@ -1133,8 +1152,8 @@ class ChatLLM {
         text = e.target.closest('p').previousElementSibling.innerHTML;
       }
     } else if (e.type == 'keyup') {
-      // check for alt shift c
-      if (e.key == 'C' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+      // check for alt shift c or ctrl shift c
+      if (e.key == 'C' && (e.ctrlKey || e.metaKey || e.altKey) && e.shiftKey) {
         e.preventDefault();
         // get the last message
         let elem = document.querySelector(
@@ -1143,7 +1162,11 @@ class ChatLLM {
         if (elem) {
           text = elem.innerHTML;
         }
-      } else if (e.key == 'A' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+      } else if (
+        e.key == 'A' &&
+        (e.ctrlKey || e.metaKey || e.altKey) &&
+        e.shiftKey
+      ) {
         e.preventDefault();
         // get html of the full chat history
         text = document.getElementById('chatLLM_chat_history').innerHTML;
