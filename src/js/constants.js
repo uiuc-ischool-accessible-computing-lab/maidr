@@ -389,7 +389,9 @@ class Menu {
                                     <tr>
                                         <td>Open GenAI Chat</td>
                                         <td>${
-                                          constants.isMac ? constants.alt : constants.control
+                                          constants.isMac
+                                            ? constants.alt
+                                            : constants.control
                                         } + Shift + ?</td>
                                     </tr>
                                     <tr>
@@ -605,13 +607,22 @@ class Menu {
 
     // trigger notification that LLM will be reset
     // this is done on change of LLM model, multi settings, or skill level
-    constants.events.push([
-      document.getElementById('LLM_model'),
-      'change',
-      function (e) {
-        menu.NotifyOfLLMReset();
-      },
-    ]);
+    let LLMResetIds = [
+      'LLM_model',
+      'openai_multi',
+      'gemini_multi',
+      'skill_level',
+      'LLM_preferences',
+    ];
+    for (let i = 0; i < LLMResetIds.length; i++) {
+      constants.events.push([
+        document.getElementById(LLMResetIds[i]),
+        'change',
+        function (e) {
+          menu.NotifyOfLLMReset();
+        },
+      ]);
+    }
   }
 
   /**
@@ -857,6 +868,13 @@ class Menu {
     }
     if (
       !shouldReset &&
+      constants.LLMPreferences !=
+        document.getElementById('LLM_preferences').value
+    ) {
+      shouldReset = true;
+    }
+    if (
+      !shouldReset &&
       constants.LLMModel != document.getElementById('LLM_model').value
     ) {
       shouldReset = true;
@@ -1029,7 +1047,7 @@ class ChatLLM {
       document,
       'keyup',
       function (e) {
-        if (e.key == '?' && (e.ctrlKey || e.metaKey) || e.key == '¿') {
+        if ((e.key == '?' && (e.ctrlKey || e.metaKey)) || e.key == '¿') {
           chatLLM.Toggle();
         }
       },
