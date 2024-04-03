@@ -59,7 +59,7 @@ df <- read_csv(path) %>%
 clean_df <- df %>%
   filter(brand %in% c("Apple", "Samsung", "Sony", "Google", "Huawei", "Oneplus", "Motorola")) %>%
   select(brand, price) %>%
-  mutate(price = as.numeric(price)) %>%
+  mutate(price = as.numeric(gsub("[$,]", "", price))) %>%
   # remove missing values using pairwise deletion
   drop_na()
 
