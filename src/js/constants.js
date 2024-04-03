@@ -389,7 +389,7 @@ class Menu {
                                     <tr>
                                         <td>Open GenAI Chat</td>
                                         <td>${
-                                          constants.control
+                                          constants.isMac ? constants.alt : constants.control
                                         } + Shift + ?</td>
                                     </tr>
                                     <tr>
@@ -1029,12 +1029,7 @@ class ChatLLM {
       document,
       'keyup',
       function (e) {
-        if (
-          ((e.ctrlKey || e.metaKey) &&
-            e.shiftKey &&
-            (e.key == '?' || e.key == '¿')) ||
-          (e.metaKey && e.altKey && (e.key == '?' || e.key == '¿'))
-        ) {
+        if (e.key == '?' && (e.ctrlKey || e.metaKey) || e.key == '¿') {
           chatLLM.Toggle();
         }
       },
