@@ -997,9 +997,9 @@ class ChatLLM {
                             <p><button type="button">What is the title?</button></p>
                             <p><button type="button">What are the high and low values?</button></p>
                             <p><button type="button">What is the general shape of the chart?</button></p>
-                            <p><button type="button" id="more_suggestions">More</button></p>
+                            <p class="hidden"><button type="button" id="more_suggestions">More</button></p>
                           </div>
-                          <div id="more_suggestions_container" class="hidden LLM_suggestions">
+                          <div id="more_suggestions_container" class="LLM_suggestions">
                             <p><button type="button">Please provide the title of this visualization, then provide a description for someone who is blind or low vision. Include general overview of axes and the data at a high-level.</button></p>
                             <p><button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extrema, correlations, relational comparisons like greater than OR lesser than.</button></p>
                             <p><button type="button">Based on the visualization shared, address the following: Do you observe any unforeseen trends? If yes, what?  Please convey any complex multi-faceted patterns present. Can you identify any noteworthy exceptions that aren't readily apparent through non-visual methods of analysis?</button></p>
