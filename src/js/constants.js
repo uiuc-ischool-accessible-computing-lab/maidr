@@ -1473,7 +1473,7 @@ class ChatLLM {
       .catch((error) => {
         chatLLM.WaitingSound(false);
         console.error('Error:', error);
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
         // also todo: handle errors somehow
       });
   }
