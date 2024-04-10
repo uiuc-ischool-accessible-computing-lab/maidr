@@ -1079,21 +1079,6 @@ class ChatLLM {
     ]);
 
     // ChatLLM suggestion events
-    // the more button
-    constants.events.push([
-      document.getElementById('more_suggestions'),
-      'click',
-      function (e) {
-        document
-          .getElementById('more_suggestions_container')
-          .classList.toggle('hidden');
-        // focus on button right after the more button
-        document
-          .querySelector('#more_suggestions_container > p > button')
-          .focus();
-        document.getElementById('more_suggestions').remove();
-      },
-    ]);
     // actual suggestions:
     let suggestions = document.querySelectorAll(
       '#chatLLM .LLM_suggestions button:not(#more_suggestions)'
