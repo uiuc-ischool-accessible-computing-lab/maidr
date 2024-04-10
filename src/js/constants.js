@@ -476,12 +476,12 @@ class Menu {
                                     <option value="basic">Basic</option>
                                     <option value="intermediate">Intermediate</option>
                                     <option value="expert">Expert</option>
-                                    <option value="other">other</option>
+                                    <option value="other">Other: describe in your own words</option>
                                 </select>
                                 <label for="skill_level">Level of skill in statistical charts</label>
                             </p>
                             <p id="skill_level_other_container" class="hidden"><input type="text" placeholder="Very basic" id="skill_level_other"> <label for="skill_level_other">Describe your level of skill in statistical charts</label></p>
-                            <p><label for="LLM_preferences">LLM Preferences</label></p>
+                            <p><label for="LLM_preferences">Custom instructions for the chat response</label></p>
                             <p><textarea id="LLM_preferences" rows="4" cols="50" placeholder="I'm a stats undergrad and work with Python. I prefer a casual tone, and favor information accuracy over creative description; just the facts please!"></textarea></p>
                         </div>
                     </div>
@@ -997,11 +997,10 @@ class ChatLLM {
                             <p><button type="button">What is the title?</button></p>
                             <p><button type="button">What are the high and low values?</button></p>
                             <p><button type="button">What is the general shape of the chart?</button></p>
-                            <p class="hidden"><button type="button" id="more_suggestions">More</button></p>
                           </div>
                           <div id="more_suggestions_container" class="LLM_suggestions">
                             <p><button type="button">Please provide the title of this visualization, then provide a description for someone who is blind or low vision. Include general overview of axes and the data at a high-level.</button></p>
-                            <p><button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extrema, correlations, relational comparisons like greater than OR lesser than.</button></p>
+                            <p><button type="button">For the visualization I shared, please provide the following (where applicable): mean, standard deviation, extreme, correlations, relational comparisons like greater than OR lesser than.</button></p>
                             <p><button type="button">Based on the visualization shared, address the following: Do you observe any unforeseen trends? If yes, what?  Please convey any complex multi-faceted patterns present. Can you identify any noteworthy exceptions that aren't readily apparent through non-visual methods of analysis?</button></p>
                             <p><button type="button">Provide context to help explain the data depicted in this visualization based on domain-specific insight.</button></p>
                           </div>
