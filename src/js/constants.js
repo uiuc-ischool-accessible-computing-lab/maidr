@@ -966,7 +966,16 @@ class ChatLLM {
     this.CreateComponent();
     this.SetEvents();
     if (constants.autoInitLLM) {
-      this.InitChatMessage();
+      // only run if we have API keys set
+      if (
+        (constants.LLMModel == 'openai' && constants.openAIAuthKey) ||
+        (constants.LLMModel == 'gemini' && constants.geminiAuthKey) ||
+        (constants.LLMModel == 'multi' &&
+          constants.openAIAuthKey &&
+          constants.geminiAuthKey)
+      ) {
+        this.InitChatMessage();
+      }
     }
   }
 
@@ -1189,7 +1198,7 @@ class ChatLLM {
       markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
       try {
-        navigator.clipboard.writeText(markdown);
+        navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
       } catch (err) {
         console.error('Failed to copy: ', err);
       }
@@ -1359,6 +1368,7 @@ class ChatLLM {
 
       if (data.error) {
         chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.WaitingSound(false);
       } else {
         chatLLM.DisplayChatMessage(LLMName, text);
       }
@@ -1369,10 +1379,12 @@ class ChatLLM {
       } else {
         if (!data.error) {
           data.error = 'Error processing request.';
+          chatLLM.WaitingSound(false);
         }
       }
       if (data.error) {
         chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.WaitingSound(false);
       } else {
         // todo: display actual response
       }
@@ -1563,6 +1575,8 @@ class ChatLLM {
       // Process the response
       chatLLM.ProcessLLMResponse(result.response, 'gemini');
     } catch (error) {
+      chatLLM.WaitingSound(false);
+      chatLLM.DisplayChatMessage('Gemini', 'Error processing request.', true);
       console.error('Error in GeminiPrompt:', error);
       throw error; // Rethrow the error for further handling if necessary
     }
@@ -1624,11 +1638,6 @@ class ChatLLM {
   ResetLLM() {
     // clear the main chat history
     document.getElementById('chatLLM_chat_history').innerHTML = '';
-    // unhide the more button
-    document
-      .getElementById('more_suggestions_container')
-      .classList.add('hidden');
-    document.getElementById('more_suggestions').classList.remove('hidden');
 
     // reset the data
     this.requestJson = null;
@@ -2143,10 +2152,12 @@ class Tracker {
   SaveSettings() {
     // fetch all settings, push to data.settings
     let settings = JSON.parse(localStorage.getItem('settings_data'));
-    // don't store their auth keys
-    settings.openAIAuthKey = 'hidden';
-    settings.geminiAuthKey = 'hidden';
-    this.SetData('settings', settings);
+    if (settings) {
+      // don't store their auth keys
+      settings.openAIAuthKey = 'hidden';
+      settings.geminiAuthKey = 'hidden';
+      this.SetData('settings', settings);
+    }
   }
 
   /**
