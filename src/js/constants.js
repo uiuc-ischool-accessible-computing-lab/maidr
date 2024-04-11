@@ -2303,6 +2303,7 @@ class Tracker {
         constants.plotOrientation == 'vert' ? position.x : position.y;
       let sectionPos =
         constants.plotOrientation == 'vert' ? position.y : position.x;
+      let sectionLabel = plot.sections[sectionPos];
 
       if (!this.isUndefinedOrNull(plot.x_group_label)) {
         x_label = plot.x_group_label;
@@ -2312,42 +2313,26 @@ class Tracker {
       }
       if (constants.plotOrientation == 'vert') {
         if (plotPos > -1 && sectionPos > -1) {
-          if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].label)
-          ) {
-            y_tickmark = plot.plotData[plotPos][sectionPos].label;
+          if (!this.isUndefinedOrNull(sectionLabel)) {
+            y_tickmark = sectionLabel;
           }
           if (!this.isUndefinedOrNull(plot.x_labels[position.x])) {
             x_tickmark = plot.x_labels[position.x];
           }
-          if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].values)
-          ) {
-            value = plot.plotData[plotPos][sectionPos].values;
-          } else if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].y)
-          ) {
-            value = plot.plotData[plotPos][sectionPos].y;
+          if (!this.isUndefinedOrNull(plot.plotData[plotPos][sectionLabel])) {
+            value = plot.plotData[plotPos][sectionLabel];
           }
         }
       } else {
         if (plotPos > -1 && sectionPos > -1) {
-          if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].label)
-          ) {
-            x_tickmark = plot.plotData[plotPos][sectionPos].label;
+          if (!this.isUndefinedOrNull(sectionLabel)) {
+            x_tickmark = sectionLabel;
           }
           if (!this.isUndefinedOrNull(plot.y_labels[position.y])) {
             y_tickmark = plot.y_labels[position.y];
           }
-          if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].values)
-          ) {
-            value = plot.plotData[plotPos][sectionPos].values;
-          } else if (
-            !this.isUndefinedOrNull(plot.plotData[plotPos][sectionPos].x)
-          ) {
-            value = plot.plotData[plotPos][sectionPos].x;
+          if (!this.isUndefinedOrNull(plot.plotData[plotPos][sectionLabel])) {
+            value = plot.plotData[plotPos][sectionLabel];
           }
         }
       }
