@@ -109,6 +109,7 @@ class Constants {
   skillLevelOther = ''; // custom skill level
   autoInitLLM = true; // auto initialize LLM on page load
   verboseText = '';
+  waitingQueue = 0;
 
   // user controls (not exposed to menu, with shortcuts usually)
   showDisplay = 1; // true / false
@@ -1310,22 +1311,40 @@ class ChatLLM {
    * @returns {void}
    */
   WaitingSound(onoff = true) {
-    // clear old intervals and timeouts
-    if (constants.waitingInterval) {
-      // destroy old waiting sound
-      clearInterval(constants.waitingInterval);
-      constants.waitingSound = null;
-    }
-    if (constants.waitingSoundOverride) {
-      clearTimeout(constants.waitingSoundOverride);
-      constants.waitingSoundOverride = null;
+    let delay = 1000;
+    let freq = 440; // a440 babee
+    let inprogressFreq = freq * 2;
+
+    if (onoff) {
+      // if turning on, clear old intervals and timeouts
+      if (constants.waitingInterval) {
+        // destroy old waiting sound
+        clearInterval(constants.waitingInterval);
+        constants.waitingInterval = null;
+      }
+      if (constants.waitingSoundOverride) {
+        clearTimeout(constants.waitingSoundOverride);
+        constants.waitingSoundOverride = null;
+      }
+    } else {
+      // notify user that we're done waiting for this one
+      if (audio && chatLLM.shown) {
+        audio.playOscillator(inprogressFreq, 0.2, 0);
+      }
+
+      // turning off, but do we have more in the queue after this?
+      if (constants.waitingQueue > 1) {
+        // turning off and still have a queue, decrement by 1, and play a new sound
+        constants.waitingQueue--;
+      } else {
+        // no queue, just turn off
+        chatLLM.KillAllWaitingSounds();
+      }
     }
 
-    // assuming we're turning it on, start playing a new waiting sound
+    // turning it on: start playing a new waiting sound
     if (onoff) {
       // create new waiting sound
-      let delay = 1000;
-      let freq = 440; // a440 babee
       constants.waitingInterval = setInterval(function () {
         if (audio && chatLLM.shown) {
           audio.playOscillator(freq, 0.2, 0);
@@ -1334,9 +1353,36 @@ class ChatLLM {
 
       // clear automatically after 30 sec, assuming no response
       constants.waitingSoundOverride = setTimeout(function () {
-        chatLLM.WaitingSound(false);
+        chatLLM.KillAllWaitingSounds();
       }, 30000);
+
+      // set queue for multi
+      if (constants.LLMModel != 'multi') {
+        constants.waitingQueue = 1;
+      } else {
+        constants.waitingQueue = 0;
+        if (constants.LLMGeminiMulti) {
+          constants.waitingQueue++;
+        }
+        if (constants.LLMOpenAiMulti) {
+          constants.waitingQueue++;
+        }
+      }
     }
+  }
+  /**
+   * Overrides and kills all waiting sounds for LLM
+   */
+  KillAllWaitingSounds() {
+    if (constants.waitingInterval) {
+      clearInterval(constants.waitingInterval);
+      constants.waitingInterval = null;
+    }
+    if (constants.waitingSoundOverride) {
+      clearTimeout(constants.waitingSoundOverride);
+      constants.waitingSoundOverride = null;
+    }
+    constants.waitingQueue = 0;
   }
 
   InitChatMessage() {
