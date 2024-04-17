@@ -1401,7 +1401,7 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    //console.log('LLM response: ', data);
+    console.log('LLM response: ', data);
     let text = '';
     let LLMName = resources.GetString(model);
 
@@ -1583,6 +1583,7 @@ class ChatLLM {
   }
 
   async GeminiPrompt(text, imgBase64 = null) {
+    // https://ai.google.dev/docs/gemini_api_overview#node.js
     try {
       // Save the image for next time
       if (imgBase64 == null) {
@@ -1653,9 +1654,11 @@ class ChatLLM {
     let html = `
       <div class="chatLLM_message ${
         user == 'User' ? 'chatLLM_message_self' : 'chatLLM_message_other'
-      }">
-        <${hLevel} class="chatLLM_message_user">${user}</${hLevel}>
-        <p class="chatLLM_message_text">${text}</p>
+      }">`;
+    if (text != resources.GetString('processing')) {
+      html += `<${hLevel} class="chatLLM_message_user">${user}</${hLevel}>`;
+    }
+    html += `<p class="chatLLM_message_text">${text}</p>
       </div>
     `;
     // add a copy button to actual messages
