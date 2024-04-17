@@ -463,11 +463,11 @@ class Menu {
                             </p>
                             <p id="openai_auth_key_container" class="multi_container hidden">
                               <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
-                              <input type="password" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
+                              <input type="text" size="50" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
                             </p>
                             <p id="gemini_auth_key_container" class="multi_container hidden">
                               <span id="gemini_multi_container" class="hidden"><input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode"></span>
-                              <input type="password" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
+                              <input type="text" size="50" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
                             </p>
                             <p><input type="checkbox" ${
                               constants.autoInitLLM ? 'checked' : ''
@@ -1401,7 +1401,7 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    //console.log('LLM response: ', data);
+    console.log('LLM response: ', data);
     let text = '';
     let LLMName = resources.GetString(model);
 
@@ -1583,6 +1583,7 @@ class ChatLLM {
   }
 
   async GeminiPrompt(text, imgBase64 = null) {
+    // https://ai.google.dev/docs/gemini_api_overview#node.js
     try {
       // Save the image for next time
       if (imgBase64 == null) {
@@ -1653,9 +1654,11 @@ class ChatLLM {
     let html = `
       <div class="chatLLM_message ${
         user == 'User' ? 'chatLLM_message_self' : 'chatLLM_message_other'
-      }">
-        <${hLevel} class="chatLLM_message_user">${user}</${hLevel}>
-        <p class="chatLLM_message_text">${text}</p>
+      }">`;
+    if (text != resources.GetString('processing')) {
+      html += `<${hLevel} class="chatLLM_message_user">${user}</${hLevel}>`;
+    }
+    html += `<p class="chatLLM_message_text">${text}</p>
       </div>
     `;
     // add a copy button to actual messages
