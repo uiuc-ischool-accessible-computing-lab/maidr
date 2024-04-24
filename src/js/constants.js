@@ -463,11 +463,11 @@ class Menu {
                             </p>
                             <p id="openai_auth_key_container" class="multi_container hidden">
                               <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
-                              <input type="text" size="50" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
+                              <input type="password" size="50" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
                             </p>
                             <p id="gemini_auth_key_container" class="multi_container hidden">
                               <span id="gemini_multi_container" class="hidden"><input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode"></span>
-                              <input type="text" size="50" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
+                              <input type="password" size="50" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
                             </p>
                             <p><input type="checkbox" ${
                               constants.autoInitLLM ? 'checked' : ''
@@ -1821,7 +1821,7 @@ class ChatLLM {
     } else {
       text += ' who has a basic understanding of statistical charts. ';
     }
-    text += 'Here is chart in png format';
+    text += 'Here is a chart in image format';
     if (singleMaidr) {
       text += ' and raw data in json format: \n';
       text += JSON.stringify(singleMaidr);
