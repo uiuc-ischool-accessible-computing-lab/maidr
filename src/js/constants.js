@@ -1153,6 +1153,9 @@ class ChatLLM {
       // check for passthrough
       // get html of the full chat history
       text = document.getElementById('chatLLM_chat_history').innerHTML;
+    } else if (e == false) {
+      // this is from tracking, get html of the full chat history
+      text = document.getElementById('chatLLM_chat_history').innerHTML;
     } else if (e.type == 'click') {
       // check for buttons
       if (e.target.id == 'chatLLM_copy_all') {
@@ -1187,29 +1190,29 @@ class ChatLLM {
     if (text == '') {
       return;
     } else {
-      // clear the html, removing buttons etc
-      let cleanElems = document.createElement('div');
-      cleanElems.innerHTML = text;
-      let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
-      removeThese.forEach((elem) => elem.remove());
-
       // convert to markdown
-      let markdown = this.htmlToMarkdown(cleanElems);
-      // kill more than 2 newlines in a row
-      markdown = markdown.replace(/\n{3,}/g, '\n\n');
+      let markdown = this.htmlTextToMarkdown(text);
 
-      try {
-        navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
-      } catch (err) {
-        console.error('Failed to copy: ', err);
+      if (e) {
+        try {
+          navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
       }
       return markdown;
     }
   }
 
-  htmlToMarkdown(element) {
-    let markdown = '';
+  htmlTextToMarkdown(text) {
+    // clear the html, removing buttons etc
+    let cleanElems = document.createElement('div');
+    cleanElems.innerHTML = text;
+    let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
+    removeThese.forEach((elem) => elem.remove());
 
+    let element = cleanElems;
+    let markdown = '';
     const convertElementToMarkdown = (element) => {
       switch (element.tagName) {
         case 'H1':
@@ -1250,7 +1253,12 @@ class ChatLLM {
       markdown += element.textContent.trim();
     }
 
-    return markdown.trim();
+    markdown = markdown.trim();
+
+    // kill more than 2 newlines in a row
+    markdown = markdown.replace(/\n{3,}/g, '\n\n');
+
+    return markdown;
   }
 
   /**
@@ -1438,7 +1446,7 @@ class ChatLLM {
 
     // if we're tracking, log the data
     if (constants.isTracking) {
-      let chatHist = chatLLM.CopyChatHistory();
+      let chatHist = chatLLM.CopyChatHistory(false);
       tracker.SetData('ChatHistory', chatHist);
     }
   }
