@@ -278,6 +278,32 @@ class Control {
       constants.lastx = 0;
       let lastPlayed = '';
 
+      // testing for braille cursor routing
+      constants.events.push([
+        constants.brailleInput,
+        'selectionchange',
+        function (e) {
+          const selection = document.getSelection();
+          let offset = selection.anchorOffset;
+
+          console.log('Testing cursor routing');
+          console.log('Selection:', selection);
+          console.log('Offset:', offset);
+
+          position.x = offset;
+          updateInfoThisRound = true;
+          isAtEnd = lockPosition();
+
+          // update display / text / audio
+          if (updateInfoThisRound && !isAtEnd) {
+            UpdateAll();
+          }
+          if (isAtEnd) {
+            audio.playEnd();
+          }
+        },
+      ]);
+
       // control eventlisteners
       constants.events.push([
         constants.chart,
