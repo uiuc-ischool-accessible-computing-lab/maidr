@@ -1,49 +1,249 @@
 /**
  * A class representing system vars, user config vars, and helper functions used throughout the application.
- *
  * @class
  */
 class Constants {
+  /**
+   * @namespace HtmlIds
+   */
+  /**
+   * HTML id of the div containing the chart.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'chart-container'
+   */
   chart_container_id = 'chart-container';
+  /**
+   * HTML id of the main container div.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'maidr-container'
+   */
   main_container_id = 'maidr-container';
-  //chart_container_class = 'chart-container'; // remove later
+  /**
+   * HTML id of the div containing the braille display input
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'braille-div'
+   */
   braille_container_id = 'braille-div';
+  /**
+   * HTML id of the actual braille input element.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'braille-input'
+   */
   braille_input_id = 'braille-input';
+  /**
+   * HTML id of the div containing the info box.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'info'
+   */
   info_id = 'info';
+  /**
+   * HTML id of the div containing announcements that hook directly into the screen reader via aria-live.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'announcements'
+   */
   announcement_container_id = 'announcements';
+  /**
+   * HTML id of the div containing the end chime. To be implemented in the future.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'end_chime'
+   */
   end_chime_id = 'end_chime';
+  /**
+   * HTML id of the main container div.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'container'
+   */
   container_id = 'container';
+  /**
+   * The main project id, used throughout the application.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'maidr'
+   */
   project_id = 'maidr';
+  /**
+   * HTML id of the div containing the review text.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'review_container'
+   */
   review_id_container = 'review_container';
+  /**
+   * HTML id of the review input element.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'review'
+   */
   review_id = 'review';
+  /**
+   * Storage element, used to store the last focused element before moving to the review input so we can switch back to it easily.
+   * @type {HTMLElement}
+   * @default null
+   */
   reviewSaveSpot;
+  /**
+   * Storage setting for the braille mode when we enter review mode
+   * @type {("on"|"off")}
+   */
   reviewSaveBrailleMode;
+  /**
+   * HTML id of the actual chart element. Used to connect the application to the chart.
+   * @type {string}
+   * @memberof HtmlIds
+   */
   chartId = '';
+  /**
+   * @typedef {Object} EventListenerSetupObject
+   * @property {HTMLElement} element - The element to attach the event listener to.
+   * @property {string} event - The event type to listen for.
+   * @property {function(Event)} func - The function to run when the event is triggered.
+   */
+  /**
+   * An array of event listeners to be added to the document. This is used so that we can properly create and destroy events when needed and not cause massive memory leaks when the system is run repeatedly.
+   * @type {Array<EventListenerSetupObject>}
+   * @default []
+   */
   events = [];
+  /**
+   * An array of functions to run after the page has loaded. This is used to ensure that the page is fully loaded before running any functions that may rely on that.
+   */
   postLoadEvents = [];
 
   constructor() {}
 
-  // BTS modes initial values
-  textMode = 'verbose'; // off / terse / verbose
-  brailleMode = 'off'; // on / off
-  sonifMode = 'on'; // sep / same / off
-  reviewMode = 'off'; // on / off
+  /**
+   * @namespace BTSModes
+   */
+  /**
+   * The current text mode. Can be 'off', 'terse', or 'verbose'.
+   * @type {("off"|"terse"|"verbose")}
+   * @memberof BTSModes
+   * @default 'verbose'
+   */
+  textMode = 'verbose';
+  /**
+   * The current braille mode. Can be 'off' or 'on'.
+   * @type {("off"|"on")}
+   * @memberof BTSModes
+   * @default 'off'
+   */
+  brailleMode = 'off';
+  /**
+   * The current sonification mode. Can be 'on', 'off', 'sep' (seperated), or 'same' (all played at once).
+   * @type {("on"|"off"|"sep"|"same")}
+   * @memberof BTSModes
+   * @default 'on'
+   */
+  sonifMode = 'on';
+  /**
+   * The current review mode. Can be 'on' or 'off'.
+   * @type {("on"|"off")}
+   * @memberof BTSModes
+   * @default 'off'
+   */
+  reviewMode = 'off';
 
   // basic chart properties
+  /**
+   * @namespace BasicChartProperties
+   */
+  /**
+   * The minimum x value of the chart, set during MAIDR initialization.
+   * @type {number}
+   * @memberof BasicChartProperties
+   * @default 0
+   */
   minX = 0;
+  /**
+   * The maximum x value of the chart, set during MAIDR initialization.
+   * @type {number}
+   * @memberof BasicChartProperties
+   * @default 0
+   */
   maxX = 0;
+  /**
+   * The minimum y value of the chart, set during MAIDR initialization.
+   * @type {number}
+   * @memberof BasicChartProperties
+   * @default 0
+   */
   minY = 0;
+  /**
+   * The maximum y value of the chart, set during MAIDR initialization.
+   * @type {number}
+   * @memberof BasicChartProperties
+   * @default 0
+   */
   maxY = 0;
+
+  /**
+   * The plotID of the chart, used interchangably with chartId.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default ''
+   */
   plotId = ''; // update with id in chart specific js
-  chartType = ''; // set as 'box' or whatever later in chart specific js file
+  /**
+   * The chart type, sort of a short name of the chart such as 'box', 'bar', 'line', etc.
+   * @type {string}
+   * @default ''
+   * @memberof BasicChartProperties
+   */
+  chartType = '';
+  /**
+   * The navigation orientation of the chart. 0 = row navigation (up/down), 1 = col navigation (left/right).
+   * @type {number}
+   * @default 1
+   * @memberof BasicChartProperties
+   */
   navigation = 1; // 0 = row navigation (up/down), 1 = col navigation (left/right)
 
+  /**
+   * @namespace AudioProperties
+   */
   // basic audio properties
+  /**
+   * The max frequency (Hz) of the audio tones to be played when sonifying the chart.
+   * @type {number}
+   * @default 1000
+   * @memberof AudioProperties
+   */
   MAX_FREQUENCY = 1000;
+  /**
+   * The min frequency (Hz) of the audio tones to be played when sonifying the chart.
+   * @type {number}
+   * @default 200
+   * @memberof AudioProperties
+   */
   MIN_FREQUENCY = 200;
+  /**
+   * Frequncy (Hz) to play when there is no data in a cell, plays twice quickly, recommend a low tone here.
+   * @type {number}
+   * @default 100
+   * @memberof AudioProperties
+   */
   NULL_FREQUENCY = 100;
-  combinedVolMin = 0.25; // volume for min amplitude combined tones
+  /**
+   * Minimum volume of the audio tones to be played when sonifying the chart. Expected range is 0 to 2.
+   * @type {number}
+   * @default 0.25
+   * @memberof AudioProperties
+   */
+  combinedVolMin = 0.25;
+  /**
+   * Maximum volume of the audio tones to be played when sonifying the chart. Expected range is 0 to 2.
+   * @type {number}
+   * @default 1.25
+   * @memberof AudioProperties
+   */
   combinedVolMax = 1.25; // volume for max amplitude combined tones
 
   // autoplay speed
