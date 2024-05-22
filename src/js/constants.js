@@ -1456,7 +1456,8 @@ class ChatLLM {
         id: 'chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7',
         object: 'chat.completion',
         created: 1703129508,
-        model: 'gpt-4-1106-vision-preview',
+        //model: 'gpt-4-1106-vision-preview',
+        model: 'gpt4-o',
         usage: {
           prompt_tokens: 451,
           completion_tokens: 16,
@@ -1542,7 +1543,8 @@ class ChatLLM {
     // headers and sys message
     if (!this.requestJson) {
       this.requestJson = {};
-      this.requestJson.model = 'gpt-4-vision-preview';
+      //this.requestJson.model = 'gpt-4-vision-preview';
+      this.requestJson.model = 'gpt4-o';
       this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
 
       // sys message
@@ -1599,7 +1601,9 @@ class ChatLLM {
       );
       const API_KEY = constants.geminiAuthKey;
       const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-1.5-pro-latest',
+      }); // old model was 'gemini-pro-vision'
 
       // Create the prompt
       let prompt = constants.LLMSystemMessage;
