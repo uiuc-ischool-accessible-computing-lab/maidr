@@ -247,35 +247,175 @@ class Constants {
   combinedVolMax = 1.25; // volume for max amplitude combined tones
 
   // autoplay speed
+  /**
+   * The maximum speed of the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 500
+   * @memberof AudioProperties
+   */
   MAX_SPEED = 500;
+  /**
+   * The minimum speed of the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 50
+   * @memberof AudioProperties
+   */
   MIN_SPEED = 50; // 50;
+  /**
+   * The default speed of the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 250
+   * @memberof AudioProperties
+   */
   DEFAULT_SPEED = 250;
+  /**
+   * The interval between tones in the autoplay feature, in milliseconds.
+   * @type {number}
+   * @default 20
+   * @memberof AudioProperties
+   */
   INTERVAL = 20;
+  /**
+   * The duration of the autoplay feature, in milliseconds.
+   * @type {number}
+   * @default 5000
+   * @memberof AudioProperties
+   */
   AUTOPLAY_DURATION = 5000; // 5s
 
   // user settings
+  /**
+   * @namespace UserSettings
+   */
+  /**
+   * The volume of the audio tones to be played when sonifying the chart. Expected range is 0 to 1.
+   * @type {number}
+   * @default 0.5
+   * @memberof UserSettings
+   */
   vol = 0.5;
+  /**
+   * Max volume, used only to differentiate points in a scatterplot.
+   * @type {number}
+   * @default 30
+   * @memberof UserSettings
+   */
   MAX_VOL = 30;
-  // autoPlayRate = this.DEFAULT_SPEED; // ms per tone
-  autoPlayRate = this.DEFAULT_SPEED; // ms per tone
+  /**
+   * The speed of the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 250
+   * @memberof UserSettings
+   */
+  autoPlayRate = this.DEFAULT_SPEED;
+  /**
+   * The color of the selected element in the chart in hex format.
+   * @type {string}
+   * @default '#03C809' (green)
+   * @memberof UserSettings
+   */
   colorSelected = '#03C809';
-  brailleDisplayLength = 32; // num characters in user's braille display.  40 is common length for desktop / mobile applications
+  /**
+   * The length of the braille display in characters. Braille displays have a variety of sizes; 40 is pretty common, 32 is quite reliable. Set this to your actual display length so that the system can scale and display braille properly for you (where possible).
+   * @type {number}
+   * @default 32
+   * @memberof UserSettings
+   */
+  brailleDisplayLength = 32;
 
   // advanced user settings
-  showRect = 1; // true / false
+  /**
+   * @namespace AdvancedUserSettings
+   */
+  /**
+   * Whether or not to show the outline of the selected element in the chart.
+   * @type {boolean}
+   * @default true
+   * @memberof AdvancedUserSettings
+   */
+  showRect = 1;
+  /**
+   * Whether or not the chart even has a rectangle to show.
+   * @type {boolean}
+   * @default true
+   * @memberof AdvancedUserSettings
+   */
   hasRect = 1; // true / false
-  hasSmooth = 1; // true / false (for smooth line points)
+  /**
+   * Whether or not the chart has smooth line points.
+   * @type {boolean}
+   * @default true
+   * @memberof AdvancedUserSettings
+   */
+  hasSmooth = 1;
+  /**
+   * Standard tone duration in seconds.
+   * @type {number}
+   * @default 0.3
+   * @memberof AdvancedUserSettings
+   */
   duration = 0.3;
+  /**
+   * Outlier tone duration in seconds.
+   * @type {number}
+   * @default 0.06
+   * @memberof AdvancedUserSettings
+   */
   outlierDuration = 0.06;
-  autoPlayOutlierRate = 50; // ms per tone
-  autoPlayPointsRate = 50; // time between tones in a run
+  /**
+   * The rate at which to play outlier tones in the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 50
+   * @memberof AdvancedUserSettings
+   */
+  autoPlayOutlierRate = 50;
+  /**
+   * The rate at which to play points in the autoplay feature, in milliseconds per tone.
+   * @type {number}
+   * @default 50
+   * @memberof AdvancedUserSettings
+   */
+  autoPlayPointsRate = 50;
+  /**
+   * The rate at which to play lines in the autoplay feature, in milliseconds per tone. Deprecated.
+   * @type {number}
+   * @default 50
+   * @memberof AdvancedUserSettings
+   */
   colorUnselected = '#595959'; // deprecated, todo: find all instances replace with storing old color method
-  canTrack = 1; // 0 / 1, can we track user data
-  isTracking = 1; // 0 / 1, is tracking currently on or off
+  /**
+   * Whether or not we're logging user data. This is off by default, but is used for research purposes.
+   * @type {boolean}
+   * @default 0
+   * @memberof AdvancedUserSettings
+   */
+  canTrack = 0; // 0 / 1, can we track user data
+  /**
+   * Whether or not we're currently tracking user data.
+   * @type {boolean}
+   * @default 1
+   * @memberof AdvancedUserSettings
+   */
+  isTracking = 1;
+  /**
+   * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
+   * @type {boolean}
+   * @default false
+   * @memberof AdvancedUserSettings
+   */
   visualBraille = false; // do we want to represent braille based on what's visually there or actually there. Like if we have 2 outliers with the same position, do we show 1 (visualBraille true) or 2 (false)
-  globalMinMax = true;
-  ariaMode = 'assertive'; // assertive (default) / polite
+  /**
+   * The aria mode used throughout the application. Can be 'assertive' or 'polite'.
+   * @type {("assertive"|"polite")}
+   * @default 'assertive'
+   * @memberof AdvancedUserSettings
+   */
+  ariaMode = 'assertive';
 
+  /**
+   * Full list of user settings, used internally to save and load settings.
+   * @type {string[]}
+   */
   userSettingsKeys = [
     'vol',
     'autoPlayRate',
@@ -297,40 +437,189 @@ class Constants {
   ];
 
   // LLM settings
-  openAIAuthKey = null; // OpenAI authentication key, set in menu
-  geminiAuthKey = null; // Gemini authentication key, set in menu
+  /**
+   * @namespace LLMSettings
+   */
+  /**
+   * The OpenAI authentication key, set in the menu.
+   * @type {string}
+   * @default null
+   * @memberof LLMSettings
+   */
+  openAIAuthKey = null;
+  /**
+   * The Gemini authentication key, set in the menu.
+   * @type {string}
+   * @default null
+   * @memberof LLMSettings
+   */
+  geminiAuthKey = null;
+  /**
+   * The maximum number of tokens to send to the LLM, only used if the specific LLM has that feature.
+   * @type {number}
+   * @default 1000
+   * @memberof LLMSettings
+   */
   LLMmaxResponseTokens = 1000; // max tokens to send to LLM, 20 for testing, 1000 ish for real
+  /**
+   * Whether or not to play the LLM waiting sound. It's a 1/sec beep.
+   * @type {boolean}
+   * @default true
+   * @memberof LLMSettings
+   */
   playLLMWaitingSound = true;
+  /**
+   * The detail level of the LLM. Can be 'low' or 'high'. Only used if the specific LLM has that feature.
+   * @type {"low"|"high"}
+   * @default 'high'
+   * @memberof LLMSettings
+   */
   LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
-  LLMModel = 'openai'; // openai (default) / gemini
+  /**
+   * Current LLM model in use. Can be 'openai' (default) or 'gemini' or 'multi'. More to be added.
+   * @type {("openai"|"gemini"|"multi")}
+   * @default 'openai'
+   * @memberof LLMSettings
+   */
+  LLMModel = 'openai';
+  /**
+   * The default system message for the LLM. Helps the LLM understand the context of the chart and its role.
+   * @type {string}
+   * @default 'You are a helpful assistant describing the chart to a blind person. '
+   * @memberof LLMSettings
+   */
   LLMSystemMessage =
     'You are a helpful assistant describing the chart to a blind person. ';
+  /**
+   * The level of skill the user has with statistical charts. Can be 'basic', 'intermediate', 'expert', or 'other'. This is passed to the LLM on the initial message to help it speak correctly to the user. If 'other' is selected, the user can provide a custom skill level.
+   * @type {("basic"|"intermediate"|"expert"|"other")}
+   * @default 'basic'
+   * @memberof LLMSettings
+   */
   skillLevel = 'basic'; // basic / intermediate / expert
+  /**
+   * Custom skill level, used if the user selects 'other' as their skill level.
+   * @type {string}
+   * @default ''
+   * @memberof LLMSettings
+   */
   skillLevelOther = ''; // custom skill level
+  /**
+   * The LLM can send the first default message containing the chart image on initialization, so when the user opens the chat window the LLM already has an initial response and is ready for a conversation.
+   * @type {boolean}
+   * @default true
+   * @memberof LLMSettings
+   */
   autoInitLLM = true; // auto initialize LLM on page load
+  /**
+   * An internal variable used to store the current full verbose text, helps gives the LLM context on what's going on in the chart.
+   * @type {string}
+   * @default ''
+   * @memberof LLMSettings
+   */
   verboseText = '';
+  /**
+   * An internal variable used to turn the waiting beep on and off.
+   * @type {number}
+   * @default 0
+   * @memberof LLMSettings
+   */
   waitingQueue = 0;
 
   // user controls (not exposed to menu, with shortcuts usually)
+  /**
+   * Whether or not to show the main display.
+   * @type {boolean}
+   * @default true
+   * @memberof AdvancedUserSettings
+   */
   showDisplay = 1; // true / false
+  /**
+   * Whether or not to show the display in braille.
+   * @type {boolean}
+   * @default true
+   * @memberof AdvancedUserSettings
+   */
   showDisplayInBraille = 1; // true / false
+  /**
+   * Whether or not to show the display in autoplay.
+   * @type {boolean}
+   * @default false
+   * @memberof AdvancedUserSettings
+   */
   showDisplayInAutoplay = 0; // true / false
+  /**
+   * The interval for the outlier. This might not be used anymore.
+   * @type {number}
+   * @default null
+   * @memberof AdvancedUserSettings
+   */
   outlierInterval = null;
 
   // platform controls
+  /**
+   * @namespace PlatformControls
+   */
+  /**
+   * Whether or not the user is on a Mac. Set automatically.
+   * @type {boolean}
+   * @memberof PlatformControls
+   */
   isMac = navigator.userAgent.toLowerCase().includes('mac'); // true if macOS
+  /**
+   * The control key for the user's platform. Can be 'Cmd' or 'Ctrl'. Used in keyboard shortcut display in help.
+   * @type {"Cmd"|"Ctrl"}
+   * @memberof PlatformControls
+   */
   control = this.isMac ? 'Cmd' : 'Ctrl';
+  /**
+   * The alt key for the user's platform. Can be 'option' or 'Alt'. Used in keyboard shortcut display in help.
+   * @type {"option"|"Alt"}
+   * @memberof PlatformControls
+   */
   alt = this.isMac ? 'option' : 'Alt';
+  /**
+   * The home key for the user's platform. Can be 'fn + Left arrow' or 'Home'. Used in keyboard shortcut display in help.
+   * @type {"fn + Left arrow"|"Home"}
+   * @memberof PlatformControls
+   */
   home = this.isMac ? 'fn + Left arrow' : 'Home';
+  /**
+   * The end key for the user's platform. Can be 'fn + Right arrow' or 'End'. Used in keyboard shortcut display in help.
+   * @type {"fn + Right arrow"|"End"}
+   * @memberof PlatformControls
+   */
   end = this.isMac ? 'fn + Right arrow' : 'End';
 
   // internal controls
+  // todo: are these even used? Sean doesn't think so (May 2024)
   keypressInterval = 2000; // ms or 2s
   tabMovement = null;
 
   // debug stuff
+  /**
+   * @namespace DebugSettings
+   */
+  /**
+   * The debug level of the application. 0 = no console output, 1 = some console, 2 = more console, etc.
+   * @type {number}
+   * @default 3
+   * @memberof DebugSettings
+   */
   debugLevel = 3; // 0 = no console output, 1 = some console, 2 = more console, etc
+  /**
+   * Whether or not to display the end chime. This is not currently implemented as the end chime is not yet implemented.
+   * @type {boolean}
+   * @default false
+   * @memberof DebugSettings
+   */
   canPlayEndChime = false; //
+  /**
+   * Whether or not the LLM is connected, or generates a fake response for testing.
+   * @type {boolean}
+   * @default false
+   * @memberof DebugSettings
+   */
   manualData = true; // pull from manual data like chart2music (true), or do the old method where we pull from the chart (false)
 
   KillAutoplay() {
