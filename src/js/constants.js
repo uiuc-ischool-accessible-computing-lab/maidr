@@ -1456,7 +1456,8 @@ class ChatLLM {
         id: 'chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7',
         object: 'chat.completion',
         created: 1703129508,
-        model: 'gpt-4-1106-vision-preview',
+        //model: 'gpt-4-1106-vision-preview',
+        model: 'gpt4-o',
         usage: {
           prompt_tokens: 451,
           completion_tokens: 16,
