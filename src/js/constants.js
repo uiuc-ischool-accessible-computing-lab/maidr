@@ -1456,8 +1456,7 @@ class ChatLLM {
         id: 'chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7',
         object: 'chat.completion',
         created: 1703129508,
-        //model: 'gpt-4-1106-vision-preview',
-        model: 'gpt-4o',
+        model: 'gpt-4-1106-vision-preview',
         usage: {
           prompt_tokens: 451,
           completion_tokens: 16,
@@ -1544,7 +1543,7 @@ class ChatLLM {
     if (!this.requestJson) {
       this.requestJson = {};
       //this.requestJson.model = 'gpt-4-vision-preview';
-      this.requestJson.model = 'gpt4-o';
+      this.requestJson.model = 'gpt-4o';
       this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
 
       // sys message
