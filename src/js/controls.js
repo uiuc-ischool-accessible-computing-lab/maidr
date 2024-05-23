@@ -280,7 +280,7 @@ class Control {
 
       // testing for braille cursor routing
       constants.events.push([
-        constants.brailleInput,
+        documnent,
         'selectionchange',
         function (e) {
           const selection = document.getSelection();
@@ -289,17 +289,20 @@ class Control {
           console.log('Testing cursor routing');
           console.log('Selection:', selection);
           console.log('Offset:', offset);
+          console.log('Target:', e.target);
 
-          position.x = offset;
-          updateInfoThisRound = true;
-          isAtEnd = lockPosition();
+          if ((e.target = constants.brailleInput)) {
+            position.x = offset;
+            updateInfoThisRound = true;
+            isAtEnd = lockPosition();
 
-          // update display / text / audio
-          if (updateInfoThisRound && !isAtEnd) {
-            UpdateAll();
-          }
-          if (isAtEnd) {
-            audio.playEnd();
+            // update display / text / audio
+            if (updateInfoThisRound && !isAtEnd) {
+              UpdateAll();
+            }
+            if (isAtEnd) {
+              audio.playEnd();
+            }
           }
         },
       ]);
