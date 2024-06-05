@@ -279,6 +279,7 @@ class Control {
       let lastPlayed = '';
 
       // testing for braille cursor routing
+      /*
       constants.events.push([
         document,
         'selectionchange',
@@ -306,6 +307,41 @@ class Control {
           }
         },
       ]);
+      */
+
+      document.addEventListener('selectionchange', function (e) {
+        const selection = document.getSelection();
+        let offset = selection.anchorOffset;
+
+        console.log('Testing cursor routing, part 2');
+        console.log('Selection:', selection);
+        console.log('Offset:', offset);
+        console.log('Target:', e.target);
+
+        if (e.target == constants.brailleInput) {
+          position.x = offset;
+          updateInfoThisRound = true;
+          isAtEnd = lockPosition();
+
+          // update display / text / audio
+          if (updateInfoThisRound && !isAtEnd) {
+            UpdateAll();
+          }
+          if (isAtEnd) {
+            audio.playEnd();
+          }
+        }
+      });
+
+      document.addEventListener('selectionchange', () => {
+        const selection = document.getSelection();
+        let offset = selection.anchorOffset;
+
+        console.log('Testing cursor routing, part 3');
+        console.log('Selection:', selection);
+        console.log('Offset:', offset);
+        console.log('Target:', e.target);
+      });
 
       // control eventlisteners
       constants.events.push([
