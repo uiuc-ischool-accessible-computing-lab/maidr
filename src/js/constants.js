@@ -622,13 +622,21 @@ class Constants {
    */
   manualData = true; // pull from manual data like chart2music (true), or do the old method where we pull from the chart (false)
 
+  /**
+   * Stops the autoplay if it is currently running.
+   *
+   * @return {void}
+   */
   KillAutoplay() {
-    if (this.autoplayId) {
-      clearInterval(this.autoplayId);
-      this.autoplayId = null;
-    }
+    clearInterval(this.autoplayId);
+    this.autoplayId = null;
   }
 
+  /**
+   * Stops the autoplay if it is currently running.
+   *
+   * @return {void}
+   */
   KillSepPlay() {
     if (this.sepPlayId) {
       clearInterval(this.sepPlayId);
@@ -636,18 +644,33 @@ class Constants {
     }
   }
 
+  /**
+   * Speed up the autoplay rate by the specified interval.
+   *
+   * @return {void}
+   */
   SpeedUp() {
     if (constants.autoPlayRate - this.INTERVAL > this.MIN_SPEED) {
       constants.autoPlayRate -= this.INTERVAL;
     }
   }
 
+  /**
+   * Speed down the autoplay rate by the specified interval.
+   *
+   * @return {void}
+   */
   SpeedDown() {
     if (constants.autoPlayRate + this.INTERVAL <= this.MAX_SPEED) {
       constants.autoPlayRate += this.INTERVAL;
     }
   }
 
+  /**
+   * Reset the autoplay rate to the default.
+   *
+   * @return {void}
+   */
   SpeedReset() {
     constants.autoPlayRate = constants.DEFAULT_SPEED;
   }
@@ -656,7 +679,6 @@ class Constants {
    * Function to convert hexadecimal color to string formatted rgb() functional notation.
    * @param hexColorString - hexadecimal color (e.g., "#595959").
    * @returns {string} - rgb() functional notation string (e.g., "rgb(100,100,100)").
-   * @constructor
    */
   ConvertHexToRGBString(hexColorString) {
     return (
@@ -674,7 +696,6 @@ class Constants {
    * Function to convert an rgb() functional notation string to hexadecimal color.
    * @param rgbColorString - color in rgb() functional notation (e.g., "rgb(100,100,100)").
    * @returns {string} - hexadecimal color (e.g., "#595959").
-   * @constructor
    */
   ConvertRGBStringToHex(rgbColorString) {
     let rgb = rgbColorString.replace(/[^\d,]/g, '').split(',');
@@ -686,6 +707,12 @@ class Constants {
     );
   }
 
+  /**
+   * Inverts an RGB color by subtracting each color component from 255.
+   *
+   * @param {string} color - The RGB color to invert, in the format "rgb(r,g,b)".
+   * @return {string} The inverted RGB color, in the format "rgb(r,g,b)".
+   */
   ColorInvert(color) {
     // invert an rgb color
     let rgb = color.replace(/[^\d,]/g, '').split(',');
@@ -694,10 +721,13 @@ class Constants {
     let b = 255 - rgb[2];
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
+
+  /**
+   * Determines the best contrast color for the given color, by inverting it if necessary, but if it's just a shade of gray, default to this.colorSelected
+   * @param {string} oldColor - The color to make better
+   * @returns {string} The better color
+   */
   GetBetterColor(oldColor) {
-    // get a highly contrasting color against the current
-    // method: choose an inverted color, but if it's just a shade of gray, default to this.colorSelected
-    // Convert hex color to RGB color string if needed
     if (oldColor.indexOf('#') !== -1) {
       oldColor = this.ConvertHexToRGBString(oldColor);
     }
@@ -721,7 +751,6 @@ class Constants {
    * Function to parse a string containing CSS styles and return an array of strings containing CSS style attributes and values.
    * @param styleString - a string containing CSS styles in inline format.
    * @returns {string[]} - an array of strings containing CSS style attributes and values.
-   * @constructor
    */
   GetStyleArrayFromString(styleString) {
     // Get an array of CSS style attributes and values from a style string
@@ -732,7 +761,6 @@ class Constants {
    * Function to parse an array of strings containing CSS style attributes and values and return a string containing CSS styles.
    * @param styleArray - an array of strings containing CSS style attributes and values.
    * @returns {string} - a string containing the CSS styles.
-   * @constructor
    */
   GetStyleStringFromArray(styleArray) {
     // Get CSS style string from an array of style attributes and values
@@ -753,15 +781,15 @@ class Constants {
 }
 
 /**
- * Resources class contains properties and methods related to language, knowledge level, and strings.
+ * Resources class to hold localization strings
  */
 class Resources {
   constructor() {}
 
-  language = 'en'; // 2 char lang code
+  language = 'en'; // Current language, 2 char lang code
   knowledgeLevel = 'basic'; // basic, intermediate, expert
 
-  // these strings run on getters, which pull in language, knowledgeLevel, chart, and actual requested string
+  // language strings, per 2 char language code
   strings = {
     en: {
       basic: {
@@ -802,7 +830,7 @@ class Resources {
 }
 
 /**
- * Represents a menu object with various settings and keyboard shortcuts.
+ * Represents a menu class that contains the settings menu
  */
 class Menu {
   whereWasMyFocus = null;
@@ -812,6 +840,7 @@ class Menu {
     this.LoadDataFromLocalStorage();
   }
 
+  // initial html for the menu
   menuHtml = `
         <div id="menu" class="modal hidden" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document" tabindex="0">
@@ -1137,10 +1166,7 @@ class Menu {
 
   /**
    * Destroys the menu element and its backdrop.
-   * @function
-   * @name Destroy
-   * @memberof module:constants
-   * @returns {void}
+   * @return {void}
    */
   Destroy() {
     // menu element destruction
@@ -1155,8 +1181,9 @@ class Menu {
   }
 
   /**
-   * Toggles the menu on and off.
+   * Toggles the menu on and off, toggling the css 'hidden' class.
    * @param {boolean} [onoff=false] - Whether to turn the menu on or off. Defaults to false (close).
+   * @return {void}
    */
   Toggle(onoff = false) {
     if (typeof onoff == 'undefined') {
@@ -1190,7 +1217,8 @@ class Menu {
   }
 
   /**
-   * Populates the form fields in the help menu with the values from the constants object.
+   * Populates the form fields in the help menu with stored values in constants, which pulls from localStorage
+   * @return {void}
    */
   PopulateData() {
     document.getElementById('vol').value = constants.vol;
@@ -1280,7 +1308,8 @@ class Menu {
   }
 
   /**
-   * Saves the data from the HTML elements into the constants object.
+   * Saves the data from the HTML elements into the constants object, which is later stored in localStorage
+   * @return {void}
    */
   SaveData() {
     let shouldReset = this.ShouldLLMReset();
@@ -1325,11 +1354,7 @@ class Menu {
   }
 
   /**
-   * Updates various html elements and attributes.
-   * Typically used to do things like update the aria-live attributes
-   *
-   * @function
-   * @memberof constants
+   * Sets the aria attributes on the HTML elements in the menu
    * @returns {void}
    */
   UpdateHtml() {
@@ -1343,7 +1368,8 @@ class Menu {
   }
 
   /**
-   * Notifies the user that the LLM will be reset.
+   * Adds a textual notification near the submit button to tell the user that the LLM history will be reset
+   * @return {void}
    */
   NotifyOfLLMReset() {
     let html =
@@ -1365,8 +1391,9 @@ class Menu {
       );
   }
   /**
-   * Handles changes to the LLM model and multi-modal settings.
-   * We reset if we change the LLM model, multi settings, or skill level.
+   * Checks whether or not we should reset the LLM history.
+   * Criteria: if we've changed the LLM model, multi settings, preferences, or skill level.
+   * @return {boolean} - if we're resetting or not.
    */
   ShouldLLMReset() {
     let shouldReset = false;
@@ -1403,9 +1430,7 @@ class Menu {
   }
 
   /**
-   * Saves all data in Menu to local storage.
-   * @function
-   * @memberof constants
+   * Saves all data settings data in local storage. Specifially this saves data in constants variables to settings_data localStorage
    * @returns {void}
    */
   SaveDataToLocalStorage() {
@@ -1427,7 +1452,7 @@ class Menu {
     }
   }
   /**
-   * Loads data from local storage and updates the constants object with the retrieved values, to be loaded into the menu
+   * Loads data from 'settings_data' localStorage, and updates contants variables
    */
   LoadDataFromLocalStorage() {
     let data = JSON.parse(localStorage.getItem('settings_data'));
@@ -1443,9 +1468,7 @@ class Menu {
 }
 
 /**
- * Creates an html modal with a basic text input,
- * and hooks to send info to an LLM
- * @class
+ * This class creates the chat LLM window, handles events, and handles all of the LLM calls
  */
 class ChatLLM {
   constructor() {
@@ -1520,6 +1543,7 @@ class ChatLLM {
 
   /**
    * Sets events for the chatLLM modal
+   * @return {void}
    */
   SetEvents() {
     // chatLLM close events
