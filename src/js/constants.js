@@ -1019,6 +1019,8 @@ class Menu {
   /**
    * Creates a menu element and sets up event listeners for opening and closing the menu,
    * and saving and loading data from local storage.
+   *
+   * @returns {void}
    */
   CreateMenu() {
     // menu element creation
@@ -2958,7 +2960,7 @@ class Tracker {
 }
 
 /**
- * Represents a Review object.
+ * The Review class. Review mode is basically an input that users can toggle to that holds the last text output. Very useful for screen reader users who want to copy what was just said.
  * @class
  */
 class Review {
@@ -2991,7 +2993,8 @@ class Review {
 }
 
 /**
- * Represents a class for logging errors.
+ * Represents a class for more easily sending custom errors to the console.
+ * @class
  */
 class LogError {
   constructor() {}
