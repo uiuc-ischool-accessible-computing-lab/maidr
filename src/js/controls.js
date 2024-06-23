@@ -292,8 +292,7 @@ class Control {
         if (constants.brailleMode == 'on') {
           if (constants.brailleInput.selectionDirection == 'forward') {
             // we're using braille cursor
-            // braille cursor is always one character behind
-            pos = constants.brailleInput.selectionStart - 1;
+            pos = constants.brailleInput.selectionStart;
             if (pos < 0) {
               pos = 0;
             }
