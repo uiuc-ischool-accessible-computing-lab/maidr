@@ -283,7 +283,6 @@ class Control {
       let lastPlayed = '';
 
       // testing for braille cursor routing
-      /*
       document.addEventListener('selectionchange', function (e) {
         // notes:
         // this basically works
@@ -297,6 +296,7 @@ class Control {
         const selection = document.getSelection();
         console.log('Testing cursor routing', new Date().toLocaleTimeString());
         console.log('selection: ', selection);
+        console.log('event: ', e);
         let pos = constants.brailleInput.selectionStart;
         console.log('Position: ', pos);
         position.x = pos - 1; // selection starts at 1, so we subtract 1 to get the actual position
@@ -310,7 +310,6 @@ class Control {
           audio.playEnd();
         }
       });
-      */
 
       // control eventlisteners
       constants.events.push([
