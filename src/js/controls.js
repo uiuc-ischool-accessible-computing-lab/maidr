@@ -284,22 +284,27 @@ class Control {
 
       // testing for braille cursor routing
       document.addEventListener('selectionchange', function (e) {
-        // notes:
-        // this basically works
-        // constants.braillInput.selectionStart is the key, and is the position,
-        // but it starts at 1, so we need to subtract 1 to get the actual position
-        // hard part is that we need to wire this through the whole script
-        // event is selectionchange, so we'll either need to refactor and do separate events + functions for this,
-        // or pull UpdateAll() etc into their own area so it can be triggered from anywhere
-        // ... ideally let's do that. Better yet, have a global UpdateAll, not per chart
+        console.log('Testing cursor routing', new Date().toLocaleTimeString());
 
         const selection = document.getSelection();
-        console.log('Testing cursor routing', new Date().toLocaleTimeString());
-        console.log('selection: ', selection);
-        console.log('event: ', e);
         let pos = constants.brailleInput.selectionStart;
+
+        if (constants.brailleMode == 'on') {
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor
+            // braille cursor is always one character behind
+            pos = constants.brailleInput.selectionStart - 1;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
         console.log('Position: ', pos);
-        position.x = pos - 1; // selection starts at 1, so we subtract 1 to get the actual position
+        position.x = pos;
         let testEnd = lockPosition();
 
         // update display / text / audio
