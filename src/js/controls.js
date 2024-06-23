@@ -305,7 +305,8 @@ class Control {
         }
         console.log('Position: ', pos);
         position.x = pos;
-        let testEnd = lockPosition();
+        lockPosition();
+        let testEnd = true;
 
         // update display / text / audio
         if (testEnd) {
