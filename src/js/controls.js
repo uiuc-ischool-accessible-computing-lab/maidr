@@ -286,12 +286,17 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         console.log('Testing cursor routing', new Date().toLocaleTimeString());
 
+        // bugs: braille cursor moves between position and position + 1
+        // bugs: blinking cursor isn't always accurate
+        // fixable bug: cursor can get out of sync slightly,
+        // caused if you hit a key JUST past the last char (so #6 for the tut example)
+        // need to check if cursor is past the last char and set to just before
         const selection = document.getSelection();
         let pos = constants.brailleInput.selectionStart;
 
         if (constants.brailleMode == 'on') {
           if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor
+            // we're using braille cursor, update the selection from what was clicked
             pos = constants.brailleInput.selectionStart;
             if (pos < 0) {
               pos = 0;
@@ -493,17 +498,19 @@ class Control {
       function lockPosition() {
         // lock to min / max postions
         let didLockHappen = false;
-        // if (!constants.hasRect) {
-        //   return didLockHappen;
-        // }
 
         if (position.x < 0) {
           position.x = 0;
           didLockHappen = true;
+          if (constants.brailleMode != 'off') {
+            // change selection to match postion as well
+            constants.brailleInput.selectionEnd = 0;
+          }
         }
         if (position.x > plot.plotData.length - 1) {
           position.x = plot.plotData.length - 1;
           didLockHappen = true;
+          constants.brailleInput.selectionEnd = plot.plotData.length - 1;
         }
 
         return didLockHappen;
