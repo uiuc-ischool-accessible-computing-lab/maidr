@@ -282,19 +282,10 @@ class Control {
       constants.lastx = 0;
       let lastPlayed = '';
 
-      // testing for braille cursor routing
+      // braille cursor routing
       document.addEventListener('selectionchange', function (e) {
-        console.log('Testing cursor routing', new Date().toLocaleTimeString());
-
-        // bugs: braille cursor moves between position and position + 1
-        // bugs: blinking cursor isn't always accurate
-        // fixable bug: cursor can get out of sync slightly,
-        // caused if you hit a key JUST past the last char (so #6 for the tut example)
-        // need to check if cursor is past the last char and set to just before
-        const selection = document.getSelection();
-        let pos = constants.brailleInput.selectionStart;
-
         if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
           if (constants.brailleInput.selectionDirection == 'forward') {
             // we're using braille cursor, update the selection from what was clicked
             pos = constants.brailleInput.selectionStart;
@@ -304,20 +295,19 @@ class Control {
           } else {
             // we're using normal cursor, let the default handle it
           }
+          position.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
         } else {
           // we're using normal cursor, let the default handle it
-        }
-        console.log('Position: ', pos);
-        position.x = pos;
-        lockPosition();
-        let testEnd = true;
-
-        // update display / text / audio
-        if (testEnd) {
-          UpdateAll();
-        }
-        if (testEnd) {
-          audio.playEnd();
         }
       });
 
@@ -597,6 +587,39 @@ class Control {
       }
       let lastPlayed = '';
 
+      // braille cursor routing
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+          if (constants.plotOrientation == 'vert') {
+            position.x = pos;
+          } else {
+            position.y = pos;
+          }
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
+
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -609,12 +632,14 @@ class Control {
           if (e.key == 'ArrowRight') {
             if (constants.isMac ? e.metaKey : e.ctrlKey) {
               if (e.shiftKey) {
+                // autoplay
                 if (constants.plotOrientation == 'vert') {
                   Autoplay('right', position.x, plot.plotData.length - 1);
                 } else {
                   Autoplay('right', position.x, plot.sections.length - 1);
                 }
               } else {
+                // move to end
                 isAtEnd = lockPosition();
                 if (constants.plotOrientation == 'vert') {
                   position.x = plot.plotData.length - 1;
@@ -633,6 +658,7 @@ class Control {
                 lastY = position.y;
                 Autoplay('reverse-right', plot.plotData.length - 1, position.x);
               } else {
+                // normal movement
                 if (position.x == -1 && position.y == plot.sections.length) {
                   position.y -= 1;
                 }
@@ -1205,6 +1231,37 @@ class Control {
       let lastPlayed = '';
       constants.lastx = 0;
 
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+
+          // actual position is based on num_cols and num_rows and the spacer
+          position.y = Math.floor(pos / (plot.num_cols + 1));
+          position.x = pos % (plot.num_cols + 1);
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
+
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -1310,6 +1367,8 @@ class Control {
             }
             constants.navigation = 0;
           }
+
+          console.log('position: ' + position.x + ', ' + position.y);
 
           // update text, display, and audio
           if (updateInfoThisRound && !isAtEnd) {
@@ -1676,6 +1735,34 @@ class Control {
       let lastx1 = 0; // for smooth layer autoplay use
 
       window.positionL1 = new Position(lastx1, lastx1);
+
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+          position.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
 
       // control eventlisteners
       constants.events.push([
@@ -2131,6 +2218,34 @@ class Control {
       let lastPlayed = '';
       constants.lastx = 0;
 
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+          position.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
+
       // control eventlisteners
       constants.events.push([
         [constants.chart, constants.brailleInput],
@@ -2376,6 +2491,34 @@ class Control {
       // global variables
       let lastPlayed = '';
       constants.lastx = 0;
+
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          if (constants.brailleInput.selectionDirection == 'forward') {
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+          } else {
+            // we're using normal cursor, let the default handle it
+          }
+          position.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
 
       // control eventlisteners
       constants.events.push([
