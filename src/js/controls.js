@@ -590,16 +590,35 @@ class Control {
       // braille cursor routing
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
+          let cursorPos = constants.brailleInput.selectionStart;
           if (constants.brailleInput.selectionDirection == 'forward') {
             // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
+            cursorPos = constants.brailleInput.selectionStart;
+            if (cursorPos < 0) {
               pos = 0;
             }
           } else {
             // we're using normal cursor, let the default handle it
           }
+
+          // convert braille position to start of whatever section we're in
+          let walk = 0;
+          let posType = '';
+          if (constants.brailleData) {
+            for (let i = 0; i < constants.brailleData.length; i++) {
+              walk += constants.brailleData[i].numChars;
+              if (walk > cursorPos) {
+                if (constants.brailleData[i].type == 'blank') {
+                  posType = constants.brailleData[i + 1].type;
+                } else {
+                  posType = constants.brailleData[i].type;
+                }
+                break;
+              }
+            }
+          }
+          let pos = plot.sections.indexOf(posType);
+
           if (constants.plotOrientation == 'vert') {
             position.x = pos;
           } else {
@@ -1234,6 +1253,18 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
+
+          // exception: don't let users click the seperator char
+          let seperatorPositions = constants.brailleInput.value
+            .split('')
+            .reduce((positions, char, index) => {
+              if (char === '⠳') positions.push(index);
+              return positions;
+            }, []);
+          if (seperatorPositions.includes(pos)) {
+            return;
+          }
+
           if (constants.brailleInput.selectionDirection == 'forward') {
             // we're using braille cursor, update the selection from what was clicked
             pos = constants.brailleInput.selectionStart;
@@ -1736,6 +1767,8 @@ class Control {
 
       window.positionL1 = new Position(lastx1, lastx1);
 
+      // todo / bug: does'nt work at all on just line (in gallery)
+      // it sorta works in scatter (in gallery), visual highlight changes, but sonify and text don't update
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
@@ -1748,7 +1781,7 @@ class Control {
           } else {
             // we're using normal cursor, let the default handle it
           }
-          position.x = pos;
+          positionL1.x = pos;
           lockPosition();
           let testEnd = true;
 
@@ -2492,6 +2525,8 @@ class Control {
       let lastPlayed = '';
       constants.lastx = 0;
 
+      // todo bug, forgot about all mode
+      // bug: you can click 1 past end (for all chart types). Make sure we're lockign and then resetting the selectionStart
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
