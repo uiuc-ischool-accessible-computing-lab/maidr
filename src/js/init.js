@@ -358,6 +358,7 @@ function CreateChartComponents() {
       constants.brailleDisplayLength +
       '" ' +
       'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
+      'autocomplete="off" ' +
       '/>\n</div>\n'
   );
 

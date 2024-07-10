@@ -588,6 +588,8 @@ class Control {
       let lastPlayed = '';
 
       // braille cursor routing
+      // bug: still not working. Not really sure what's going on but the tethering is now totally broken
+      // like, it doesn't even seem to be on the right plot
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let cursorPos = constants.brailleInput.selectionStart;
