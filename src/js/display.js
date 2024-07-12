@@ -1052,8 +1052,6 @@ class Display {
     }
 
     constants.brailleInput.value = brailleArray.join('');
-
-    constants.brailleInput.value = brailleArray.join('');
     if (constants.debugLevel > 5) {
       console.log('braille:', constants.brailleInput.value);
     }

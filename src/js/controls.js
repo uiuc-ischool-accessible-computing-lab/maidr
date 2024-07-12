@@ -593,51 +593,52 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let cursorPos = constants.brailleInput.selectionStart;
+          console.log(
+            'cursor direction',
+            constants.brailleInput.selectionDirection
+          );
           if (constants.brailleInput.selectionDirection == 'forward') {
             // we're using braille cursor, update the selection from what was clicked
             cursorPos = constants.brailleInput.selectionStart;
             if (cursorPos < 0) {
               pos = 0;
             }
+            // convert braille position to start of whatever section we're in
+            let walk = 0;
+            let posType = '';
+            if (constants.brailleData) {
+              for (let i = 0; i < constants.brailleData.length; i++) {
+                walk += constants.brailleData[i].numChars;
+                if (walk > cursorPos) {
+                  if (constants.brailleData[i].type == 'blank') {
+                    posType = constants.brailleData[i + 1].type;
+                  } else {
+                    posType = constants.brailleData[i].type;
+                  }
+                  break;
+                }
+              }
+            }
+            let pos = plot.sections.indexOf(posType);
+
+            if (constants.plotOrientation == 'vert') {
+              position.x = pos;
+            } else {
+              position.y = pos;
+            }
+            lockPosition();
+            let testEnd = true;
+
+            // update display / text / audio
+            if (testEnd) {
+              UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
           } else {
             // we're using normal cursor, let the default handle it
           }
-
-          // convert braille position to start of whatever section we're in
-          let walk = 0;
-          let posType = '';
-          if (constants.brailleData) {
-            for (let i = 0; i < constants.brailleData.length; i++) {
-              walk += constants.brailleData[i].numChars;
-              if (walk > cursorPos) {
-                if (constants.brailleData[i].type == 'blank') {
-                  posType = constants.brailleData[i + 1].type;
-                } else {
-                  posType = constants.brailleData[i].type;
-                }
-                break;
-              }
-            }
-          }
-          let pos = plot.sections.indexOf(posType);
-
-          if (constants.plotOrientation == 'vert') {
-            position.x = pos;
-          } else {
-            position.y = pos;
-          }
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
         }
       });
 
