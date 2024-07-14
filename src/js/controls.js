@@ -286,14 +286,10 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
-              pos = 0;
-            }
-          } else {
-            // we're using normal cursor, let the default handle it
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
           }
           position.x = pos;
           lockPosition();
@@ -593,51 +589,43 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let cursorPos = constants.brailleInput.selectionStart;
-          console.log(
-            'cursor direction',
-            constants.brailleInput.selectionDirection
-          );
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            cursorPos = constants.brailleInput.selectionStart;
-            if (cursorPos < 0) {
-              pos = 0;
-            }
-            // convert braille position to start of whatever section we're in
-            let walk = 0;
-            let posType = '';
-            if (constants.brailleData) {
-              for (let i = 0; i < constants.brailleData.length; i++) {
-                walk += constants.brailleData[i].numChars;
-                if (walk > cursorPos) {
-                  if (constants.brailleData[i].type == 'blank') {
-                    posType = constants.brailleData[i + 1].type;
-                  } else {
-                    posType = constants.brailleData[i].type;
-                  }
-                  break;
+          // we're using braille cursor, update the selection from what was clicked
+          cursorPos = constants.brailleInput.selectionStart;
+          if (cursorPos < 0) {
+            pos = 0;
+          }
+          // convert braille position to start of whatever section we're in
+          let walk = 0;
+          let posType = '';
+          if (constants.brailleData) {
+            for (let i = 0; i < constants.brailleData.length; i++) {
+              walk += constants.brailleData[i].numChars;
+              if (walk > cursorPos) {
+                if (constants.brailleData[i].type == 'blank') {
+                  posType = constants.brailleData[i + 1].type;
+                } else {
+                  posType = constants.brailleData[i].type;
                 }
+                break;
               }
             }
-            let pos = plot.sections.indexOf(posType);
+          }
+          let pos = plot.sections.indexOf(posType);
 
-            if (constants.plotOrientation == 'vert') {
-              position.x = pos;
-            } else {
-              position.y = pos;
-            }
-            lockPosition();
-            let testEnd = true;
-
-            // update display / text / audio
-            if (testEnd) {
-              UpdateAll();
-            }
-            if (testEnd) {
-              audio.playEnd();
-            }
+          if (constants.plotOrientation == 'vert') {
+            position.x = pos;
           } else {
-            // we're using normal cursor, let the default handle it
+            position.y = pos;
+          }
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
           }
         }
       });
@@ -1268,14 +1256,10 @@ class Control {
             return;
           }
 
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
-              pos = 0;
-            }
-          } else {
-            // we're using normal cursor, let the default handle it
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
           }
 
           // actual position is based on num_cols and num_rows and the spacer
@@ -1770,36 +1754,6 @@ class Control {
 
       window.positionL1 = new Position(lastx1, lastx1);
 
-      // todo / bug: does'nt work at all on just line (in gallery)
-      // it sorta works in scatter (in gallery), visual highlight changes, but sonify and text don't update
-      document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
-              pos = 0;
-            }
-          } else {
-            // we're using normal cursor, let the default handle it
-          }
-          positionL1.x = pos;
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
-        }
-      });
-
       // control eventlisteners
       constants.events.push([
         [constants.chart, constants.brailleInput],
@@ -1952,6 +1906,32 @@ class Control {
           }
         }
       }
+
+      // todo / bug: does'nt work at all on just line (in gallery)
+      // it sorta works in scatter (in gallery), visual highlight changes, but sonify and text don't update
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
+          }
+          positionL1.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAllBraille();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
 
       constants.events.push([
         constants.brailleInput,
@@ -2257,14 +2237,10 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
-              pos = 0;
-            }
-          } else {
-            // we're using normal cursor, let the default handle it
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
           }
           position.x = pos;
           lockPosition();
@@ -2533,14 +2509,10 @@ class Control {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
-          if (constants.brailleInput.selectionDirection == 'forward') {
-            // we're using braille cursor, update the selection from what was clicked
-            pos = constants.brailleInput.selectionStart;
-            if (pos < 0) {
-              pos = 0;
-            }
-          } else {
-            // we're using normal cursor, let the default handle it
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
           }
           position.x = pos;
           lockPosition();
@@ -2914,6 +2886,29 @@ class Control {
       // global variables
       let lastPlayed = '';
       constants.lastx = 0;
+
+      // braille cursor routing
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
+          }
+          position.x = pos;
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        }
+      });
 
       // control eventlisteners
       constants.events.push([
