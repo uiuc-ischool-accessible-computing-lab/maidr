@@ -786,6 +786,11 @@ class Display {
         globalMax = constants.maxX;
       }
 
+      // exception: return if we're out of bounds
+      if (plotPos < 0 || plotPos >= plot.plotData.length) {
+        return;
+      }
+
       // We convert main plot data to array of values and types, including min and max, and seperating outliers and removing nulls
       let valData = [];
       valData.push({ type: 'global_min', value: globalMin });

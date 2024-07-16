@@ -587,7 +587,11 @@ class Control {
       // bug: still not working. Not really sure what's going on but the tethering is now totally broken
       // like, it doesn't even seem to be on the right plot
       document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
+        e.preventDefault();
+        if (
+          constants.brailleMode == 'on' &&
+          constants.brailleInput.selectionStart
+        ) {
           let cursorPos = constants.brailleInput.selectionStart;
           // we're using braille cursor, update the selection from what was clicked
           cursorPos = constants.brailleInput.selectionStart;
@@ -612,20 +616,22 @@ class Control {
           }
           let pos = plot.sections.indexOf(posType);
 
-          if (constants.plotOrientation == 'vert') {
-            position.x = pos;
-          } else {
-            position.y = pos;
-          }
-          lockPosition();
-          let testEnd = true;
+          if (posType.length > 0) {
+            if (constants.plotOrientation == 'vert') {
+              position.y = pos;
+            } else {
+              position.x = pos;
+            }
+            lockPosition();
+            let testEnd = true;
 
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
+            // update display / text / audio
+            if (testEnd) {
+              UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
           }
         }
       });
