@@ -396,7 +396,7 @@ class Constants {
    * @default 1
    * @memberof AdvancedUserSettings
    */
-  isTracking = 1;
+  isTracking = 0;
   /**
    * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
    * @type {boolean}
@@ -1662,6 +1662,16 @@ class ChatLLM {
     ]);
   }
 
+  /**
+   * Copies the chat history to the clipboard in markdown format.
+   * We do this by running on any click or keyup event on the chatLLM modal so we can handle all the cases.
+   * If e is undefined, the entire chat history is copied.
+   * If e.type is click, we see what button was clicked and copy just that block or the entire thing
+   * If e.type is keyup, we check for alt shift c or ctrl shift c and copy the last message,
+   * or ctrl shift a for the entire chat history
+   *
+   * @param {Event|undefined} e - The event that triggered the copy action. If undefined, the entire chat history is copied.
+   */
   CopyChatHistory(e) {
     let text = '';
     if (typeof e == 'undefined') {
@@ -1708,9 +1718,9 @@ class ChatLLM {
       let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
       removeThese.forEach((elem) => elem.remove());
 
-      // convert to markdown
+      // convert from html to markdown
       let markdown = this.htmlToMarkdown(cleanElems);
-      // kill more than 2 newlines in a row
+      // this messes up a bit with spacing, so kill more than 2 newlines in a row
       markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
       try {
