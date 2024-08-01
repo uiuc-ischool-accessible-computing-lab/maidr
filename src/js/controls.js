@@ -4,11 +4,26 @@
  */
 class Control {
   /**
+   * Elements that are active and accept the standard control scheme (ie, arrow keys etc)
+   */
+  controlElements = [constants.chart, constants.brailleInput];
+  allControlElements = [
+    constants.chart,
+    constants.brailleInput,
+    constants.review_container,
+  ];
+  /**
+   * We store whether the l key is pressed for preset mode
+   */
+  pressedL = false;
+
+  /**
    * Creates a new instance of the Controls class.
    * @constructor
    */
   constructor() {
     this.InitChartClass();
+    this.SetBTSControls();
     this.SetControls();
   }
 
@@ -50,29 +65,22 @@ class Control {
    * @name SetControls
    * @returns {void}
    */
-  SetControls() {
+  SetBTSControls() {
     // global controls
 
     // variable initialization
-    let controlElements = [
-      constants.chart,
-      constants.brailleInput,
-      constants.review_container,
-    ];
-    let pressedL = false;
-    let pressedTimeout = null;
 
     // main BTS controls
-    for (let i = 0; i < controlElements.length; i++) {
+    for (let i = 0; i < this.allControlElements.length; i++) {
       constants.events.push([
-        controlElements[i],
+        this.allControlElements[i],
         'keydown',
         function (e) {
           // init
           let lastPlayed = '';
 
           // if we're awaiting an L + X prefix, we don't want to do anything else
-          if (pressedL) {
+          if (this.pressedL) {
             return;
           }
 
@@ -148,9 +156,9 @@ class Control {
     }
 
     // We want to tab or shift tab past the chart,
-    for (let i = 0; i < controlElements.length; i++) {
+    for (let i = 0; i < this.allControlElements.length; i++) {
       constants.events.push([
-        controlElements[i],
+        this.allControlElements[i],
         'keydown',
         function (e) {
           if (e.key == 'Tab') {
@@ -164,7 +172,9 @@ class Control {
         },
       ]);
     }
+  }
 
+  SetControls() {
     // prefix events, l + x, where x is a key for the title, axis, etc
     // we listen for a moment when l is hit for a key to follow
     constants.events.push([
@@ -173,16 +183,17 @@ class Control {
       function (e) {
         // init
         let lastPlayed = '';
+        let pressedTimeout = null;
 
         // enable / disable prefix mode
         if (e.key == 'l') {
-          pressedL = true;
+          this.pressedL = true;
           if (pressedTimeout != null) {
             clearTimeout(pressedTimeout);
             pressedTimeout = null;
           }
           pressedTimeout = setTimeout(function () {
-            pressedL = false;
+            this.pressedL = false;
           }, constants.keypressInterval);
         }
 
@@ -230,7 +241,7 @@ class Control {
         }
 
         // Prefix mode stuff: L is enabled, look for these keys
-        if (pressedL) {
+        if (this.pressedL) {
           if (e.key == 'x') {
             // X: x label
             let xlabel = '';
@@ -247,7 +258,7 @@ class Control {
               xlabel = plot.x_group_label;
             }
             display.displayInfo('x label', xlabel);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key == 'y') {
             // Y: y label
             let ylabel = '';
@@ -265,24 +276,24 @@ class Control {
               ylabel = plot.y_group_label;
             }
             display.displayInfo('y label', ylabel);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key == 't') {
             // T: title
             display.displayInfo('title', plot.title);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key == 's') {
             // subtitle
             display.displayInfo('subtitle', plot.subtitle);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key == 'c') {
             // caption
             display.displayInfo('caption', plot.caption);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key == 'f') {
             display.displayInfo('fill', plot.fill);
-            pressedL = false;
+            this.pressedL = false;
           } else if (e.key != 'l') {
-            pressedL = false;
+            this.pressedL = false;
           }
         }
       },
@@ -458,11 +469,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -1033,11 +1043,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -1420,11 +1429,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -1870,11 +1878,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -2382,11 +2389,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -2730,11 +2736,10 @@ class Control {
         },
       ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
@@ -3208,11 +3213,10 @@ class Control {
       //   },
       // ]);
 
-      let controlElements = [constants.chart, constants.brailleInput];
       let lastx = 0;
-      for (let i = 0; i < controlElements.length; i++) {
+      for (let i = 0; i < this.controlElements.length; i++) {
         constants.events.push([
-          controlElements[i],
+          this.controlElements[i],
           'keydown',
           function (e) {
             // period: speed up
