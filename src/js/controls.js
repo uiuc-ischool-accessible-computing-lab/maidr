@@ -8,7 +8,38 @@ class Control {
    * @constructor
    */
   constructor() {
+    this.InitChartClass();
     this.SetControls();
+  }
+
+  /**
+   * We initialize the chart class.
+   * We do this here because of javascript screwyness, it has to be done after Init, before controls are set, and in this file.
+   */
+  InitChartClass() {
+    if ([].concat(singleMaidr.type).includes('bar')) {
+      window.plot = new BarChart();
+    } else if ([].concat(singleMaidr.type).includes('box')) {
+      window.plot = new BoxPlot();
+    } else if ([].concat(singleMaidr.type).includes('heat')) {
+      window.plot = new HeatMap();
+      window.rect = new HeatMapRect();
+    } else if (
+      [].concat(singleMaidr.type).includes('point') ||
+      [].concat(singleMaidr.type).includes('smooth')
+    ) {
+      window.plot = new ScatterPlot();
+      window.layer0Point = new Layer0Point();
+      window.layer1Point = new Layer1Point();
+    } else if ([].concat(singleMaidr.type).includes('hist')) {
+      window.plot = new Histogram();
+    } else if (
+      [].concat(singleMaidr.type).includes('stacked_bar') ||
+      [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
+      [].concat(singleMaidr.type).includes('dodged_bar')
+    ) {
+      window.plot = new Segmented();
+    }
   }
 
   /**
@@ -117,7 +148,6 @@ class Control {
     }
 
     // We want to tab or shift tab past the chart,
-    // but we delay adding this eventlistener for a moment so the chart loads first
     for (let i = 0; i < controlElements.length; i++) {
       constants.events.push([
         controlElements[i],
@@ -135,7 +165,8 @@ class Control {
       ]);
     }
 
-    // prefix events
+    // prefix events, l + x, where x is a key for the title, axis, etc
+    // we listen for a moment when l is hit for a key to follow
     constants.events.push([
       document,
       'keydown',
@@ -254,29 +285,17 @@ class Control {
             pressedL = false;
           }
         }
-
-        // // period: speed up
-        // if (e.key == '.') {
-        //   constants.SpeedUp();
-        //   display.announceText('Speed up');
-        // }
-
-        // // comma: speed down
-        // if (e.key == ',') {
-        //   constants.SpeedDown();
-        //   display.announceText('Speed down');
-        // }
-        // // /: reset speed
-        // if (e.key == '/') {
-        //   constants.SpeedReset();
-        //   display.announceText('Speed reset');
-        // }
       },
     ]);
 
+    // TODO control rewrite starts here
+
+    // plan: generally switch from if chart.type > control, to control > if chart.type
+    // This will standardize and separate controls so we can manage more easily, I hope
+    // It'll also mean we have a single UpdateAll / UpdateAllBraille / etc
+
     if ([].concat(singleMaidr.type).includes('bar')) {
       window.position = new Position(-1, -1);
-      window.plot = new BarChart();
 
       // global variables
       constants.lastx = 0;
@@ -571,7 +590,6 @@ class Control {
     } else if ([].concat(singleMaidr.type).includes('box')) {
       // variable initialization
       constants.plotId = 'geom_boxplot.gTree.78.1';
-      window.plot = new BoxPlot();
       if (constants.plotOrientation == 'vert') {
         window.position = new Position(0, 6); // always 6
       } else {
@@ -1242,8 +1260,6 @@ class Control {
       // variable initialization
       constants.plotId = 'geom_rect.rect.2.1';
       window.position = new Position(-1, -1);
-      window.plot = new HeatMap();
-      let rect = new HeatMapRect();
       let lastPlayed = '';
       constants.lastx = 0;
 
@@ -1750,9 +1766,6 @@ class Control {
       // variable initialization
       constants.plotId = 'geom_point.points.12.1';
       window.position = new Position(-1, -1);
-      window.plot = new ScatterPlot();
-      let layer0Point = new Layer0Point();
-      let layer1Point = new Layer1Point();
 
       let lastPlayed = ''; // for autoplay use
       constants.lastx = 0; // for scatter point layer autoplay use
@@ -2234,7 +2247,6 @@ class Control {
       }
     } else if ([].concat(singleMaidr.type).includes('hist')) {
       window.position = new Position(-1, -1);
-      window.plot = new Histogram();
 
       // global variables
       let lastPlayed = '';
@@ -2504,7 +2516,6 @@ class Control {
       [].concat(singleMaidr.type).includes('dodged_bar')
     ) {
       window.position = new Position(-1, -1);
-      window.plot = new Segmented();
 
       // global variables
       let lastPlayed = '';
