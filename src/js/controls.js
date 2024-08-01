@@ -22,6 +22,8 @@ class Control {
    * @constructor
    */
   constructor() {
+    constants.lastx = 0;
+
     this.InitChartClass();
     this.SetBTSControls();
     this.SetPrefixControls();
@@ -39,7 +41,7 @@ class Control {
       window.plot = new BoxPlot();
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       window.plot = new HeatMap();
-      window.rect = new HeatMapRect();
+      singleMaidr.rect = new HeatMapRect();
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
@@ -78,7 +80,7 @@ class Control {
         this.allControlElements[i],
         'keydown',
         function (e) {
-          if (!constants.pressedL) {
+          if (constants.pressedL) {
             return;
           }
 
@@ -276,12 +278,6 @@ class Control {
    * @returns {void}
    */
   SetControls() {
-    // TODO control rewrite starts here
-
-    // plan: generally switch from if chart.type > control, to control > if chart.type
-    // This will standardize and separate controls so we can manage more easily, I hope
-    // It'll also mean we have a single UpdateAll / UpdateAllBraille / etc
-
     constants.events.push([
       document,
       'keydown',
@@ -331,14 +327,146 @@ class Control {
       },
     ]);
 
+    // Init a few things
+    let lastPlayed = '';
     if ([].concat(singleMaidr.type).includes('bar')) {
       window.position = new Position(-1, -1);
-
-      // global variables
+    } else if ([].concat(singleMaidr.type).includes('box')) {
+      // variable initialization
+      constants.plotId = 'geom_boxplot.gTree.78.1';
+      if (constants.plotOrientation == 'vert') {
+        window.position = new Position(0, 6); // always 6
+      } else {
+        window.position = new Position(-1, plot.plotData.length);
+      }
+      if (constants.hasRect) {
+        singleMaidr.rect = new BoxplotRect();
+      }
+    } else if ([].concat(singleMaidr.type).includes('heat')) {
+      // variable initialization
+      constants.plotId = 'geom_rect.rect.2.1';
+      window.position = new Position(-1, -1);
       constants.lastx = 0;
-      let lastPlayed = '';
+    } else if (
+      [].concat(singleMaidr.type).includes('point') ||
+      [].concat(singleMaidr.type).includes('smooth')
+    ) {
+      constants.plotId = 'geom_point.points.12.1';
+      window.position = new Position(-1, -1);
 
-      // braille cursor routing
+      constants.lastx = 0; // for scatter point layer autoplay use
+      constants.lastx1 = 0; // for smooth layer autoplay use
+
+      window.positionL1 = new Position(constants.lastx1, constants.lastx1);
+    } else if ([].concat(singleMaidr.type).includes('hist')) {
+      window.position = new Position(-1, -1);
+    } else if (
+      [].concat(singleMaidr.type).includes('stacked_bar') ||
+      [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
+      [].concat(singleMaidr.type).includes('dodged_bar')
+    ) {
+      window.position = new Position(-1, -1);
+    }
+
+    // Cursor routing
+    if ([].concat(singleMaidr.type).includes('box')) {
+      document.addEventListener('selectionchange', function (e) {
+        e.preventDefault();
+        if (
+          constants.brailleMode == 'on' &&
+          constants.brailleInput.selectionStart
+        ) {
+          let cursorPos = constants.brailleInput.selectionStart;
+          // we're using braille cursor, update the selection from what was clicked
+          cursorPos = constants.brailleInput.selectionStart;
+          if (cursorPos < 0) {
+            pos = 0;
+          }
+          // convert braille position to start of whatever section we're in
+          let walk = 0;
+          let posType = '';
+          if (constants.brailleData) {
+            for (let i = 0; i < constants.brailleData.length; i++) {
+              walk += constants.brailleData[i].numChars;
+              if (walk > cursorPos) {
+                if (constants.brailleData[i].type == 'blank') {
+                  posType = constants.brailleData[i + 1].type;
+                } else {
+                  posType = constants.brailleData[i].type;
+                }
+                break;
+              }
+            }
+          }
+          let pos = plot.sections.indexOf(posType);
+
+          if (posType.length > 0) {
+            if (constants.plotOrientation == 'vert') {
+              position.y = pos;
+            } else {
+              position.x = pos;
+            }
+            lockPosition();
+            let testEnd = true;
+
+            // update display / text / audio
+            if (testEnd) {
+              UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
+          }
+        }
+      });
+    } else if ([].concat(singleMaidr.type).includes('heat')) {
+      document.addEventListener('selectionchange', function (e) {
+        if (constants.brailleMode == 'on') {
+          let pos = constants.brailleInput.selectionStart;
+
+          // exception: don't let users click the seperator char
+          let seperatorPositions = constants.brailleInput.value
+            .split('')
+            .reduce((positions, char, index) => {
+              if (char === '⠳') positions.push(index);
+              return positions;
+            }, []);
+          if (seperatorPositions.includes(pos)) {
+            return;
+          }
+
+          // we're using braille cursor, update the selection from what was clicked
+          pos = constants.brailleInput.selectionStart;
+          if (pos < 0) {
+            pos = 0;
+          }
+
+          // actual position is based on num_cols and num_rows and the spacer
+          position.y = Math.floor(pos / (plot.num_cols + 1));
+          position.x = pos % (plot.num_cols + 1);
+          lockPosition();
+          let testEnd = true;
+
+          // update display / text / audio
+          if (testEnd) {
+            UpdateAll();
+          }
+          if (testEnd) {
+            audio.playEnd();
+          }
+        } else {
+          // we're using normal cursor, let the default handle it
+        }
+      });
+    } else if (
+      [].concat(singleMaidr.type).includes('bar') ||
+      [].concat(singleMaidr.type).includes('point') ||
+      [].concat(singleMaidr.type).includes('smooth') ||
+      [].concat(singleMaidr.type).includes('hist') ||
+      [].concat(singleMaidr.type).includes('stacked_bar') ||
+      [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
+      [].concat(singleMaidr.type).includes('dodged_bar')
+    ) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
           let pos = constants.brailleInput.selectionStart;
@@ -362,7 +490,23 @@ class Control {
           // we're using normal cursor, let the default handle it
         }
       });
+    }
 
+    // TODO control rewrite starts here
+    // plan: generally switch from if chart.type > control, to control > if chart.type
+    // This will standardize and separate controls so we can manage more easily, I hope
+    // It'll also mean we have a single UpdateAll / UpdateAllBraille / etc
+    //
+    // todo
+    // ! move BTS, prefix, chart init to separate functions
+    // ! move ctrl movement at least to top of SetControls, maybe separate function later
+    // ! move cursor routing at least to top of SetControls, maybe separate function later
+    // reroute UpdateAll etc to new class level functions
+    // rearrange nested ifs to start with actual controls (just arrow, ctrl arrow, etc), then if chart.type inside
+    // final routing from nested ifs to class level functions
+    // bugfixes :D
+
+    if ([].concat(singleMaidr.type).includes('bar')) {
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -624,72 +768,6 @@ class Control {
         }, constants.autoPlayRate);
       }
     } else if ([].concat(singleMaidr.type).includes('box')) {
-      // variable initialization
-      constants.plotId = 'geom_boxplot.gTree.78.1';
-      if (constants.plotOrientation == 'vert') {
-        window.position = new Position(0, 6); // always 6
-      } else {
-        window.position = new Position(-1, plot.plotData.length);
-      }
-      let rect;
-      if (constants.hasRect) {
-        rect = new BoxplotRect();
-      }
-      let lastPlayed = '';
-
-      // braille cursor routing
-      // bug: still not working. Not really sure what's going on but the tethering is now totally broken
-      // like, it doesn't even seem to be on the right plot
-      document.addEventListener('selectionchange', function (e) {
-        e.preventDefault();
-        if (
-          constants.brailleMode == 'on' &&
-          constants.brailleInput.selectionStart
-        ) {
-          let cursorPos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          cursorPos = constants.brailleInput.selectionStart;
-          if (cursorPos < 0) {
-            pos = 0;
-          }
-          // convert braille position to start of whatever section we're in
-          let walk = 0;
-          let posType = '';
-          if (constants.brailleData) {
-            for (let i = 0; i < constants.brailleData.length; i++) {
-              walk += constants.brailleData[i].numChars;
-              if (walk > cursorPos) {
-                if (constants.brailleData[i].type == 'blank') {
-                  posType = constants.brailleData[i + 1].type;
-                } else {
-                  posType = constants.brailleData[i].type;
-                }
-                break;
-              }
-            }
-          }
-          let pos = plot.sections.indexOf(posType);
-
-          if (posType.length > 0) {
-            if (constants.plotOrientation == 'vert') {
-              position.y = pos;
-            } else {
-              position.x = pos;
-            }
-            lockPosition();
-            let testEnd = true;
-
-            // update display / text / audio
-            if (testEnd) {
-              UpdateAll();
-            }
-            if (testEnd) {
-              audio.playEnd();
-            }
-          }
-        }
-      });
-
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -1140,7 +1218,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRect();
+          singleMaidr.rect.UpdateRect();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1151,7 +1229,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRect();
+          singleMaidr.rect.UpdateRect();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1165,7 +1243,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRect();
+          singleMaidr.rect.UpdateRect();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1292,51 +1370,6 @@ class Control {
         }, constants.autoPlayRate);
       }
     } else if ([].concat(singleMaidr.type).includes('heat')) {
-      // variable initialization
-      constants.plotId = 'geom_rect.rect.2.1';
-      window.position = new Position(-1, -1);
-      let lastPlayed = '';
-      constants.lastx = 0;
-
-      document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-
-          // exception: don't let users click the seperator char
-          let seperatorPositions = constants.brailleInput.value
-            .split('')
-            .reduce((positions, char, index) => {
-              if (char === '⠳') positions.push(index);
-              return positions;
-            }, []);
-          if (seperatorPositions.includes(pos)) {
-            return;
-          }
-
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
-          }
-
-          // actual position is based on num_cols and num_rows and the spacer
-          position.y = Math.floor(pos / (plot.num_cols + 1));
-          position.x = pos % (plot.num_cols + 1);
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
-        }
-      });
-
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -1705,7 +1738,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRectDisplay();
+          singleMaidr.rect.UpdateRectDisplay();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1716,7 +1749,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRectDisplay();
+          singleMaidr.rect.UpdateRectDisplay();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1730,7 +1763,7 @@ class Control {
           display.displayValues();
         }
         if (constants.showRect && constants.hasRect) {
-          rect.UpdateRectDisplay();
+          singleMaidr.rect.UpdateRectDisplay();
         }
         if (constants.sonifMode != 'off') {
           plot.PlayTones();
@@ -1797,16 +1830,6 @@ class Control {
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
     ) {
-      // variable initialization
-      constants.plotId = 'geom_point.points.12.1';
-      window.position = new Position(-1, -1);
-
-      let lastPlayed = ''; // for autoplay use
-      constants.lastx = 0; // for scatter point layer autoplay use
-      let lastx1 = 0; // for smooth layer autoplay use
-
-      window.positionL1 = new Position(lastx1, lastx1);
-
       // control eventlisteners
       constants.events.push([
         [constants.chart, constants.brailleInput],
@@ -1864,7 +1887,7 @@ class Control {
             }
           } else if (constants.chartType == 'smooth') {
             if (!positionL1.x) {
-              positionL1.x = lastx1;
+              positionL1.x = constants.lastx1;
             }
 
             if (e.key == 'ArrowRight' && e.shiftKey) {
@@ -1941,49 +1964,23 @@ class Control {
             if (constants.chartType == 'point') {
               Autoplay('right', position.x, lastx);
             } else if (constants.chartType == 'smooth') {
-              Autoplay('right', positionL1.x, lastx1);
+              Autoplay('right', positionL1.x, constants.lastx1);
             }
           } else if (lastPlayed == 'reverse-right') {
             if (constants.chartType == 'point') {
               Autoplay('left', position.x, lastx);
             } else if (constants.chartType == 'smooth') {
-              Autoplay('left', positionL1.x, lastx1);
+              Autoplay('left', positionL1.x, constants.lastx1);
             }
           } else {
             if (constants.chartType == 'point') {
               Autoplay(lastPlayed, position.x, lastx);
             } else if (constants.chartType == 'smooth') {
-              Autoplay(lastPlayed, positionL1.x, lastx1);
+              Autoplay(lastPlayed, positionL1.x, constants.lastx1);
             }
           }
         }
       }
-
-      // todo / bug: does'nt work at all on just line (in gallery)
-      // it sorta works in scatter (in gallery), visual highlight changes, but sonify and text don't update
-      document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
-          }
-          positionL1.x = pos;
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAllBraille();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
-        }
-      });
 
       constants.events.push([
         constants.brailleInput,
@@ -2019,7 +2016,7 @@ class Control {
                 e.shiftKey &&
                 positionL1.x != plot.curvePoints.length - 1
               ) {
-                lastx1 = positionL1.x;
+                constants.lastx1 = positionL1.x;
                 Autoplay(
                   'reverse-right',
                   plot.curvePoints.length,
@@ -2058,7 +2055,7 @@ class Control {
             e.preventDefault();
           }
 
-          lastx1 = positionL1.x;
+          constants.lastx1 = positionL1.x;
 
           if (updateInfoThisRound && !isAtEnd) {
             UpdateAllBraille();
@@ -2279,36 +2276,6 @@ class Control {
         audio.playSmooth(freqArr, duration, panningArr, constants.vol, 'sine');
       }
     } else if ([].concat(singleMaidr.type).includes('hist')) {
-      window.position = new Position(-1, -1);
-
-      // global variables
-      let lastPlayed = '';
-      constants.lastx = 0;
-
-      document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
-          }
-          position.x = pos;
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
-        }
-      });
-
       // control eventlisteners
       constants.events.push([
         [constants.chart, constants.brailleInput],
@@ -2547,38 +2514,6 @@ class Control {
       [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
       [].concat(singleMaidr.type).includes('dodged_bar')
     ) {
-      window.position = new Position(-1, -1);
-
-      // global variables
-      let lastPlayed = '';
-      constants.lastx = 0;
-
-      // todo bug, forgot about all mode
-      // bug: you can click 1 past end (for all chart types). Make sure we're lockign and then resetting the selectionStart
-      document.addEventListener('selectionchange', function (e) {
-        if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
-          }
-          position.x = pos;
-          lockPosition();
-          let testEnd = true;
-
-          // update display / text / audio
-          if (testEnd) {
-            UpdateAll();
-          }
-          if (testEnd) {
-            audio.playEnd();
-          }
-        } else {
-          // we're using normal cursor, let the default handle it
-        }
-      });
-
       // control eventlisteners
       constants.events.push([
         [constants.chart, constants.brailleInput],
