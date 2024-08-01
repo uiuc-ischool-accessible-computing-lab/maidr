@@ -24,6 +24,7 @@ class Control {
   constructor() {
     this.InitChartClass();
     this.SetBTSControls();
+    this.SetPrefixControls();
     this.SetControls();
   }
 
@@ -58,11 +59,12 @@ class Control {
   }
 
   /**
-   * Sets up event listeners for the global controls and prefix events.
-   * @function
-   * @memberof Maidr
-   * @instance
-   * @name SetControls
+   * Sets up event listeners for the main BTS controls:
+   * - B: braille mode
+   * - T: text mode
+   * - S: sonification mode
+   * - R: review mode
+   *
    * @returns {void}
    */
   SetBTSControls() {
@@ -76,8 +78,9 @@ class Control {
         this.allControlElements[i],
         'keydown',
         function (e) {
-          // init
-          let lastPlayed = '';
+          if (!constants.pressedL) {
+            return;
+          }
 
           // if we're awaiting an L + X prefix, we don't want to do anything else
           if (this.pressedL) {
@@ -174,7 +177,11 @@ class Control {
     }
   }
 
-  SetControls() {
+  /**
+   * Sets up event listeners for prefix events.
+   * @returns {void}
+   */
+  SetPrefixControls() {
     // prefix events, l + x, where x is a key for the title, axis, etc
     // we listen for a moment when l is hit for a key to follow
     constants.events.push([
@@ -182,7 +189,6 @@ class Control {
       'keydown',
       function (e) {
         // init
-        let lastPlayed = '';
         let pressedTimeout = null;
 
         // enable / disable prefix mode
@@ -195,49 +201,6 @@ class Control {
           pressedTimeout = setTimeout(function () {
             this.pressedL = false;
           }, constants.keypressInterval);
-        }
-
-        // ctrl/cmd: stop autoplay
-        if (constants.isMac ? e.metaKey : e.ctrlKey) {
-          // (ctrl/cmd)+(home/fn+left arrow): first element
-          if (e.key == 'Home') {
-            // chart types
-            if (constants.chartType == 'bar' || constants.chartType == 'hist') {
-              position.x = 0;
-            } else if (constants.chartType == 'box') {
-              position.x = 0;
-              position.y = plot.sections.length - 1;
-            } else if (constants.chartType == 'heat') {
-              position.x = 0;
-              position.y = 0;
-            } else if (constants.chartType == 'point') {
-              position.x = 0;
-            } else if (constants.chartType == 'smooth') {
-              positionL1.x = 0;
-            }
-
-            UpdateAllBraille();
-          }
-
-          // (ctrl/cmd)+(end/fn+right arrow): last element
-          else if (e.key == 'End') {
-            // chart types
-            if (constants.chartType == 'bar' || constants.chartType == 'hist') {
-              position.x = plot.bars.length - 1;
-            } else if (constants.chartType == 'box') {
-              position.x = plot.sections.length - 1;
-              position.y = 0;
-            } else if (constants.chartType == 'heat') {
-              position.x = plot.num_cols - 1;
-              position.y = plot.num_rows - 1;
-            } else if (constants.chartType == 'point') {
-              position.x = plot.y.length - 1;
-            } else if (constants.chartType == 'smooth') {
-              positionL1.x = plot.curvePoints.length - 1;
-            }
-
-            UpdateAllBraille();
-          }
         }
 
         // Prefix mode stuff: L is enabled, look for these keys
@@ -298,12 +261,75 @@ class Control {
         }
       },
     ]);
+  }
 
+  /**
+   * Sets up event listeners for main controls
+   *  - Arrow keys: basic motion
+   *  - Shift + Arrow keys: Autoplay outward
+   *  - Shift + Alt + Arrow keys: Autoplay inward
+   *  - Ctrl: Stop autoplay
+   *  - Ctrl + Arrow keys: Move to end
+   *  - Period: Autoplay speed up
+   *  - Comma: Autoplay slow down
+   *
+   * @returns {void}
+   */
+  SetControls() {
     // TODO control rewrite starts here
 
     // plan: generally switch from if chart.type > control, to control > if chart.type
     // This will standardize and separate controls so we can manage more easily, I hope
     // It'll also mean we have a single UpdateAll / UpdateAllBraille / etc
+
+    constants.events.push([
+      document,
+      'keydown',
+      function (e) {
+        // ctrl/cmd: stop autoplay
+        if (constants.isMac ? e.metaKey : e.ctrlKey) {
+          // (ctrl/cmd)+(home/fn+left arrow): first element
+          if (e.key == 'Home') {
+            // chart types
+            if (constants.chartType == 'bar' || constants.chartType == 'hist') {
+              position.x = 0;
+            } else if (constants.chartType == 'box') {
+              position.x = 0;
+              position.y = plot.sections.length - 1;
+            } else if (constants.chartType == 'heat') {
+              position.x = 0;
+              position.y = 0;
+            } else if (constants.chartType == 'point') {
+              position.x = 0;
+            } else if (constants.chartType == 'smooth') {
+              positionL1.x = 0;
+            }
+
+            UpdateAllBraille();
+          }
+
+          // (ctrl/cmd)+(end/fn+right arrow): last element
+          else if (e.key == 'End') {
+            // chart types
+            if (constants.chartType == 'bar' || constants.chartType == 'hist') {
+              position.x = plot.bars.length - 1;
+            } else if (constants.chartType == 'box') {
+              position.x = plot.sections.length - 1;
+              position.y = 0;
+            } else if (constants.chartType == 'heat') {
+              position.x = plot.num_cols - 1;
+              position.y = plot.num_rows - 1;
+            } else if (constants.chartType == 'point') {
+              position.x = plot.y.length - 1;
+            } else if (constants.chartType == 'smooth') {
+              positionL1.x = plot.curvePoints.length - 1;
+            }
+
+            UpdateAllBraille();
+          }
+        }
+      },
+    ]);
 
     if ([].concat(singleMaidr.type).includes('bar')) {
       window.position = new Position(-1, -1);
