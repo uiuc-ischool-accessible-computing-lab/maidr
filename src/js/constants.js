@@ -205,6 +205,13 @@ class Constants {
    * @memberof BasicChartProperties
    */
   navigation = 1; // 0 = row navigation (up/down), 1 = col navigation (left/right)
+  /**
+   * The orientation of the chart. 'horz' = horizontal, 'vert' = vertical
+   * @type {string}
+   * @default 'horz'
+   * @memberof BasicChartProperties
+   */
+  plotOrientation = 'horz';
 
   /**
    * @namespace AudioProperties
