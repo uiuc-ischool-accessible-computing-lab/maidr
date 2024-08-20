@@ -1412,104 +1412,6 @@ class Control {
         },
       ]);
 
-      // bookmark: wiping out these individual functions, moving to the below class level
-      // we have most of these in there, just need to make sure that the correct stuff is getting called
-      // so make sure this stuff goes in the cases and threads correctly
-      function this.UpdateAll() {
-        if (constants.showDisplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          singleMaidr.rect.UpdateRectDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-      }
-      function this.UpdateAllAutoPlay() {
-        if (constants.showDisplayInAutoplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          singleMaidr.rect.UpdateRectDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        if (constants.brailleMode != 'off') {
-          display.UpdateBraillePos();
-        }
-      }
-      function this.UpdateAllBraille() {
-        if (constants.showDisplayInBraille) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          singleMaidr.rect.UpdateRectDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        display.UpdateBraillePos();
-      }
-
-      function this.Autoplay(dir, start, end) {
-        lastPlayed = dir;
-        let xMax = plot.num_cols - 1;
-        let yMax = plot.num_rows - 1;
-        let step = 1; // default right, down, reverse-left, and reverse-up
-        if (
-          dir == 'left' ||
-          dir == 'up' ||
-          dir == 'reverse-right' ||
-          dir == 'reverse-down'
-        ) {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-        }
-
-        if (dir == 'reverse-left' || dir == 'reverse-right') {
-          position.x = start;
-        } else if (dir == 'reverse-up' || dir == 'reverse-down') {
-          position.y = start;
-        }
-
-        constants.autoplayId = setInterval(function () {
-          if (
-            dir == 'left' ||
-            dir == 'right' ||
-            dir == 'reverse-left' ||
-            dir == 'reverse-right'
-          ) {
-            position.x += step;
-            if (position.x < 0 || plot.num_cols - 1 < position.x) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (position.x == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          } else {
-            // up or down
-            position.y += step;
-            if (position.y < 0 || plot.num_rows - 1 < position.y) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (position.y == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          }
-        }, constants.autoPlayRate);
-      }
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
@@ -1647,31 +1549,6 @@ class Control {
           },
         ]);
       }
-      function this.PlayDuringSpeedChange() {
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-          audio.KillSmooth();
-          if (lastPlayed == 'reverse-left') {
-            if (constants.chartType == 'point') {
-              this.Autoplay('right', position.x, lastx);
-            } else if (constants.chartType == 'smooth') {
-              this.Autoplay('right', positionL1.x, constants.lastx1);
-            }
-          } else if (lastPlayed == 'reverse-right') {
-            if (constants.chartType == 'point') {
-              this.Autoplay('left', position.x, lastx);
-            } else if (constants.chartType == 'smooth') {
-              this.Autoplay('left', positionL1.x, constants.lastx1);
-            }
-          } else {
-            if (constants.chartType == 'point') {
-              this.Autoplay(lastPlayed, position.x, lastx);
-            } else if (constants.chartType == 'smooth') {
-              this.Autoplay(lastPlayed, positionL1.x, constants.lastx1);
-            }
-          }
-        }
-      }
 
       constants.events.push([
         constants.brailleInput,
@@ -1757,8 +1634,8 @@ class Control {
         },
       ]);
 
-      // helper functions
-
+      //bookmark
+      // working through moving these functions and consolidating below, got to here
       function this.UpdateAll() {
         if (constants.showDisplay) {
           display.displayValues();
@@ -2830,14 +2707,23 @@ class Control {
   PlayDuringSpeedChange() {
     if (constants.autoplayId != null) {
       constants.KillAutoplay();
+      audio.KillSmooth();
       if (lastPlayed == 'reverse-left') {
-        if (constants.plotOrientation == 'vert') {
+        if (constants.chartType == 'point') {
+          this.Autoplay('right', position.x, lastx);
+        } else if (constants.chartType == 'smooth') {
+          this.Autoplay('right', positionL1.x, constants.lastx1);
+        } else if (constants.plotOrientation == 'vert') {
           this.Autoplay('right', position.y, lastY);
         } else {
           this.Autoplay('right', position.x, lastx);
         }
       } else if (lastPlayed == 'reverse-right') {
-        if (constants.plotOrientation == 'vert') {
+        if (constants.chartType == 'point') {
+          this.Autoplay('left', position.x, lastx);
+        } else if (constants.chartType == 'smooth') {
+          this.Autoplay('left', positionL1.x, constants.lastx1);
+        } else if (constants.plotOrientation == 'vert') {
           this.Autoplay('left', position.y, lastY);
         } else {
           this.Autoplay('left', position.x, lastx);
@@ -2855,7 +2741,11 @@ class Control {
           this.Autoplay('up', position.x, lastx);
         }
       } else {
-        if (constants.plotOrientation == 'vert') {
+          if (constants.chartType == 'point') {
+          this.Autoplay(lastPlayed, position.x, lastx);
+        } else if (constants.chartType == 'smooth') {
+          this.Autoplay(lastPlayed, positionL1.x, constants.lastx1);
+        } else if (constants.plotOrientation == 'vert') {
           this.Autoplay(lastPlayed, position.y, lastY);
         } else {
           this.Autoplay(lastPlayed, position.x, lastx);
@@ -2924,7 +2814,23 @@ class Control {
       display.displayValues();
     }
     if (constants.showRect && constants.hasRect) {
-      plot.Select();
+      if ([].concat(singleMaidr.type).includes('bar')) {
+        plot.Select();
+      } else if ([].concat(singleMaidr.type).includes('box')) {
+        singleMaidr.rect.UpdateRect();
+      } else if ([].concat(singleMaidr.type).includes('heat')) {
+        singleMaidr.rect.UpdateRectDisplay();
+      } else if (
+        [].concat(singleMaidr.type).includes('point') ||
+        [].concat(singleMaidr.type).includes('smooth')
+      ) {
+      } else if ([].concat(singleMaidr.type).includes('hist')) {
+      } else if (
+        [].concat(singleMaidr.type).includes('stacked_bar') ||
+        [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
+        [].concat(singleMaidr.type).includes('dodged_bar')
+      ) {
+      }
     }
     if (constants.sonifMode != 'off') {
       plot.PlayTones();
@@ -2940,6 +2846,7 @@ class Control {
       } else if ([].concat(singleMaidr.type).includes('box')) {
         singleMaidr.rect.UpdateRect();
       } else if ([].concat(singleMaidr.type).includes('heat')) {
+        singleMaidr.rect.UpdateRectDisplay();
       } else if (
         [].concat(singleMaidr.type).includes('point') ||
         [].concat(singleMaidr.type).includes('smooth')
@@ -2970,6 +2877,7 @@ class Control {
       } else if ([].concat(singleMaidr.type).includes('box')) {
         singleMaidr.rect.UpdateRect();
       } else if ([].concat(singleMaidr.type).includes('heat')) {
+          singleMaidr.rect.UpdateRectDisplay();
       } else if (
         [].concat(singleMaidr.type).includes('point') ||
         [].concat(singleMaidr.type).includes('smooth')
@@ -3101,6 +3009,61 @@ class Control {
         }
       }, constants.autoPlayRate);
     } else if ([].concat(singleMaidr.type).includes('heat')) {
+        lastPlayed = dir;
+        let xMax = plot.num_cols - 1;
+        let yMax = plot.num_rows - 1;
+        let step = 1; // default right, down, reverse-left, and reverse-up
+        if (
+          dir == 'left' ||
+          dir == 'up' ||
+          dir == 'reverse-right' ||
+          dir == 'reverse-down'
+        ) {
+          step = -1;
+        }
+
+        // clear old autoplay if exists
+        if (constants.autoplayId != null) {
+          constants.KillAutoplay();
+        }
+
+        if (dir == 'reverse-left' || dir == 'reverse-right') {
+          position.x = start;
+        } else if (dir == 'reverse-up' || dir == 'reverse-down') {
+          position.y = start;
+        }
+
+        constants.autoplayId = setInterval(function () {
+          if (
+            dir == 'left' ||
+            dir == 'right' ||
+            dir == 'reverse-left' ||
+            dir == 'reverse-right'
+          ) {
+            position.x += step;
+            if (position.x < 0 || plot.num_cols - 1 < position.x) {
+              constants.KillAutoplay();
+              this.lockPosition(xMax, yMax);
+            } else if (position.x == end) {
+              constants.KillAutoplay();
+              this.UpdateAllAutoPlay();
+            } else {
+              this.UpdateAllAutoPlay();
+            }
+          } else {
+            // up or down
+            position.y += step;
+            if (position.y < 0 || plot.num_rows - 1 < position.y) {
+              constants.KillAutoplay();
+              this.lockPosition(xMax, yMax);
+            } else if (position.y == end) {
+              constants.KillAutoplay();
+              this.UpdateAllAutoPlay();
+            } else {
+              this.UpdateAllAutoPlay();
+            }
+          }
+        }, constants.autoPlayRate);
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
