@@ -675,13 +675,13 @@ class Control {
       }
     } else if ([].concat(singleMaidr.type).includes('box')) {
       let xMax = 0;
-      let yMax = 0
-      if ( constants.plotOrientation == 'vert') {
+      let yMax = 0;
+      if (constants.plotOrientation == 'vert') {
         xMax = plot.plotData.length - 1;
-        yMax = plot.sections.length - 1
+        yMax = plot.sections.length - 1;
       } else {
         xMax = plot.sections.length - 1;
-        yMax = plot.plotData.length - 1
+        yMax = plot.plotData.length - 1;
       }
       // control eventlisteners
       constants.events.push([
@@ -719,7 +719,11 @@ class Control {
                 plot.sections.length - 1 != position.x
               ) {
                 lastY = position.y;
-                this.Autoplay('reverse-right', plot.plotData.length - 1, position.x);
+                this.Autoplay(
+                  'reverse-right',
+                  plot.plotData.length - 1,
+                  position.x
+                );
               } else {
                 // normal movement
                 if (position.x == -1 && position.y == plot.sections.length) {
@@ -736,7 +740,11 @@ class Control {
                 plot.sections.length - 1 != position.x
               ) {
                 constants.lastx = position.x;
-                this.Autoplay('reverse-right', plot.sections.length - 1, position.x);
+                this.Autoplay(
+                  'reverse-right',
+                  plot.sections.length - 1,
+                  position.x
+                );
               } else {
                 if (position.x == -1 && position.y == plot.plotData.length) {
                   position.y -= 1;
@@ -798,7 +806,11 @@ class Control {
                 position.y != plot.sections.length - 1
               ) {
                 lastY = position.y;
-                this.Autoplay('reverse-up', plot.sections.length - 1, position.y);
+                this.Autoplay(
+                  'reverse-up',
+                  plot.sections.length - 1,
+                  position.y
+                );
               } else {
                 position.y += 1;
                 updateInfoThisRound = true;
@@ -811,7 +823,11 @@ class Control {
                 position.y != plot.sections.length - 1
               ) {
                 constants.lastx = position.x;
-                this.Autoplay('reverse-up', plot.plotData.length - 1, position.y);
+                this.Autoplay(
+                  'reverse-up',
+                  plot.plotData.length - 1,
+                  position.y
+                );
               } else {
                 position.y += 1;
                 updateInfoThisRound = true;
@@ -900,7 +916,11 @@ class Control {
                 plot.plotData.length - 1 != position.x
               ) {
                 lastY = position.y;
-                this.Autoplay('reverse-right', plot.plotData.length - 1, position.x);
+                this.Autoplay(
+                  'reverse-right',
+                  plot.plotData.length - 1,
+                  position.x
+                );
               } else {
                 if (
                   position.x == -1 &&
@@ -919,7 +939,11 @@ class Control {
                 plot.sections.length - 1 != position.x
               ) {
                 constants.lastx = position.x;
-                this.Autoplay('reverse-right', plot.sections.length - 1, position.x);
+                this.Autoplay(
+                  'reverse-right',
+                  plot.sections.length - 1,
+                  position.x
+                );
               } else {
                 if (position.x == -1 && position.y == plot.plotData.length) {
                   position.y -= 1;
@@ -981,7 +1005,11 @@ class Control {
                 position.y != plot.sections.length - 1
               ) {
                 lasY = position.y;
-                this.Autoplay('reverse-up', plot.sections.length - 1, position.y);
+                this.Autoplay(
+                  'reverse-up',
+                  plot.sections.length - 1,
+                  position.y
+                );
               } else {
                 position.y += 1;
                 updateInfoThisRound = true;
@@ -994,7 +1022,11 @@ class Control {
                 position.y != plot.plotData.length - 1
               ) {
                 constants.lastx = position.x;
-                this.Autoplay('reverse-up', plot.plotData.length - 1, position.y);
+                this.Autoplay(
+                  'reverse-up',
+                  plot.plotData.length - 1,
+                  position.y
+                );
               } else {
                 position.y += 1;
                 updateInfoThisRound = true;
@@ -1091,7 +1123,6 @@ class Control {
           },
         ]);
       }
-
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       let xMax = plot.num_cols - 1;
       let yMax = plot.num_rows - 1;
@@ -1239,8 +1270,7 @@ class Control {
           },
         ]);
       }
-      function PlayDuringSpeedChange() {
-      }
+      function PlayDuringSpeedChange() {}
 
       constants.events.push([
         constants.brailleInput,
@@ -1411,14 +1441,13 @@ class Control {
           }
         },
       ]);
-
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
     ) {
       let xMax = 0;
       let yMax = 0;
-      if ( constants.chartType == 'point') {
+      if (constants.chartType == 'point') {
         xMax = plot.x.length - 1;
       } else if (constants.chartType == 'smooth') {
         xMax = plot.curvePoints.length - 1;
@@ -1633,198 +1662,6 @@ class Control {
           }
         },
       ]);
-
-      //bookmark
-      // working through moving these functions and consolidating below, got to here
-      function this.UpdateAll() {
-        if (constants.showDisplay) {
-          display.displayValues();
-        }
-        if (layer0Point.hasRect) {
-          layer0Point.UpdatePointDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-      }
-
-      function this.UpdateAllAutoPlay() {
-        if (constants.showDisplayInAutoplay) {
-          display.displayValues();
-        }
-        if (constants.showRect) {
-          if (constants.chartType == 'point' && layer0Point.hasRect) {
-            layer0Point.UpdatePointDisplay();
-          } else if (constants.chartType == 'smooth' && layer1Point.hasRect) {
-            layer1Point.UpdatePointDisplay();
-          }
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        if (constants.brailleMode != 'off') {
-          display.UpdateBraillePos();
-        }
-      }
-      function this.UpdateAllBraille() {
-        if (constants.showDisplayInBraille) {
-          display.displayValues();
-        }
-        if (layer1Point.hasRect) {
-          layer1Point.UpdatePointDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        display.UpdateBraillePos();
-      }
-
-      function this.Autoplay(dir, start, end) {
-        lastPlayed = dir;
-        let xMax = 0;
-        let yMax = 0;
-        if ( constants.chartType == 'point') {
-          xMax = plot.x.length - 1;
-        } else if (constants.chartType == 'smooth') {
-          xMax = plot.curvePoints.length - 1;
-        }
-        let step = 1; // default right and reverse left
-        if (dir == 'left' || dir == 'reverse-right') {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId) {
-          constants.KillAutoplay();
-        }
-        if (constants.isSmoothAutoplay) {
-          audio.KillSmooth();
-        }
-
-        if (dir == 'reverse-left' || dir == 'reverse-right') {
-          position.x = start;
-          position.L1x = start;
-        }
-
-        if (constants.chartType == 'point') {
-          constants.autoplayId = setInterval(function () {
-            position.x += step;
-            // autoplay for two layers: point layer & smooth layer in braille
-            // plot.numPoints is not available anymore
-            if (position.x < 0 || position.x > plot.y.length - 1) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (position.x == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          }, constants.autoPlayRate);
-        } else if (constants.chartType == 'smooth') {
-          constants.autoplayId = setInterval(function () {
-            positionL1.x += step;
-            // autoplay for two layers: point layer & smooth layer in braille
-            // plot.numPoints is not available anymore
-            if (
-              positionL1.x < 0 ||
-              positionL1.x > plot.curvePoints.length - 1
-            ) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (positionL1.x == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          }, constants.autoPlayRate);
-        }
-      }
-
-      function PlayLine(dir) {
-        lastPlayed = dir;
-
-        let freqArr = [];
-        let panningArr = [];
-        let panPoint = audio.SlideBetween(
-          positionL1.x,
-          0,
-          plot.curvePoints.length - 1,
-          -1,
-          1
-        );
-        let x = positionL1.x < 0 ? 0 : positionL1.x;
-        let duration = 0;
-        if (dir == 'right') {
-          for (let i = x; i < plot.curvePoints.length; i++) {
-            freqArr.push(
-              audio.SlideBetween(
-                plot.curvePoints[i],
-                plot.curveMinY,
-                plot.curveMaxY,
-                constants.MIN_FREQUENCY,
-                constants.MAX_FREQUENCY
-              )
-            );
-          }
-          panningArr = [panPoint, 1];
-          duration =
-            (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) *
-            3;
-        } else if (dir == 'left') {
-          for (let i = x; i >= 0; i--) {
-            freqArr.push(
-              audio.SlideBetween(
-                plot.curvePoints[i],
-                plot.curveMinY,
-                plot.curveMaxY,
-                constants.MIN_FREQUENCY,
-                constants.MAX_FREQUENCY
-              )
-            );
-          }
-          panningArr = [panPoint, -1];
-          duration = (Math.abs(x) / plot.curvePoints.length) * 3;
-        } else if (dir == 'reverse-right') {
-          for (let i = plot.curvePoints.length - 1; i >= x; i--) {
-            freqArr.push(
-              audio.SlideBetween(
-                plot.curvePoints[i],
-                plot.curveMinY,
-                plot.curveMaxY,
-                constants.MIN_FREQUENCY,
-                constants.MAX_FREQUENCY
-              )
-            );
-          }
-          panningArr = [1, panPoint];
-          duration =
-            (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) *
-            3;
-        } else if (dir == 'reverse-left') {
-          for (let i = 0; i <= x; i++) {
-            freqArr.push(
-              audio.SlideBetween(
-                plot.curvePoints[i],
-                plot.curveMinY,
-                plot.curveMaxY,
-                constants.MIN_FREQUENCY,
-                constants.MAX_FREQUENCY
-              )
-            );
-          }
-          panningArr = [-1, panPoint];
-          duration = (Math.abs(x) / plot.curvePoints.length) * 3;
-        }
-
-        if (constants.isSmoothAutoplay) {
-          audio.KillSmooth();
-        }
-
-        // audio.playSmooth(freqArr, 2, panningArr, constants.vol, 'sine');
-        audio.playSmooth(freqArr, duration, panningArr, constants.vol, 'sine');
-      }
     } else if ([].concat(singleMaidr.type).includes('hist')) {
       // control eventlisteners
       constants.events.push([
@@ -1963,101 +1800,6 @@ class Control {
             }
           },
         ]);
-      }
-      function this.PlayDuringSpeedChange() {
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-          if (lastPlayed == 'reverse-left') {
-            this.Autoplay('right', position.x, lastx);
-          } else if (lastPlayed == 'reverse-right') {
-            this.Autoplay('left', position.x, lastx);
-          } else {
-            this.Autoplay(lastPlayed, position.x, lastx);
-          }
-        }
-      }
-
-      // lock to min / max postions
-      function this.lockPosition() {
-        let didLockHappen = false;
-
-        if (position.x < 0) {
-          position.x = 0;
-          didLockHappen = true;
-        }
-        if (position.x > plot.plotData.length - 1) {
-          position.x = plot.plotData.length - 1;
-          didLockHappen = true;
-        }
-
-        return didLockHappen;
-      }
-      function this.UpdateAll() {
-        if (constants.showDisplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-      }
-      function this.UpdateAllAutoPlay() {
-        if (constants.showDisplayInAutoplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-
-        if (constants.brailleMode != 'off') {
-          display.UpdateBraillePos();
-        }
-      }
-      function this.UpdateAllBraille() {
-        if (constants.showDisplayInBraille) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        display.UpdateBraillePos();
-      }
-      function this.Autoplay(dir, start, end) {
-        lastPlayed = dir;
-        let step = 1; // default right and reverse-left
-        if (dir == 'left' || dir == 'reverse-right') {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-        }
-
-        if (dir == 'reverse-right' || dir == 'reverse-left') {
-          position.x = start;
-        }
-
-        constants.autoplayId = setInterval(function () {
-          position.x += step;
-          if (position.x < 0 || plot.plotData.length - 1 < position.x) {
-            constants.KillAutoplay();
-            this.lockPosition();
-          } else if (position.x == end) {
-            constants.KillAutoplay();
-            this.UpdateAllAutoPlay();
-          } else {
-            this.UpdateAllAutoPlay();
-          }
-        }, constants.autoPlayRate);
       }
     } else if (
       [].concat(singleMaidr.type).includes('stacked_bar') ||
@@ -2276,141 +2018,8 @@ class Control {
           },
         ]);
       }
-      function this.PlayDuringSpeedChange() {
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-          if (lastPlayed == 'reverse-left') {
-            this.Autoplay('right', position.x, lastx);
-          } else if (lastPlayed == 'reverse-right') {
-            this.Autoplay('left', position.x, lastx);
-          } else if (lastPlayed == 'reverse-up') {
-            this.Autoplay('down', position.x, lastx);
-          } else if (lastPlayed == 'reverse-down') {
-            this.Autoplay('up', position.x, lastx);
-          } else {
-            this.Autoplay(lastPlayed, position.x, lastx);
-          }
-        }
-      }
 
       // lock to min / max postions
-      function this.lockPosition() {
-        let didLockHappen = false;
-
-        if (position.x < 0) {
-          position.x = 0;
-          didLockHappen = true;
-        }
-        if (position.x > plot.level.length - 1) {
-          position.x = plot.plotData.length - 1;
-          didLockHappen = true;
-        }
-        if (position.y < 0) {
-          position.y = 0;
-          didLockHappen = true;
-        }
-        if (position.y > plot.fill.length - 1) {
-          position.y = plot.fill.length - 1;
-          didLockHappen = true;
-        }
-
-        return didLockHappen;
-      }
-      function this.UpdateAll() {
-        if (constants.showDisplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-      }
-      function this.UpdateAllAutoPlay() {
-        if (constants.showDisplayInAutoplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-
-        if (constants.brailleMode != 'off') {
-          display.UpdateBraillePos();
-        }
-      }
-      function this.UpdateAllBraille() {
-        if (constants.showDisplayInBraille) {
-          display.SetBraille();
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          plot.Select();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-
-        display.UpdateBraillePos();
-      }
-      function this.Autoplay(dir, start, end) {
-        lastPlayed = dir;
-        let step = 1; // default right, up, reverse-left, and reverse-down
-        if (
-          dir == 'left' ||
-          dir == 'down' ||
-          dir == 'reverse-right' ||
-          dir == 'reverse-up'
-        ) {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-        }
-
-        if (dir == 'reverse-left' || dir == 'reverse-right') {
-          position.x = start;
-        } else if (dir == 'reverse-up' || dir == 'reverse-down') {
-          position.y = start;
-        }
-
-        constants.autoplayId = setInterval(function () {
-          if (
-            dir == 'left' ||
-            dir == 'right' ||
-            dir == 'reverse-left' ||
-            dir == 'reverse-right'
-          ) {
-            position.x += step;
-            if (position.x < 0 || plot.plotData.length - 1 < position.x) {
-              constants.KillAutoplay();
-              this.lockPosition();
-            } else if (position.x == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          } else {
-            // up or down
-            position.y += step;
-            if (position.y < 0 || plot.plotData[0].length - 1 < position.y) {
-              constants.KillAutoplay();
-              this.lockPosition();
-            } else if (position.y == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
-          }
-        }, constants.autoPlayRate);
-      }
     } else if (singleMaidr.type == 'line') {
       window.position = new Position(-1, -1);
       window.plot = new LinePlot();
@@ -2467,7 +2076,11 @@ class Control {
               position.x != plot.pointValuesY.length - 1
             ) {
               constants.lastx = position.x;
-              this.Autoplay('reverse-right', plot.pointValuesY.length, position.x);
+              this.Autoplay(
+                'reverse-right',
+                plot.pointValuesY.length,
+                position.x
+              );
             } else {
               position.x += 1;
               updateInfoThisRound = true;
@@ -2533,7 +2146,11 @@ class Control {
               position.x != plot.pointValues.length - 1
             ) {
               constants.lastx = position.x;
-              this.Autoplay('reverse-right', plot.pointValuesY.length, position.x);
+              this.Autoplay(
+                'reverse-right',
+                plot.pointValuesY.length,
+                position.x
+              );
             } else {
               position.x += 1;
               updateInfoThisRound = true;
@@ -2604,104 +2221,8 @@ class Control {
           },
         ]);
       }
-      function this.PlayDuringSpeedChange() {
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-          if (lastPlayed == 'reverse-left') {
-            this.Autoplay('right', position.x, lastx);
-          } else if (lastPlayed == 'reverse-right') {
-            this.Autoplay('left', position.x, lastx);
-          } else {
-            this.Autoplay(lastPlayed, position.x, lastx);
-          }
-        }
-      }
-
-      function this.lockPosition() {
-        // lock to min / max postions
-        let didLockHappen = false;
-        // if (!constants.hasRect) {
-        //   return didLockHappen;
-        // }
-
-        if (position.x < 0) {
-          position.x = 0;
-          didLockHappen = true;
-        }
-        if (position.x > plot.pointValuesY.length - 1) {
-          position.x = plot.pointValuesY.length - 1;
-          didLockHappen = true;
-        }
-
-        return didLockHappen;
-      }
-      function this.UpdateAll() {
-        if (constants.showDisplay) {
-          display.displayValues();
-        }
-        if (constants.showRect && constants.hasRect) {
-          point.UpdatePointDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-      }
-      function this.UpdateAllAutoPlay() {
-        if (constants.showDisplayInAutoplay) {
-          display.displayValues();
-        }
-        if (constants.showRect) {
-          point.UpdatePointDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-
-        if (constants.brailleMode != 'off') {
-          display.UpdateBraillePos();
-        }
-      }
-      function this.UpdateAllBraille() {
-        if (constants.showDisplayInBraille) {
-          display.displayValues();
-        }
-        if (constants.showRect) {
-          point.UpdatePointDisplay();
-        }
-        if (constants.sonifMode != 'off') {
-          plot.PlayTones();
-        }
-        display.UpdateBraillePos();
-      }
-      function this.Autoplay(dir, start, end) {
-        lastPlayed = dir;
-        let step = 1; // default right and reverse-left
-        if (dir == 'left' || dir == 'reverse-right') {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-        }
-
-        if (dir == 'reverse-right' || dir == 'reverse-left') {
-          position.x = start;
-        }
-
-        constants.autoplayId = setInterval(function () {
-          position.x += step;
-          if (position.x < 0 || plot.pointValuesY.length - 1 < position.x) {
-            constants.KillAutoplay();
-            this.lockPosition();
-          } else if (position.x == end) {
-            constants.KillAutoplay();
-            this.UpdateAllAutoPlay();
-          } else {
-            this.UpdateAllAutoPlay();
-          }
-        }, constants.autoPlayRate);
-      }
+      //bookmark
+      // working through moving these functions and consolidating below, got to here
     }
   }
   PlayDuringSpeedChange() {
@@ -2741,7 +2262,7 @@ class Control {
           this.Autoplay('up', position.x, lastx);
         }
       } else {
-          if (constants.chartType == 'point') {
+        if (constants.chartType == 'point') {
           this.Autoplay(lastPlayed, position.x, lastx);
         } else if (constants.chartType == 'smooth') {
           this.Autoplay(lastPlayed, positionL1.x, constants.lastx1);
@@ -2756,12 +2277,12 @@ class Control {
   lockPosition(xMax, yMax) {
     // default values, which works for bar like charts
     if (!this.isUndefinedOrNull(xMax)) {
-      if ( constants.plotOrientation == 'horz') {
-        xMax = plot.plotData.length - 1;
-        yMax = 0;
-      } else {
+      if (constants.plotOrientation == 'vert') {
         xMax = 0;
         yMax = plot.sections.length - 1;
+      } else {
+        xMax = plot.plotData.length - 1;
+        yMax = 0;
       }
     }
 
@@ -2774,6 +2295,28 @@ class Control {
       }
       if (positionL1.x > plot.curvePoints.length - 1) {
         positionL1.x = plot.curvePoints.length - 1;
+        didLockHappen = true;
+      }
+    } else if (constants.chartType == 'line') {
+      if (position.x < 0) {
+        position.x = 0;
+        didLockHappen = true;
+      }
+      if (position.x > plot.pointValuesY.length - 1) {
+        position.x = plot.pointValuesY.length - 1;
+        didLockHappen = true;
+      }
+    } else if (
+      constants.chartType == 'stacked_bar' ||
+      constants.chartType == 'stacked_normalized_bar' ||
+      constants.chartType == 'dodged_bar'
+    ) {
+      if (position.x > plot.level.length - 1) {
+        position.x = plot.plotData.length - 1;
+        didLockHappen = true;
+      }
+      if (position.y > plot.fill.length - 1) {
+        position.y = plot.fill.length - 1;
         didLockHappen = true;
       }
     } else {
@@ -2795,17 +2338,18 @@ class Control {
           constants.brailleInput.selectionEnd = 0;
         }
       }
-      if (position.x > xMax ) {
+      if (position.x > xMax) {
         position.x = xMax;
         didLockHappen = true;
-        constants.brailleInput.selectionStart = constants.brailleInput.value.length;
+        constants.brailleInput.selectionStart =
+          constants.brailleInput.value.length;
       }
-      if (position.y > yMax ) {
+      if (position.y > yMax) {
         position.y = yMax;
         didLockHappen = true;
-        constants.brailleInput.selectionStart = constants.brailleInput.value.length;
+        constants.brailleInput.selectionStart =
+          constants.brailleInput.value.length;
       }
-
     }
     return didLockHappen;
   }
@@ -2824,12 +2368,25 @@ class Control {
         [].concat(singleMaidr.type).includes('point') ||
         [].concat(singleMaidr.type).includes('smooth')
       ) {
+        if (layer0Point.hasRect) {
+          layer0Point.UpdatePointDisplay();
+        }
       } else if ([].concat(singleMaidr.type).includes('hist')) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
       } else if (
         [].concat(singleMaidr.type).includes('stacked_bar') ||
         [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
         [].concat(singleMaidr.type).includes('dodged_bar')
       ) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
+      } else if ([].concat(singleMaidr.type).includes('line')) {
+        if (constants.showRect && constants.hasRect) {
+          point.UpdatePointDisplay();
+        }
       }
     }
     if (constants.sonifMode != 'off') {
@@ -2851,12 +2408,29 @@ class Control {
         [].concat(singleMaidr.type).includes('point') ||
         [].concat(singleMaidr.type).includes('smooth')
       ) {
+        if (constants.showRect) {
+          if (constants.chartType == 'point' && layer0Point.hasRect) {
+            layer0Point.UpdatePointDisplay();
+          } else if (constants.chartType == 'smooth' && layer1Point.hasRect) {
+            layer1Point.UpdatePointDisplay();
+          }
+        }
       } else if ([].concat(singleMaidr.type).includes('hist')) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
       } else if (
         [].concat(singleMaidr.type).includes('stacked_bar') ||
         [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
         [].concat(singleMaidr.type).includes('dodged_bar')
       ) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
+      } else if ([].concat(singleMaidr.type).includes('line')) {
+        if (constants.showRect) {
+          point.UpdatePointDisplay();
+        }
       }
     }
     if (constants.sonifMode != 'off') {
@@ -2869,6 +2443,13 @@ class Control {
   }
   UpdateAllBraille() {
     if (constants.showDisplayInBraille) {
+      if (
+        [].concat(singleMaidr.type).includes('stacked_bar') ||
+        [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
+        [].concat(singleMaidr.type).includes('dodged_bar')
+      ) {
+        display.SetBraille();
+      }
       display.displayValues();
     }
     if (constants.showRect && constants.hasRect) {
@@ -2877,17 +2458,30 @@ class Control {
       } else if ([].concat(singleMaidr.type).includes('box')) {
         singleMaidr.rect.UpdateRect();
       } else if ([].concat(singleMaidr.type).includes('heat')) {
-          singleMaidr.rect.UpdateRectDisplay();
+        singleMaidr.rect.UpdateRectDisplay();
       } else if (
         [].concat(singleMaidr.type).includes('point') ||
         [].concat(singleMaidr.type).includes('smooth')
       ) {
+        if (layer1Point.hasRect) {
+          layer1Point.UpdatePointDisplay();
+        }
       } else if ([].concat(singleMaidr.type).includes('hist')) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
       } else if (
         [].concat(singleMaidr.type).includes('stacked_bar') ||
         [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
         [].concat(singleMaidr.type).includes('dodged_bar')
       ) {
+        if (constants.showRect && constants.hasRect) {
+          plot.Select();
+        }
+      } else if ([].concat(singleMaidr.type).includes('line')) {
+        if (constants.showRect) {
+          point.UpdatePointDisplay();
+        }
       }
     }
     if (constants.sonifMode != 'off') {
@@ -3009,71 +2603,236 @@ class Control {
         }
       }, constants.autoPlayRate);
     } else if ([].concat(singleMaidr.type).includes('heat')) {
-        lastPlayed = dir;
-        let xMax = plot.num_cols - 1;
-        let yMax = plot.num_rows - 1;
-        let step = 1; // default right, down, reverse-left, and reverse-up
+      lastPlayed = dir;
+      let xMax = plot.num_cols - 1;
+      let yMax = plot.num_rows - 1;
+      let step = 1; // default right, down, reverse-left, and reverse-up
+      if (
+        dir == 'left' ||
+        dir == 'up' ||
+        dir == 'reverse-right' ||
+        dir == 'reverse-down'
+      ) {
+        step = -1;
+      }
+
+      // clear old autoplay if exists
+      if (constants.autoplayId != null) {
+        constants.KillAutoplay();
+      }
+
+      if (dir == 'reverse-left' || dir == 'reverse-right') {
+        position.x = start;
+      } else if (dir == 'reverse-up' || dir == 'reverse-down') {
+        position.y = start;
+      }
+
+      constants.autoplayId = setInterval(function () {
         if (
           dir == 'left' ||
-          dir == 'up' ||
-          dir == 'reverse-right' ||
-          dir == 'reverse-down'
+          dir == 'right' ||
+          dir == 'reverse-left' ||
+          dir == 'reverse-right'
         ) {
-          step = -1;
-        }
-
-        // clear old autoplay if exists
-        if (constants.autoplayId != null) {
-          constants.KillAutoplay();
-        }
-
-        if (dir == 'reverse-left' || dir == 'reverse-right') {
-          position.x = start;
-        } else if (dir == 'reverse-up' || dir == 'reverse-down') {
-          position.y = start;
-        }
-
-        constants.autoplayId = setInterval(function () {
-          if (
-            dir == 'left' ||
-            dir == 'right' ||
-            dir == 'reverse-left' ||
-            dir == 'reverse-right'
-          ) {
-            position.x += step;
-            if (position.x < 0 || plot.num_cols - 1 < position.x) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (position.x == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
+          position.x += step;
+          if (position.x < 0 || plot.num_cols - 1 < position.x) {
+            constants.KillAutoplay();
+            this.lockPosition(xMax, yMax);
+          } else if (position.x == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
           } else {
-            // up or down
-            position.y += step;
-            if (position.y < 0 || plot.num_rows - 1 < position.y) {
-              constants.KillAutoplay();
-              this.lockPosition(xMax, yMax);
-            } else if (position.y == end) {
-              constants.KillAutoplay();
-              this.UpdateAllAutoPlay();
-            } else {
-              this.UpdateAllAutoPlay();
-            }
+            this.UpdateAllAutoPlay();
           }
-        }, constants.autoPlayRate);
+        } else {
+          // up or down
+          position.y += step;
+          if (position.y < 0 || plot.num_rows - 1 < position.y) {
+            constants.KillAutoplay();
+            this.lockPosition(xMax, yMax);
+          } else if (position.y == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
+          } else {
+            this.UpdateAllAutoPlay();
+          }
+        }
+      }, constants.autoPlayRate);
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
     ) {
+      lastPlayed = dir;
+      let xMax = 0;
+      let yMax = 0;
+      if (constants.chartType == 'point') {
+        xMax = plot.x.length - 1;
+      } else if (constants.chartType == 'smooth') {
+        xMax = plot.curvePoints.length - 1;
+      }
+      let step = 1; // default right and reverse left
+      if (dir == 'left' || dir == 'reverse-right') {
+        step = -1;
+      }
+
+      // clear old autoplay if exists
+      if (constants.autoplayId) {
+        constants.KillAutoplay();
+      }
+      if (constants.isSmoothAutoplay) {
+        audio.KillSmooth();
+      }
+
+      if (dir == 'reverse-left' || dir == 'reverse-right') {
+        position.x = start;
+        position.L1x = start;
+      }
+
+      if (constants.chartType == 'point') {
+        constants.autoplayId = setInterval(function () {
+          position.x += step;
+          // autoplay for two layers: point layer & smooth layer in braille
+          // plot.numPoints is not available anymore
+          if (position.x < 0 || position.x > plot.y.length - 1) {
+            constants.KillAutoplay();
+            this.lockPosition(xMax, yMax);
+          } else if (position.x == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
+          } else {
+            this.UpdateAllAutoPlay();
+          }
+        }, constants.autoPlayRate);
+      } else if (constants.chartType == 'smooth') {
+        constants.autoplayId = setInterval(function () {
+          positionL1.x += step;
+          // autoplay for two layers: point layer & smooth layer in braille
+          // plot.numPoints is not available anymore
+          if (positionL1.x < 0 || positionL1.x > plot.curvePoints.length - 1) {
+            constants.KillAutoplay();
+            this.lockPosition(xMax, yMax);
+          } else if (positionL1.x == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
+          } else {
+            this.UpdateAllAutoPlay();
+          }
+        }, constants.autoPlayRate);
+      }
     } else if ([].concat(singleMaidr.type).includes('hist')) {
+      lastPlayed = dir;
+      let step = 1; // default right and reverse-left
+      if (dir == 'left' || dir == 'reverse-right') {
+        step = -1;
+      }
+
+      // clear old autoplay if exists
+      if (constants.autoplayId != null) {
+        constants.KillAutoplay();
+      }
+
+      if (dir == 'reverse-right' || dir == 'reverse-left') {
+        position.x = start;
+      }
+
+      constants.autoplayId = setInterval(function () {
+        position.x += step;
+        if (position.x < 0 || plot.plotData.length - 1 < position.x) {
+          constants.KillAutoplay();
+          this.lockPosition();
+        } else if (position.x == end) {
+          constants.KillAutoplay();
+          this.UpdateAllAutoPlay();
+        } else {
+          this.UpdateAllAutoPlay();
+        }
+      }, constants.autoPlayRate);
     } else if (
       [].concat(singleMaidr.type).includes('stacked_bar') ||
       [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
       [].concat(singleMaidr.type).includes('dodged_bar')
     ) {
+      lastPlayed = dir;
+      let step = 1; // default right, up, reverse-left, and reverse-down
+      if (
+        dir == 'left' ||
+        dir == 'down' ||
+        dir == 'reverse-right' ||
+        dir == 'reverse-up'
+      ) {
+        step = -1;
+      }
+
+      // clear old autoplay if exists
+      if (constants.autoplayId != null) {
+        constants.KillAutoplay();
+      }
+
+      if (dir == 'reverse-left' || dir == 'reverse-right') {
+        position.x = start;
+      } else if (dir == 'reverse-up' || dir == 'reverse-down') {
+        position.y = start;
+      }
+
+      constants.autoplayId = setInterval(function () {
+        if (
+          dir == 'left' ||
+          dir == 'right' ||
+          dir == 'reverse-left' ||
+          dir == 'reverse-right'
+        ) {
+          position.x += step;
+          if (position.x < 0 || plot.plotData.length - 1 < position.x) {
+            constants.KillAutoplay();
+            this.lockPosition();
+          } else if (position.x == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
+          } else {
+            this.UpdateAllAutoPlay();
+          }
+        } else {
+          // up or down
+          position.y += step;
+          if (position.y < 0 || plot.plotData[0].length - 1 < position.y) {
+            constants.KillAutoplay();
+            this.lockPosition();
+          } else if (position.y == end) {
+            constants.KillAutoplay();
+            this.UpdateAllAutoPlay();
+          } else {
+            this.UpdateAllAutoPlay();
+          }
+        }
+      }, constants.autoPlayRate);
+    } else if ([].concat(singleMaidr.type).includes('hist')) {
+      lastPlayed = dir;
+      let step = 1; // default right and reverse-left
+      if (dir == 'left' || dir == 'reverse-right') {
+        step = -1;
+      }
+
+      // clear old autoplay if exists
+      if (constants.autoplayId != null) {
+        constants.KillAutoplay();
+      }
+
+      if (dir == 'reverse-right' || dir == 'reverse-left') {
+        position.x = start;
+      }
+
+      constants.autoplayId = setInterval(function () {
+        position.x += step;
+        if (position.x < 0 || plot.pointValuesY.length - 1 < position.x) {
+          constants.KillAutoplay();
+          this.lockPosition();
+        } else if (position.x == end) {
+          constants.KillAutoplay();
+          this.UpdateAllAutoPlay();
+        } else {
+          this.UpdateAllAutoPlay();
+        }
+      }, constants.autoPlayRate);
     }
   }
   PlayLine(dir) {
@@ -3104,8 +2863,7 @@ class Control {
       }
       panningArr = [panPoint, 1];
       duration =
-        (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) *
-        3;
+        (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) * 3;
     } else if (dir == 'left') {
       for (let i = x; i >= 0; i--) {
         freqArr.push(
@@ -3134,8 +2892,7 @@ class Control {
       }
       panningArr = [1, panPoint];
       duration =
-        (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) *
-        3;
+        (Math.abs(plot.curvePoints.length - x) / plot.curvePoints.length) * 3;
     } else if (dir == 'reverse-left') {
       for (let i = 0; i <= x; i++) {
         freqArr.push(
