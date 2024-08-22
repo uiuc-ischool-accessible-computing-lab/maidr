@@ -469,6 +469,9 @@ function DestroyChartComponents() {
   if (typeof description != 'undefined') {
     description.Destroy();
   }
+  if (typeof chatLLM != 'undefined') {
+    chatLLM.Destroy();
+  }
 
   constants.chart = null;
   constants.chart_container = null;
