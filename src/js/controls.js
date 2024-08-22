@@ -2499,6 +2499,10 @@ class Control {
 
         constants.autoplayId = setInterval(function () {
           position.x += step;
+          if (!plot || !plot.plotData) {
+            constants.KillAutoplay();
+            return;
+          }
           if (position.x < 0 || plot.plotData.length - 1 < position.x) {
             constants.KillAutoplay();
             lockPosition();
