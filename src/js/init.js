@@ -473,6 +473,15 @@ function DestroyChartComponents() {
     chatLLM.Destroy();
   }
 
+  const scatterSvg = document.querySelector('svg#scatter');
+  if (scatterSvg) {
+    // Incase autoplay was running when the highlighted plot points were being handled,
+    // kill autoplay first before removing highlight_point elements
+    constants.KillAutoplay();
+    document.querySelectorAll('.highlight_point').forEach((element) => {
+      element.remove();
+    });
+  }
   constants.chart = null;
   constants.chart_container = null;
   constants.brailleContainer = null;
