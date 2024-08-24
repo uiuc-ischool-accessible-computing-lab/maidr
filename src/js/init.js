@@ -474,14 +474,22 @@ function DestroyChartComponents() {
   }
 
   const scatterSvg = document.querySelector('svg#scatter');
+  const lineSvg = document.querySelector('svg#line');
+  // Incase autoplay was running when the highlighted plot points were being handled,
+  // kill autoplay first before removing highlight_point elements
   if (scatterSvg) {
-    // Incase autoplay was running when the highlighted plot points were being handled,
-    // kill autoplay first before removing highlight_point elements
     constants.KillAutoplay();
-    document.querySelectorAll('.highlight_point').forEach((element) => {
+    scatterSvg.querySelectorAll('.highlight_point').forEach((element) => {
       element.remove();
     });
+  } else if (lineSvg) {
+    const highlightPoint = lineSvg.querySelector('#highlight_point');
+    if (highlightPoint) {
+      constants.KillAutoplay();
+      highlightPoint.remove();
+    }
   }
+
   constants.chart = null;
   constants.chart_container = null;
   constants.brailleContainer = null;
