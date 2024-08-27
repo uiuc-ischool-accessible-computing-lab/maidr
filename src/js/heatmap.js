@@ -389,7 +389,7 @@ class HeatMapRect {
     var rect = document.createElementNS(svgns, 'rect');
     rect.setAttribute('id', 'highlight_rect');
     rect.setAttribute('x', this.x);
-    rect.setAttribute('y', this.y);
+    rect.setAttribute('y', this.y === undefined ? 0 : this.y);
     rect.setAttribute('width', this.width);
     rect.setAttribute('height', this.height);
     rect.setAttribute('stroke', constants.colorSelected);
