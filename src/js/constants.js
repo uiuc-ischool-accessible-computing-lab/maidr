@@ -1367,6 +1367,24 @@ class Menu {
       .setAttribute('aria-live', constants.ariaMode);
 
     document.getElementById('init_llm_on_load').checked = constants.autoInitLLM;
+    const scatter = document.getElementsByClassName('highlight_point');
+    const heatmap = document.getElementById('highlight_rect');
+    const line = document.getElementById('highlight_point');
+
+    if (scatter !== null && scatter.length > 0) {
+      for (let i = 0; i < scatter.length; i++) {
+        scatter[i].setAttribute('stroke', constants.colorSelected);
+        scatter[i].setAttribute('fill', constants.colorSelected);
+      }
+    }
+
+    if (heatmap !== null) {
+      heatmap.setAttribute('stroke', constants.colorSelected);
+    }
+
+    if (line !== null) {
+      line.setAttribute('stroke', constants.colorSelected);
+    }
   }
 
   /**
