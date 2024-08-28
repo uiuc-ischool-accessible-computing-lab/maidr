@@ -475,6 +475,7 @@ function DestroyChartComponents() {
 
   const scatterSvg = document.querySelector('svg#scatter');
   const lineSvg = document.querySelector('svg#line');
+  const heatSvg = document.querySelector('svg#heat');
   // Incase autoplay was running when the highlighted plot points were being handled,
   // kill autoplay first before removing highlight_point elements
   if (scatterSvg) {
@@ -482,8 +483,10 @@ function DestroyChartComponents() {
     scatterSvg.querySelectorAll('.highlight_point').forEach((element) => {
       element.remove();
     });
-  } else if (lineSvg) {
-    const highlightPoint = lineSvg.querySelector('#highlight_point');
+  } else if (lineSvg || heatSvg) {
+    const highlightPoint = lineSvg
+      ? lineSvg.querySelector('#highlight_point')
+      : heatSvg.querySelector('#highlight_rect');
     if (highlightPoint) {
       constants.KillAutoplay();
       highlightPoint.remove();
