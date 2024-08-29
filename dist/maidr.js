@@ -3190,6 +3190,7 @@ class Audio {
         panning = 0;
       }
     } else if (constants.chartType == 'heat') {
+      if (!plot.data || !plot.data[position.y]) return;
       rawFreq = plot.data[position.y][position.x];
       rawPanning = position.x;
       frequency = this.SlideBetween(
@@ -4197,16 +4198,17 @@ class Display {
       constants.chartType == 'stacked_normalized_bar' ||
       constants.chartType == 'dodged_bar'
     ) {
-      // {legend x} is {colname x}, {legend y} is {colname y}, value is {plotData[x][y]}
+      // {legend x} is {colname x}, level is {colname y}, {legend y} is {plotData[x][y]}
       if (plot.plotLegend) {
         verboseText += plot.plotLegend.x + ' is ';
       }
       verboseText += plot.level[position.x] + ', ';
+      verboseText += 'level is ' + plot.fill[position.y] + ', ';
+
       if (plot.plotLegend) {
         verboseText += plot.plotLegend.y + ' is ';
       }
-      verboseText += plot.fill[position.y] + ', ';
-      verboseText += 'value is ' + plot.plotData[position.x][position.y];
+      verboseText += plot.plotData[position.x][position.y];
 
       // navigation == 1 ? {colname x} : {colname y} is {plotData[x][y]}
       if (constants.navigation == 1) {
@@ -6293,7 +6295,7 @@ class HeatMapRect {
     var rect = document.createElementNS(svgns, 'rect');
     rect.setAttribute('id', 'highlight_rect');
     rect.setAttribute('x', this.x);
-    rect.setAttribute('y', this.y);
+    rect.setAttribute('y', this.y === undefined ? 0 : this.y);
     rect.setAttribute('width', this.width);
     rect.setAttribute('height', this.height);
     rect.setAttribute('stroke', constants.colorSelected);
@@ -6768,6 +6770,10 @@ class ScatterPlot {
       constants.sepPlayId = setInterval(
         function () {
           // play this tone
+          if (!audio || !audio.playTone) {
+            clearInterval(constants.sepPlayId);
+            return;
+          }
           audio.playTone();
 
           // and then set up for the next one
@@ -6783,6 +6789,10 @@ class ScatterPlot {
       ); // play all tones at the same time
     } else if (constants.chartType == 'smooth') {
       // best fit smooth layer
+      if (!audio || !audio.playTone) {
+        clearInterval(constants.sepPlayId);
+        return;
+      }
       audio.playTone();
     }
   }
@@ -6826,7 +6836,7 @@ class ScatterPlot {
       if (elIndex > -1) {
         data = singleMaidr.data[elIndex];
       } else {
-        data = singleMaidr.data
+        data = singleMaidr.data;
       }
       if (xyFormat == 'object') {
         for (let i = 0; i < data.length; i++) {
@@ -7020,7 +7030,9 @@ class Layer0Point {
           plot.plotPoints[this.circleIndex[i]] instanceof SVGUseElement ||
           plot.plotPoints[this.circleIndex[i]] instanceof SVGCircleElement
         ) {
-          y = plot.plotPoints[this.circleIndex[i]].getAttribute(plot.prefix + 'y');
+          y = plot.plotPoints[this.circleIndex[i]].getAttribute(
+            plot.prefix + 'y'
+          );
         }
 
         point.setAttribute('cy', y);
@@ -8155,6 +8167,12 @@ class Control {
               singleMaidr.type.includes('point')
             ) {
               xlabel = plot.x_group_label;
+            } else if (
+              singleMaidr.type == 'stacked_bar' ||
+              singleMaidr.type == 'stacked_normalized_bar' ||
+              singleMaidr.type == 'dodged_bar'
+            ) {
+              xlabel = plot.plotLegend.x;
             }
             display.displayInfo('x label', xlabel);
             pressedL = false;
@@ -8173,6 +8191,12 @@ class Control {
               singleMaidr.type.includes('point')
             ) {
               ylabel = plot.y_group_label;
+            } else if (
+              singleMaidr.type == 'stacked_bar' ||
+              singleMaidr.type == 'stacked_normalized_bar' ||
+              singleMaidr.type == 'dodged_bar'
+            ) {
+              ylabel = plot.plotLegend.y;
             }
             display.displayInfo('y label', ylabel);
             pressedL = false;
@@ -8498,6 +8522,10 @@ class Control {
 
         constants.autoplayId = setInterval(function () {
           position.x += step;
+          if (!plot || !plot.plotData) {
+            constants.KillAutoplay();
+            return;
+          }
           if (position.x < 0 || plot.plotData.length - 1 < position.x) {
             constants.KillAutoplay();
             lockPosition();
@@ -9653,6 +9681,7 @@ class Control {
         }
 
         constants.autoplayId = setInterval(function () {
+          if (!plot) return;
           if (
             dir == 'left' ||
             dir == 'right' ||
@@ -10428,6 +10457,10 @@ class Control {
 
         constants.autoplayId = setInterval(function () {
           position.x += step;
+          if (!plot || !plot.plotData) {
+            constants.KillAutoplay();
+            return;
+          }
           if (position.x < 0 || plot.plotData.length - 1 < position.x) {
             constants.KillAutoplay();
             lockPosition();
@@ -10801,6 +10834,10 @@ class Control {
             dir == 'reverse-right'
           ) {
             position.x += step;
+            if (!plot || !plot.plotData) {
+              constants.KillAutoplay();
+              return;
+            }
             if (position.x < 0 || plot.plotData.length - 1 < position.x) {
               constants.KillAutoplay();
               lockPosition();
@@ -11856,6 +11893,29 @@ function DestroyChartComponents() {
   }
   if (typeof description != 'undefined') {
     description.Destroy();
+  }
+  if (typeof chatLLM != 'undefined') {
+    chatLLM.Destroy();
+  }
+
+  const scatterSvg = document.querySelector('svg#scatter');
+  const lineSvg = document.querySelector('svg#line');
+  const heatSvg = document.querySelector('svg#heat');
+  // Incase autoplay was running when the highlighted plot points were being handled,
+  // kill autoplay first before removing highlight_point elements
+  if (scatterSvg) {
+    constants.KillAutoplay();
+    scatterSvg.querySelectorAll('.highlight_point').forEach((element) => {
+      element.remove();
+    });
+  } else if (lineSvg || heatSvg) {
+    const highlightPoint = lineSvg
+      ? lineSvg.querySelector('#highlight_point')
+      : heatSvg.querySelector('#highlight_rect');
+    if (highlightPoint) {
+      constants.KillAutoplay();
+      highlightPoint.remove();
+    }
   }
 
   constants.chart = null;

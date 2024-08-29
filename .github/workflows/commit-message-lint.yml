@@ -21,8 +21,8 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Install Dependencies
-        run: yarn install
+      - name: Install dependencies
+        run: npm install @commitlint/config-conventional @commitlint/cli
 
       - name: Lint Commit Messages
         run: npx commitlint --from=HEAD~1 --to=HEAD --verbose

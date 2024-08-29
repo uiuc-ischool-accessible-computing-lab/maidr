@@ -462,6 +462,10 @@ class ScatterPlot {
       constants.sepPlayId = setInterval(
         function () {
           // play this tone
+          if (!audio || !audio.playTone) {
+            clearInterval(constants.sepPlayId);
+            return;
+          }
           audio.playTone();
 
           // and then set up for the next one
@@ -477,6 +481,10 @@ class ScatterPlot {
       ); // play all tones at the same time
     } else if (constants.chartType == 'smooth') {
       // best fit smooth layer
+      if (!audio || !audio.playTone) {
+        clearInterval(constants.sepPlayId);
+        return;
+      }
       audio.playTone();
     }
   }
@@ -520,7 +528,7 @@ class ScatterPlot {
       if (elIndex > -1) {
         data = singleMaidr.data[elIndex];
       } else {
-        data = singleMaidr.data
+        data = singleMaidr.data;
       }
       if (xyFormat == 'object') {
         for (let i = 0; i < data.length; i++) {
@@ -714,7 +722,9 @@ class Layer0Point {
           plot.plotPoints[this.circleIndex[i]] instanceof SVGUseElement ||
           plot.plotPoints[this.circleIndex[i]] instanceof SVGCircleElement
         ) {
-          y = plot.plotPoints[this.circleIndex[i]].getAttribute(plot.prefix + 'y');
+          y = plot.plotPoints[this.circleIndex[i]].getAttribute(
+            plot.prefix + 'y'
+          );
         }
 
         point.setAttribute('cy', y);

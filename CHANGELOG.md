@@ -1,3 +1,47 @@
+## [2.14.7](https://github.com/xability/maidr/compare/v2.14.6...v2.14.7) (2024-08-29)
+
+
+### Bug Fixes
+
+* **ci:** rectify formatting in affected file for build workflow ([#536](https://github.com/xability/maidr/issues/536)) ([03ed380](https://github.com/xability/maidr/commit/03ed3807e002ca64873eada3daf99f7968bcd648))
+* **heatmap:** kill visual selector and autoplay post maidr teardown ([#534](https://github.com/xability/maidr/issues/534)) ([17c286d](https://github.com/xability/maidr/commit/17c286df25aaa2652ee2c32270321c0ec9ea3e66))
+
+## [2.14.6](https://github.com/xability/maidr/compare/v2.14.5...v2.14.6) (2024-08-28)
+
+
+### Bug Fixes
+
+* cease autoplay when maidr is deactivated (outside the plot) ([#526](https://github.com/xability/maidr/issues/526)) ([dd564ec](https://github.com/xability/maidr/commit/dd564ecdf147536a9354ee1fda019bbb7fb1b043))
+
+## [2.14.5](https://github.com/xability/maidr/compare/v2.14.4...v2.14.5) (2024-08-25)
+
+
+### Bug Fixes
+
+* **lineplot:** destroy highlight and cease autoplay if active on lineplot ([#530](https://github.com/xability/maidr/issues/530)) ([c65ef3c](https://github.com/xability/maidr/commit/c65ef3c407b1ecc8bf59c91108182e68f0d45045))
+
+## [2.14.4](https://github.com/xability/maidr/compare/v2.14.3...v2.14.4) (2024-08-24)
+
+
+### Bug Fixes
+
+* **scatterplot:** destroy highlight and cease autoplay if active on scatterplot ([#528](https://github.com/xability/maidr/issues/528)) ([5b8d3e2](https://github.com/xability/maidr/commit/5b8d3e28922cf07353d5b928e184227d33f1f998))
+
+## [2.14.3](https://github.com/xability/maidr/compare/v2.14.2...v2.14.3) (2024-08-23)
+
+
+### Bug Fixes
+
+* destroy chatLLM dialog when maidr is deactivated ([#525](https://github.com/xability/maidr/issues/525)) ([6b705d8](https://github.com/xability/maidr/commit/6b705d8852c09fc398f4b1bcb028364bae0ebdd3))
+
+## [2.14.2](https://github.com/xability/maidr/compare/v2.14.1...v2.14.2) (2024-08-11)
+
+
+### Bug Fixes
+
+* add lx and ly for stacked plots ([fe6db71](https://github.com/xability/maidr/commit/fe6db7113bf9d740854518151468d95866fcca67))
+* use level instead of y label in verbose mode for stacked bar ([#517](https://github.com/xability/maidr/issues/517)) ([1363d5c](https://github.com/xability/maidr/commit/1363d5cc8245aa440fe2e477775865e541285dcd)), closes [#515](https://github.com/xability/maidr/issues/515)
+
 ## [2.14.1](https://github.com/xability/maidr/compare/v2.14.0...v2.14.1) (2024-07-30)
 
 

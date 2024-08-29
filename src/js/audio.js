@@ -121,6 +121,7 @@ class Audio {
         panning = 0;
       }
     } else if (constants.chartType == 'heat') {
+      if (!plot.data || !plot.data[position.y]) return;
       rawFreq = plot.data[position.y][position.x];
       rawPanning = position.x;
       frequency = this.SlideBetween(

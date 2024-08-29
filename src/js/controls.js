@@ -217,6 +217,12 @@ class Control {
               singleMaidr.type.includes('point')
             ) {
               xlabel = plot.x_group_label;
+            } else if (
+              singleMaidr.type == 'stacked_bar' ||
+              singleMaidr.type == 'stacked_normalized_bar' ||
+              singleMaidr.type == 'dodged_bar'
+            ) {
+              xlabel = plot.plotLegend.x;
             }
             display.displayInfo('x label', xlabel);
             control.pressedL = false;
@@ -235,6 +241,12 @@ class Control {
               singleMaidr.type.includes('point')
             ) {
               ylabel = plot.y_group_label;
+            } else if (
+              singleMaidr.type == 'stacked_bar' ||
+              singleMaidr.type == 'stacked_normalized_bar' ||
+              singleMaidr.type == 'dodged_bar'
+            ) {
+              ylabel = plot.plotLegend.y;
             }
             display.displayInfo('y label', ylabel);
             control.pressedL = false;
@@ -679,6 +691,7 @@ class Control {
         xMax = plot.sections.length - 1;
         yMax = plot.plotData.length - 1;
       }
+
       // control eventlisteners
       constants.events.push([
         constants.chart,
@@ -1449,6 +1462,7 @@ class Control {
           }
         },
       ]);
+
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
@@ -1813,6 +1827,7 @@ class Control {
           },
         ]);
       }
+
     } else if (
       [].concat(singleMaidr.type).includes('stacked_bar') ||
       [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||

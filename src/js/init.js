@@ -469,6 +469,29 @@ function DestroyChartComponents() {
   if (typeof description != 'undefined') {
     description.Destroy();
   }
+  if (typeof chatLLM != 'undefined') {
+    chatLLM.Destroy();
+  }
+
+  const scatterSvg = document.querySelector('svg#scatter');
+  const lineSvg = document.querySelector('svg#line');
+  const heatSvg = document.querySelector('svg#heat');
+  // Incase autoplay was running when the highlighted plot points were being handled,
+  // kill autoplay first before removing highlight_point elements
+  if (scatterSvg) {
+    constants.KillAutoplay();
+    scatterSvg.querySelectorAll('.highlight_point').forEach((element) => {
+      element.remove();
+    });
+  } else if (lineSvg || heatSvg) {
+    const highlightPoint = lineSvg
+      ? lineSvg.querySelector('#highlight_point')
+      : heatSvg.querySelector('#highlight_rect');
+    if (highlightPoint) {
+      constants.KillAutoplay();
+      highlightPoint.remove();
+    }
+  }
 
   constants.chart = null;
   constants.chart_container = null;

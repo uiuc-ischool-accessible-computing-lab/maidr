@@ -540,16 +540,17 @@ class Display {
       constants.chartType == 'stacked_normalized_bar' ||
       constants.chartType == 'dodged_bar'
     ) {
-      // {legend x} is {colname x}, {legend y} is {colname y}, value is {plotData[x][y]}
+      // {legend x} is {colname x}, level is {colname y}, {legend y} is {plotData[x][y]}
       if (plot.plotLegend) {
         verboseText += plot.plotLegend.x + ' is ';
       }
       verboseText += plot.level[position.x] + ', ';
+      verboseText += 'level is ' + plot.fill[position.y] + ', ';
+
       if (plot.plotLegend) {
         verboseText += plot.plotLegend.y + ' is ';
       }
-      verboseText += plot.fill[position.y] + ', ';
-      verboseText += 'value is ' + plot.plotData[position.x][position.y];
+      verboseText += plot.plotData[position.x][position.y];
 
       // navigation == 1 ? {colname x} : {colname y} is {plotData[x][y]}
       if (constants.navigation == 1) {
