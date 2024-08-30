@@ -78,7 +78,7 @@ class Audio {
         constants.plotOrientation == 'vert' ? position.y : position.x
       );
       if (Array.isArray(plot.plotData[plotPos][sectionKey])) {
-        // outliers are stored in values with a seperate itterator
+        // outliers are stored in values with a separate itterator
         rawFreq = plot.plotData[plotPos][sectionKey][position.z];
       } else {
         // normal points
