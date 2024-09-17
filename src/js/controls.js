@@ -506,20 +506,9 @@ class Control {
       });
     }
 
-    // TODO control rewrite starts here
-    // plan: generally switch from if chart.type > control, to control > if chart.type
-    // This will standardize and separate controls so we can manage more easily, I hope
-    // It'll also mean we have a single control.UpdateAll / control.UpdateAllBraille / etc
-    //
-    // todo
-    // ! move BTS, prefix, chart init to separate functions
-    // ! move ctrl movement at least to top of SetControls, maybe separate function later
-    // ! move cursor routing at least to top of SetControls, maybe separate function later
-    // reroute control.UpdateAll etc to new class level functions
-    // rearrange nested ifs to start with actual controls (just arrow, ctrl arrow, etc), then if chart.type inside
-    // final routing from nested ifs to class level functions
-    // bugfixes :D
-
+    // #####################################################################################################
+    // #####################################################################################################
+    // #####################################################################################################
     if ([].concat(singleMaidr.type).includes('bar')) {
       // control eventlisteners
       constants.events.push([
@@ -681,6 +670,9 @@ class Control {
           },
         ]);
       }
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if ([].concat(singleMaidr.type).includes('box')) {
       let xMax = 0;
       let yMax = 0;
@@ -1144,6 +1136,9 @@ class Control {
           },
         ]);
       }
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       let xMax = plot.num_cols - 1;
       let yMax = plot.num_rows - 1;
@@ -1462,6 +1457,9 @@ class Control {
           }
         },
       ]);
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
@@ -1687,6 +1685,9 @@ class Control {
           }
         },
       ]);
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if ([].concat(singleMaidr.type).includes('hist')) {
       // control eventlisteners
       constants.events.push([
@@ -1826,6 +1827,9 @@ class Control {
           },
         ]);
       }
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if (
       [].concat(singleMaidr.type).includes('stacked_bar') ||
       [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
@@ -2040,6 +2044,9 @@ class Control {
           },
         ]);
       }
+      // #####################################################################################################
+      // #####################################################################################################
+      // #####################################################################################################
     } else if ([].concat(singleMaidr.type).includes('line')) {
       window.position = new Position(-1, -1);
       window.plot = new LinePlot();
@@ -2394,12 +2401,13 @@ class Control {
         singleMaidr.rect.UpdateRect();
       } else if ([].concat(singleMaidr.type).includes('heat')) {
         singleMaidr.rect.UpdateRectDisplay();
-      } else if (
-        [].concat(singleMaidr.type).includes('point') ||
-        [].concat(singleMaidr.type).includes('smooth')
-      ) {
+      } else if ([].concat(singleMaidr.type).includes('point')) {
         if (layer0Point.hasRect) {
           layer0Point.UpdatePointDisplay();
+        }
+      } else if ([].concat(singleMaidr.type).includes('smooth')) {
+        if (layer1Point.hasRect) {
+          layer1Point.UpdatePointDisplay();
         }
       } else if ([].concat(singleMaidr.type).includes('hist')) {
         if (constants.showRect && constants.hasRect) {
@@ -2541,10 +2549,10 @@ class Control {
 
       constants.autoplayId = setInterval(function () {
         position.x += step;
-        if (position.x < 0 || plot.plotData.length - 1 < position.x) {
+        if (position.x < 0 || end - 1 < position.x) {
           constants.KillAutoplay();
           control.lockPosition();
-        } else if (position.x == end) {
+        } else if (position.x >= end) {
           constants.KillAutoplay();
           control.UpdateAllAutoPlay();
         } else {
@@ -2724,8 +2732,6 @@ class Control {
       if (constants.chartType == 'point') {
         constants.autoplayId = setInterval(function () {
           position.x += step;
-          // autoplay for two layers: point layer & smooth layer in braille
-          // plot.numPoints is not available anymore
           if (position.x < 0 || position.x > plot.y.length - 1) {
             constants.KillAutoplay();
             control.lockPosition(xMax, yMax);
@@ -2739,8 +2745,6 @@ class Control {
       } else if (constants.chartType == 'smooth') {
         constants.autoplayId = setInterval(function () {
           positionL1.x += step;
-          // autoplay for two layers: point layer & smooth layer in braille
-          // plot.numPoints is not available anymore
           if (positionL1.x < 0 || positionL1.x > plot.curvePoints.length - 1) {
             constants.KillAutoplay();
             control.lockPosition(xMax, yMax);
@@ -2869,8 +2873,6 @@ class Control {
     }
   }
   PlayLine(dir) {
-    lastPlayed = dir;
-
     let freqArr = [];
     let panningArr = [];
     let panPoint = audio.SlideBetween(

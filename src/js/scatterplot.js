@@ -697,7 +697,6 @@ class Layer0Point {
    * @returns {Promise<void>}
    */
   async PrintPoints() {
-    await this.ClearPoints();
     await this.UpdatePoints();
     for (let i = 0; i < this.circleIndex.length; i++) {
       const svgns = 'http://www.w3.org/2000/svg';
@@ -754,8 +753,6 @@ class Layer0Point {
    * Clears the points, updates them, and prints them to the screen.
    */
   UpdatePointDisplay() {
-    this.ClearPoints();
-    this.UpdatePoints();
     this.PrintPoints();
   }
 }
@@ -796,7 +793,6 @@ class Layer1Point {
    * @returns {Promise<void>}
    */
   async PrintPoints() {
-    await this.ClearPoints();
     await this.UpdatePoints();
     const svgns = 'http://www.w3.org/2000/svg';
     var point = document.createElementNS(svgns, 'circle');
@@ -838,8 +834,6 @@ class Layer1Point {
    * Clears the points, updates them, and prints them to the screen.
    */
   UpdatePointDisplay() {
-    this.ClearPoints();
-    this.UpdatePoints();
     this.PrintPoints();
   }
 }
