@@ -156,6 +156,20 @@ class Control {
       ]);
     }
 
+    // Review mode controls: disable everything but arrow keys
+    constants.events.push([
+      constants.review,
+      'keydown',
+      function (e) {
+        // allow arrow keys only. BTSR handled above
+        if (
+          !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+        ) {
+          e.preventDefault();
+        }
+      },
+    ]);
+
     // We want to tab or shift tab past the chart,
     for (let i = 0; i < this.allControlElements.length; i++) {
       constants.events.push([

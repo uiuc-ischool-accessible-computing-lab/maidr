@@ -396,7 +396,7 @@ function CreateChartComponents() {
         constants.review_id_container +
         '" class="hidden sr-only sr-only-focusable"><input id="' +
         constants.review_id +
-        '" type="text" readonly size="50" /></div>'
+        '" type="text" size="50" /></div>'
     );
 
   // some tweaks
