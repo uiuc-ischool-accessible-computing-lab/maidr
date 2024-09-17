@@ -1462,7 +1462,6 @@ class Control {
           }
         },
       ]);
-
     } else if (
       [].concat(singleMaidr.type).includes('point') ||
       [].concat(singleMaidr.type).includes('smooth')
@@ -1827,7 +1826,6 @@ class Control {
           },
         ]);
       }
-
     } else if (
       [].concat(singleMaidr.type).includes('stacked_bar') ||
       [].concat(singleMaidr.type).includes('stacked_normalized_bar') ||
@@ -2042,7 +2040,7 @@ class Control {
           },
         ]);
       }
-    } else if (singleMaidr.type == 'line') {
+    } else if ([].concat(singleMaidr.type).includes('line')) {
       window.position = new Position(-1, -1);
       window.plot = new LinePlot();
 
@@ -2840,7 +2838,7 @@ class Control {
           }
         }
       }, constants.autoPlayRate);
-    } else if ([].concat(singleMaidr.type).includes('hist')) {
+    } else if ([].concat(singleMaidr.type).includes('line')) {
       lastPlayed = dir;
       let step = 1; // default right and reverse-left
       if (dir == 'left' || dir == 'reverse-right') {
