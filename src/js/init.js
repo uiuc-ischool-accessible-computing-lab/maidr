@@ -250,6 +250,7 @@ function DestroyMaidr() {
   DestroyChartComponents();
 
   window.review = null;
+  window.description = null;
   window.display = null;
   window.control = null;
   window.plot = null;

@@ -88,12 +88,28 @@ class Constants {
    * @type {HTMLElement}
    * @default null
    */
-  reviewSaveSpot;
+  saveMyPlace;
   /**
-   * Storage setting for the braille mode when we enter review mode
+   * Storage setting for the braille mode when we enter various mode
    * @type {("on"|"off")}
    */
-  reviewSaveBrailleMode;
+  saveBrailleMode;
+
+  /**
+   * HTML id of the div containing the summary text.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'summary'
+   */
+  summary_id = 'summary';
+  /**
+   * HTML id of the div containing the summary text.
+   * @type {string}
+   * @memberof HtmlIds
+   * @default 'summary_container'
+   */
+  sumary_id_container = 'summary_container';
+
   /**
    * HTML id of the actual chart element. Used to connect the application to the chart.
    * @type {string}
@@ -2391,13 +2407,13 @@ class ChatLLM {
 class Description {
   // This class creates an html modal containing summary info of the active chart
   // Trigger popup with 'D' key
-  // Info is basically anything available, but stuff like:
+  // Info is a text description of the chart, and tries to include:
   // - chart type
-  // - chart labels, like title, subtitle, caption etc
+  // - general info about shape of the data
   // - chart data (an accessible html table)
 
   constructor() {
-    //this.CreateComponent(); // disabled as we're in development and have switched priorities
+    this.CreateComponent(); // disabled as we're in development and have switched priorities
   }
 
   /**
@@ -2509,7 +2525,9 @@ class Description {
       // close
       document.getElementById('description').classList.add('hidden');
       document.getElementById('desc_modal_backdrop').classList.add('hidden');
-      this.whereWasMyFocus.focus();
+      if (this.whereWasMyFocus) {
+        this.whereWasMyFocus.focus();
+      }
       this.whereWasMyFocus = null;
     }
   }
@@ -3012,19 +3030,19 @@ class Review {
   ToggleReviewMode(onoff = true) {
     // true means on or show
     if (onoff) {
-      constants.reviewSaveSpot = document.activeElement;
+      constants.saveMyPlace = document.activeElement;
       constants.review_container.classList.remove('hidden');
-      constants.reviewSaveBrailleMode = constants.brailleMode;
+      constants.saveBrailleMode = constants.brailleMode;
       constants.review.focus();
 
       display.announceText('Review on');
     } else {
       constants.review_container.classList.add('hidden');
-      if (constants.reviewSaveBrailleMode == 'on') {
+      if (constants.saveBrailleMode == 'on') {
         // we have to turn braille mode back on
         display.toggleBrailleMode('on');
       } else {
-        constants.reviewSaveSpot.focus();
+        constants.saveMyPlace.focus();
       }
       display.announceText('Review off');
     }

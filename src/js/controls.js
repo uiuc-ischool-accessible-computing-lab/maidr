@@ -114,6 +114,11 @@ class Control {
             }
           }
 
+          // D: description mode
+          if (e.key == 'd' && !e.ctrlKey && !e.shiftKey && !control.pressedL) {
+            description.Toggle();
+          }
+
           if (e.key == ' ' && !control.pressedL) {
             // space 32, replay info but no other changes
 
