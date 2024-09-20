@@ -2392,18 +2392,14 @@ class Control {
       if (position.x > xMax) {
         position.x = xMax;
         didLockHappen = true;
-        if ( constants.brailleMode != 'off' ) {
-          constants.brailleInput.selectionStart =
-            constants.brailleInput.value.length;
-        }
+        constants.brailleInput.selectionStart =
+          constants.brailleInput.value.length;
       }
       if (position.y > yMax) {
         position.y = yMax;
         didLockHappen = true;
-        if ( constants.brailleMode != 'off' ) {
-          constants.brailleInput.selectionStart =
-            constants.brailleInput.value.length;
-        }
+        constants.brailleInput.selectionStart =
+          constants.brailleInput.value.length;
       }
     }
     return didLockHappen;

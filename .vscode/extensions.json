@@ -21,8 +21,7 @@
     // "codium.codium",
     "ms-vscode.vscode-speech",
     "vivaxy.vscode-conventional-commits",
-    "joshbolduc.commitlint",
-    "ms-vscode.live-server"
+    "joshbolduc.commitlint"
   ],
   "unwantedRecommendations": ["ms-vscode.js-debug"]
 }

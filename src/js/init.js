@@ -112,13 +112,15 @@ function InitMaidr(thisMaidr) {
     // actually do eventlisteners for all events
     this.SetEvents();
 
-    // once everything is set up, expose the chart name (or title as a backup) to the user
-    if ('name' in singleMaidr) {
-      constants.chart.setAttribute('aria-label', singleMaidr.name);
-    } else if ('title' in singleMaidr || 'labels' in singleMaidr && 'title' in singleMaidr.labels) {
-      let title = 'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
-      constants.chart.setAttribute('aria-label', `${singleMaidr.type} plot of ${title}. Use Arrows to navigate data points. Press BTSR to toggle braille, text, sonification, and review mode respectively. Use H key for help.`);
-    }
+    // once everything is set up, announce the chart name (or title as a backup) to the user
+    setTimeout(function () {
+      // this is hacky, but we delay just a tick so that the chart has time to load
+      if ('name' in singleMaidr) {
+        display.announceText(singleMaidr.name);
+      } else if ('title' in singleMaidr) {
+        display.announceText(singleMaidr.title);
+      }
+    }, 200);
   }
 }
 
