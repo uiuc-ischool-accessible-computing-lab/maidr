@@ -113,11 +113,14 @@ function InitMaidr(thisMaidr) {
     this.SetEvents();
 
     // once everything is set up, announce the chart name (or title as a backup) to the user
-    if ('name' in singleMaidr) {
-      display.announceText(singleMaidr.name);
-    } else if ('title' in singleMaidr) {
-      display.announceText(singleMaidr.title);
-    }
+    setTimeout(function () {
+      // this is hacky, but we delay just a tick so that the chart has time to load
+      if ('name' in singleMaidr) {
+        display.announceText(singleMaidr.name);
+      } else if ('title' in singleMaidr) {
+        display.announceText(singleMaidr.title);
+      }
+    }, 200);
   }
 }
 
