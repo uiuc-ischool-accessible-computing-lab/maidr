@@ -117,10 +117,27 @@ function InitMaidr(thisMaidr) {
       // this is hacky, but we delay just a tick so that the chart has time to load
       if ('name' in singleMaidr) {
         display.announceText(singleMaidr.name);
-      } else if ('title' in singleMaidr) {
-        display.announceText(singleMaidr.title);
+      } else if ('title' in singleMaidr || 'labels' in singleMaidr && 'title' in singleMaidr.labels) {
+        let title = 'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
+
+        // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
+        let plotTypeString = Array.isArray(singleMaidr.type) 
+          ? singleMaidr.type.slice(0, -1).join(', ') + ' and ' + singleMaidr.type.slice(-1)
+          : singleMaidr.type;
+
+        // Prepare the instruction text for multi-layered plot
+        let multiLayerInstruction = 'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
+
+        // Check if plotTypeString has multiple types
+        let isMultiLayered = Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
+
+        // Construct the final announceText string
+        let announceText = `${plotTypeString} plot of ${title}: Use Arrows to navigate data points. ${isMultiLayered ? multiLayerInstruction : ' '}Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+
+        // Display the announcement text
+        display.announceText(announceText);
       }
-    }, 200);
+    }, 100);
   }
 }
 
