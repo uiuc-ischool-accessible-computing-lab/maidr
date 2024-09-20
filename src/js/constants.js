@@ -897,12 +897,16 @@ class Menu {
                                         <td>b</td>
                                     </tr>
                                     <tr>
+                                        <td>Toggle Text Mode</td>
+                                        <td>t</td>
+                                    </tr>
+                                                                        <tr>
                                         <td>Toggle Sonification Mode</td>
                                         <td>s</td>
                                     </tr>
-                                    <tr>
-                                        <td>Toggle Text Mode</td>
-                                        <td>t</td>
+                                                                                                            <tr>
+                                        <td>Toggle Review Mode</td>
+                                        <td>r</td>
                                     </tr>
                                     <tr>
                                         <td>Repeat current sound</td>
@@ -926,26 +930,45 @@ class Menu {
                                     </tr>
                                     <tr>
                                         <td>Auto-play speed up</td>
-                                        <td>Period</td>
+                                        <td>Period (.)</td>
                                     </tr>
                                     <tr>
                                         <td>Auto-play speed down</td>
-                                        <td>Comma</td>
+                                        <td>Comma (,)</td>
+                                    </tr>
+                                                                        <tr>
+                                        <td>Check label for the title of current plot</td>
+                                        <td>l t</td>
+                                    </tr>
+                                                                            <td>Check label for the x axis of current plot</td>
+                                        <td>l x</td>
+                                    </tr>
+                                                                                                                <td>Check label for the y axis of current plot</td>
+                                        <td>l y</td>
+                                    </tr>
+                                                                                                                <td>Check label for the fill (z) axis of current plot</td>
+                                        <td>l f</td>
+                                    </tr>
+                                                                                                                <td>Check label for the subtitle of current plot</td>
+                                        <td>l s</td>
+                                    </tr>
+                                                                                                                <td>Check label for the caption of current plot</td>
+                                        <td>l c</td>
                                     </tr>
                                     <tr>
-                                        <td>Open GenAI Chat</td>
+                                        <td>Toggle AI Chat View</td>
                                         <td>${
                                           constants.isMac
                                             ? constants.alt
                                             : constants.control
-                                        } + Shift + ?</td>
+                                        } + Shift + /</td>
                                     </tr>
                                     <tr>
-                                        <td>Copy last chat message</td>
+                                        <td>Copy last chat message in AI Chat View</td>
                                         <td>${constants.alt} + Shift + C</td>
                                     </tr>
                                     <tr>
-                                        <td>Copy full chat history</td>
+                                        <td>Copy full chat history in AI Chat View</td>
                                         <td>${constants.alt} + Shift + A</td>
                                     </tr>
                                 </tbody>
