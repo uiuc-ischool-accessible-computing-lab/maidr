@@ -161,9 +161,12 @@ class Control {
       constants.review,
       'keydown',
       function (e) {
-        // allow arrow keys only. BTSR handled above
+        // allow arrow keys only, shift arrow keys, ctrl a and ctrl c
         if (
-          !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+          !e.key.startsWith('Arrow') && // Arrow keys
+          !(e.shiftKey && e.key.startsWith('Arrow')) && // Shift + Arrow
+          !(e.ctrlKey && e.key === 'a') && // Ctrl + A
+          !(e.ctrlKey && e.key === 'c') // Ctrl + C
         ) {
           e.preventDefault();
         }
