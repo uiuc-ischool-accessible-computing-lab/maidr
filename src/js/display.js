@@ -248,6 +248,11 @@ class Display {
       let targetLabel = this.boxplotGridPlaceholders[sectionPos];
       let haveTargetLabel = false;
       let adjustedPos = 0;
+      // bookmark: shiny issue: this is being called twice??
+      // and the issue happens on 2nd call, sometimes it skips like 75% or whatever
+      //
+      // on first call, we might call it multiple as we're setting up, I care but let's check that later
+
       if (constants.brailleData) {
         for (let i = 0; i < constants.brailleData.length; i++) {
           if (constants.brailleData[i].type != 'blank') {
@@ -580,16 +585,20 @@ class Display {
     constants.verboseText = verboseText;
     // aria live hack. If we're repeating (Space), aria won't detect if text is the same, so we modify vey slightly by adding / removing period at the end
     if (output == constants.infoDiv.innerHTML) {
-      if (constants.infoDiv.innerHTML.endsWith('.')) {
-        if (output.endsWith('.')) {
-          output = output.slice(0, -1);
+      if (constants.infoDiv.textContent.endsWith('.')) {
+        if (output.endsWith('.</p>')) {
+          output = output.replace('.</p>', '</p>');
         }
       } else {
-        output = output + '.';
+        output = output.replace('</p>', '.</p>');
       }
     }
 
-    if (constants.infoDiv) constants.infoDiv.innerHTML = output;
+    // could also try this hack, but we'll need a time gap
+    if (constants.infoDiv) {
+      constants.infoDiv.innerHTML = '';
+      constants.infoDiv.innerHTML = output;
+    }
     if (constants.review) {
       if (output.length > 0) {
         constants.review.value = output.replace(/<[^>]*>?/gm, '');
