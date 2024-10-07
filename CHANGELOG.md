@@ -1,3 +1,17 @@
+## [2.17.2](https://github.com/xability/maidr/compare/v2.17.1...v2.17.2) (2024-10-01)
+
+
+### Bug Fixes
+
+* replaying current point with Space doesn't work on histogram ([#570](https://github.com/xability/maidr/issues/570)) ([f4bf11f](https://github.com/xability/maidr/commit/f4bf11f21326166059397e4332a4353af356e850))
+
+## [2.17.1](https://github.com/xability/maidr/compare/v2.17.0...v2.17.1) (2024-09-30)
+
+
+### Bug Fixes
+
+* don't repeat last point when you try to move past it ([#569](https://github.com/xability/maidr/issues/569)) ([041d752](https://github.com/xability/maidr/commit/041d7522008f818f026341fb691aa67170269562))
+
 # [2.17.0](https://github.com/xability/maidr/compare/v2.16.1...v2.17.0) (2024-09-25)
 
 

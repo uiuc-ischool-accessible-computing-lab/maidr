@@ -4284,6 +4284,16 @@ class Display {
       output = terseText;
     }
     constants.verboseText = verboseText;
+    // aria live hack. If we're repeating (Space), aria won't detect if text is the same, so we modify vey slightly by adding / removing period at the end
+    if (output == constants.infoDiv.innerHTML) {
+      if (constants.infoDiv.innerHTML.endsWith('.')) {
+        if (output.endsWith('.')) {
+          output = output.slice(0, -1);
+        }
+      } else {
+        output = output + '.';
+      }
+    }
 
     if (constants.infoDiv) constants.infoDiv.innerHTML = output;
     if (constants.review) {
@@ -8551,6 +8561,7 @@ class Control {
               position.x += 1;
               updateInfoThisRound = true;
               isAtEnd = control.lockPosition();
+              let test = true;
             }
           } else if (e.key == 'ArrowLeft') {
             // var prevLink = document.getElementById('prev');   // what is prev in the html?
@@ -10017,7 +10028,7 @@ class Control {
           }
 
           // update display / text / audio
-          if (updateInfoThisRound) {
+          if (updateInfoThisRound && !isAtEnd) {
             if (constants.brailleMode == 'off') {
               control.UpdateAll();
             } else {
@@ -10370,7 +10381,6 @@ class Control {
       }
     } else {
       // lock to min / max postions
-      let didLockHappen = false;
       if (position.y < 0) {
         position.y = 0;
         didLockHappen = true;
