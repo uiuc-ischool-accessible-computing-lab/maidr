@@ -302,7 +302,7 @@ class Control {
    *
    * @returns {void}
    */
-  SetControls() {
+  async SetControls() {
     constants.events.push([
       document,
       'keydown',
@@ -401,6 +401,12 @@ class Control {
           constants.brailleMode == 'on' &&
           constants.brailleInput.selectionStart
         ) {
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           let cursorPos = constants.brailleInput.selectionStart;
           // we're using braille cursor, update the selection from what was clicked
           cursorPos = constants.brailleInput.selectionStart;
@@ -442,18 +448,29 @@ class Control {
 
             // update display / text / audio
             if (testEnd) {
+              this.lockPosition = true;
               control.UpdateAll();
+              this.lockPosition = false;
             }
             if (testEnd) {
               audio.playEnd();
             }
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
+          if (constants.lockSelection) {
+            return;
+          }
+
           let pos = constants.brailleInput.selectionStart;
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
 
           // exception: don't let users click the seperator char
           let seperatorPositions = constants.brailleInput.value
@@ -485,6 +502,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -500,23 +520,35 @@ class Control {
     ) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
+          if (constants.lockSelection) {
+            return;
           }
-          position.x = pos;
-          control.lockPosition(); // bar etc is default, no need to supply values
-          let testEnd = true;
 
-          // update display / text / audio
-          if (testEnd) {
-            control.UpdateAll();
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
+          if (constants.brailleInput) {
+            let pos = constants.brailleInput.selectionStart;
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+            position.x = pos;
+            control.lockPosition(); // bar etc is default, no need to supply values
+            let testEnd = true;
+
+            // update display / text / audio
+            if (testEnd) {
+              control.UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
           }
-          if (testEnd) {
-            audio.playEnd();
-          }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -2076,8 +2108,14 @@ class Control {
       // braille cursor routing
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           // we're using braille cursor, update the selection from what was clicked
+          let pos = constants.brailleInput.selectionStart;
           pos = constants.brailleInput.selectionStart;
           if (pos < 0) {
             pos = 0;
@@ -2093,6 +2131,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
 

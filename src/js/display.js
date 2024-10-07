@@ -76,6 +76,7 @@ class Display {
       }
     }
     if (onoff == 'on') {
+      constants.lockSelection = true;
       if (constants.chartType == 'box') {
         // braille mode is on before any plot is selected
         if (
@@ -113,6 +114,9 @@ class Display {
       if (position.x == -1 && position.y == -1) {
         constants.brailleInput.setSelectionRange(0, 0);
       }
+      setTimeout(function () {
+        constants.lockSelection = false;
+      }, 50);
     } else {
       constants.brailleMode = 'off';
       document
@@ -219,6 +223,7 @@ class Display {
    * Updates the position of the cursor in the braille display based on the current chart type and position.
    */
   UpdateBraillePos() {
+    constants.lockSelection = true;
     if (
       constants.chartType == 'bar' ||
       constants.chartType == 'hist' ||
@@ -281,6 +286,9 @@ class Display {
     ) {
       constants.brailleInput.setSelectionRange(positionL1.x, positionL1.x);
     }
+    setTimeout(function () {
+      constants.lockSelection = false;
+    }, 50);
   }
 
   /**

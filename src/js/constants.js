@@ -136,6 +136,14 @@ class Constants {
    * @default 'off'
    */
   brailleMode = 'off';
+
+  /**
+   * We lock the selection so we don't pick up programatic selection changes
+   * @type {boolean}
+   * @default false
+   */
+  lockSelection = false;
+
   /**
    * The current sonification mode. Can be 'on', 'off', 'sep' (seperated), or 'same' (all played at once).
    * @type {("on"|"off"|"sep"|"same")}
