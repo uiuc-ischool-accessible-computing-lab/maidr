@@ -76,6 +76,7 @@ class Display {
       }
     }
     if (onoff == 'on') {
+      constants.lockSelection = true;
       if (constants.chartType == 'box') {
         // braille mode is on before any plot is selected
         if (
@@ -113,6 +114,9 @@ class Display {
       if (position.x == -1 && position.y == -1) {
         constants.brailleInput.setSelectionRange(0, 0);
       }
+      setTimeout(function () {
+        constants.lockSelection = false;
+      }, 50);
     } else {
       constants.brailleMode = 'off';
       document
@@ -219,6 +223,7 @@ class Display {
    * Updates the position of the cursor in the braille display based on the current chart type and position.
    */
   UpdateBraillePos() {
+    constants.lockSelection = true;
     if (
       constants.chartType == 'bar' ||
       constants.chartType == 'hist' ||
@@ -248,6 +253,11 @@ class Display {
       let targetLabel = this.boxplotGridPlaceholders[sectionPos];
       let haveTargetLabel = false;
       let adjustedPos = 0;
+      // bookmark: shiny issue: this is being called twice??
+      // and the issue happens on 2nd call, sometimes it skips like 75% or whatever
+      //
+      // on first call, we might call it multiple as we're setting up, I care but let's check that later
+
       if (constants.brailleData) {
         for (let i = 0; i < constants.brailleData.length; i++) {
           if (constants.brailleData[i].type != 'blank') {
@@ -276,6 +286,9 @@ class Display {
     ) {
       constants.brailleInput.setSelectionRange(positionL1.x, positionL1.x);
     }
+    setTimeout(function () {
+      constants.lockSelection = false;
+    }, 50);
   }
 
   /**
@@ -578,8 +591,22 @@ class Display {
       output = terseText;
     }
     constants.verboseText = verboseText;
+    // aria live hack. If we're repeating (Space), aria won't detect if text is the same, so we modify vey slightly by adding / removing period at the end
+    if (output == constants.infoDiv.innerHTML) {
+      if (constants.infoDiv.textContent.endsWith('.')) {
+        if (output.endsWith('.</p>')) {
+          output = output.replace('.</p>', '</p>');
+        }
+      } else {
+        output = output.replace('</p>', '.</p>');
+      }
+    }
 
-    if (constants.infoDiv) constants.infoDiv.innerHTML = output;
+    // could also try this hack, but we'll need a time gap
+    if (constants.infoDiv) {
+      constants.infoDiv.innerHTML = '';
+      constants.infoDiv.innerHTML = output;
+    }
     if (constants.review) {
       if (output.length > 0) {
         constants.review.value = output.replace(/<[^>]*>?/gm, '');

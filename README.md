@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo/logo.svg" width="350px" alt="A stylized MAIDR logo, with curved characters for M A, a hand pointing for an I, the D character, and R represented in braille."/>
+<img src="assets/logo.svg" width="350px" alt="A stylized MAIDR logo, with curved characters for M A, a hand pointing for an I, the D character, and R represented in braille."/>
 
 <hr style="color:transparent" />
 <br />
