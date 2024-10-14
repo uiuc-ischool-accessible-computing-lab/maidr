@@ -112,10 +112,18 @@ function InitMaidr(thisMaidr) {
     // actually do eventlisteners for all events
     this.SetEvents();
 
+// Set img role for chart
+    constants.chart.setAttribute('role', 'img');
+    
     // once everything is set up, announce the chart name (or title as a backup) to the user
-    setTimeout(function () {
-      if ('name' in singleMaidr) {
-        display.announceText(singleMaidr.name);
+    // setTimeout(function () {
+    if ('name' in singleMaidr) {
+              
+        // Add the aria-label and title attributes to the chart
+        constants.chart.setAttribute('aria-label', announceText);
+        constants.chart.setAttribute('title', announceText);
+
+        // display.announceText(singleMaidr.name);
       } else if (
         'title' in singleMaidr ||
         ('labels' in singleMaidr && 'title' in singleMaidr.labels)
@@ -143,10 +151,16 @@ function InitMaidr(thisMaidr) {
           isMultiLayered ? multiLayerInstruction : ' '
         }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
 
+        // Add the aria-label and title attributes to the chart
+        constants.chart.setAttribute('aria-label', announceText);
+        constants.chart.setAttribute('title', announceText);
+
+
+
         // Display the announcement text
-        display.announceText(announceText);
+        // display.announceText(announceText);
       }
-    }, 100);
+    // }, 100);
   }
 }
 

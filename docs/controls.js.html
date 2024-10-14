@@ -343,7 +343,7 @@ class Control {
    *
    * @returns {void}
    */
-  SetControls() {
+  async SetControls() {
     constants.events.push([
       document,
       'keydown',
@@ -442,6 +442,12 @@ class Control {
           constants.brailleMode == 'on' &amp;&amp;
           constants.brailleInput.selectionStart
         ) {
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           let cursorPos = constants.brailleInput.selectionStart;
           // we're using braille cursor, update the selection from what was clicked
           cursorPos = constants.brailleInput.selectionStart;
@@ -483,18 +489,29 @@ class Control {
 
             // update display / text / audio
             if (testEnd) {
+              this.lockPosition = true;
               control.UpdateAll();
+              this.lockPosition = false;
             }
             if (testEnd) {
               audio.playEnd();
             }
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
+          if (constants.lockSelection) {
+            return;
+          }
+
           let pos = constants.brailleInput.selectionStart;
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
 
           // exception: don't let users click the seperator char
           let seperatorPositions = constants.brailleInput.value
@@ -526,6 +543,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -541,23 +561,35 @@ class Control {
     ) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos &lt; 0) {
-            pos = 0;
+          if (constants.lockSelection) {
+            return;
           }
-          position.x = pos;
-          control.lockPosition(); // bar etc is default, no need to supply values
-          let testEnd = true;
 
-          // update display / text / audio
-          if (testEnd) {
-            control.UpdateAll();
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
+          if (constants.brailleInput) {
+            let pos = constants.brailleInput.selectionStart;
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos &lt; 0) {
+              pos = 0;
+            }
+            position.x = pos;
+            control.lockPosition(); // bar etc is default, no need to supply values
+            let testEnd = true;
+
+            // update display / text / audio
+            if (testEnd) {
+              control.UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
           }
-          if (testEnd) {
-            audio.playEnd();
-          }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -597,6 +629,7 @@ class Control {
               position.x += 1;
               updateInfoThisRound = true;
               isAtEnd = control.lockPosition();
+              let test = true;
             }
           } else if (e.key == 'ArrowLeft') {
             // var prevLink = document.getElementById('prev');   // what is prev in the html?
@@ -2063,7 +2096,7 @@ class Control {
           }
 
           // update display / text / audio
-          if (updateInfoThisRound) {
+          if (updateInfoThisRound &amp;&amp; !isAtEnd) {
             if (constants.brailleMode == 'off') {
               control.UpdateAll();
             } else {
@@ -2116,8 +2149,14 @@ class Control {
       // braille cursor routing
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           // we're using braille cursor, update the selection from what was clicked
+          let pos = constants.brailleInput.selectionStart;
           pos = constants.brailleInput.selectionStart;
           if (pos &lt; 0) {
             pos = 0;
@@ -2133,6 +2172,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
 
@@ -2416,7 +2458,6 @@ class Control {
       }
     } else {
       // lock to min / max postions
-      let didLockHappen = false;
       if (position.y &lt; 0) {
         position.y = 0;
         didLockHappen = true;
@@ -3068,7 +3109,7 @@ class Control {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Sep 29 2024 00:20:25 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Mon Oct 14 2024 00:19:22 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
