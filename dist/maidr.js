@@ -136,6 +136,14 @@ class Constants {
    * @default 'off'
    */
   brailleMode = 'off';
+
+  /**
+   * We lock the selection so we don't pick up programatic selection changes
+   * @type {boolean}
+   * @default false
+   */
+  lockSelection = false;
+
   /**
    * The current sonification mode. Can be 'on', 'off', 'sep' (seperated), or 'same' (all played at once).
    * @type {("on"|"off"|"sep"|"same")}
@@ -3782,6 +3790,7 @@ class Display {
       }
     }
     if (onoff == 'on') {
+      constants.lockSelection = true;
       if (constants.chartType == 'box') {
         // braille mode is on before any plot is selected
         if (
@@ -3819,6 +3828,9 @@ class Display {
       if (position.x == -1 && position.y == -1) {
         constants.brailleInput.setSelectionRange(0, 0);
       }
+      setTimeout(function () {
+        constants.lockSelection = false;
+      }, 50);
     } else {
       constants.brailleMode = 'off';
       document
@@ -3925,6 +3937,7 @@ class Display {
    * Updates the position of the cursor in the braille display based on the current chart type and position.
    */
   UpdateBraillePos() {
+    constants.lockSelection = true;
     if (
       constants.chartType == 'bar' ||
       constants.chartType == 'hist' ||
@@ -3954,6 +3967,11 @@ class Display {
       let targetLabel = this.boxplotGridPlaceholders[sectionPos];
       let haveTargetLabel = false;
       let adjustedPos = 0;
+      // bookmark: shiny issue: this is being called twice??
+      // and the issue happens on 2nd call, sometimes it skips like 75% or whatever
+      //
+      // on first call, we might call it multiple as we're setting up, I care but let's check that later
+
       if (constants.brailleData) {
         for (let i = 0; i < constants.brailleData.length; i++) {
           if (constants.brailleData[i].type != 'blank') {
@@ -3982,6 +4000,9 @@ class Display {
     ) {
       constants.brailleInput.setSelectionRange(positionL1.x, positionL1.x);
     }
+    setTimeout(function () {
+      constants.lockSelection = false;
+    }, 50);
   }
 
   /**
@@ -4284,8 +4305,22 @@ class Display {
       output = terseText;
     }
     constants.verboseText = verboseText;
+    // aria live hack. If we're repeating (Space), aria won't detect if text is the same, so we modify vey slightly by adding / removing period at the end
+    if (output == constants.infoDiv.innerHTML) {
+      if (constants.infoDiv.textContent.endsWith('.')) {
+        if (output.endsWith('.</p>')) {
+          output = output.replace('.</p>', '</p>');
+        }
+      } else {
+        output = output.replace('</p>', '.</p>');
+      }
+    }
 
-    if (constants.infoDiv) constants.infoDiv.innerHTML = output;
+    // could also try this hack, but we'll need a time gap
+    if (constants.infoDiv) {
+      constants.infoDiv.innerHTML = '';
+      constants.infoDiv.innerHTML = output;
+    }
     if (constants.review) {
       if (output.length > 0) {
         constants.review.value = output.replace(/<[^>]*>?/gm, '');
@@ -8297,7 +8332,7 @@ class Control {
    *
    * @returns {void}
    */
-  SetControls() {
+  async SetControls() {
     constants.events.push([
       document,
       'keydown',
@@ -8396,6 +8431,12 @@ class Control {
           constants.brailleMode == 'on' &&
           constants.brailleInput.selectionStart
         ) {
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           let cursorPos = constants.brailleInput.selectionStart;
           // we're using braille cursor, update the selection from what was clicked
           cursorPos = constants.brailleInput.selectionStart;
@@ -8437,18 +8478,29 @@ class Control {
 
             // update display / text / audio
             if (testEnd) {
+              this.lockPosition = true;
               control.UpdateAll();
+              this.lockPosition = false;
             }
             if (testEnd) {
               audio.playEnd();
             }
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
     } else if ([].concat(singleMaidr.type).includes('heat')) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
+          if (constants.lockSelection) {
+            return;
+          }
+
           let pos = constants.brailleInput.selectionStart;
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
 
           // exception: don't let users click the seperator char
           let seperatorPositions = constants.brailleInput.value
@@ -8480,6 +8532,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -8495,23 +8550,35 @@ class Control {
     ) {
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
-          // we're using braille cursor, update the selection from what was clicked
-          pos = constants.brailleInput.selectionStart;
-          if (pos < 0) {
-            pos = 0;
+          if (constants.lockSelection) {
+            return;
           }
-          position.x = pos;
-          control.lockPosition(); // bar etc is default, no need to supply values
-          let testEnd = true;
 
-          // update display / text / audio
-          if (testEnd) {
-            control.UpdateAll();
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
+          if (constants.brailleInput) {
+            let pos = constants.brailleInput.selectionStart;
+            // we're using braille cursor, update the selection from what was clicked
+            pos = constants.brailleInput.selectionStart;
+            if (pos < 0) {
+              pos = 0;
+            }
+            position.x = pos;
+            control.lockPosition(); // bar etc is default, no need to supply values
+            let testEnd = true;
+
+            // update display / text / audio
+            if (testEnd) {
+              control.UpdateAll();
+            }
+            if (testEnd) {
+              audio.playEnd();
+            }
           }
-          if (testEnd) {
-            audio.playEnd();
-          }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         } else {
           // we're using normal cursor, let the default handle it
         }
@@ -8551,6 +8618,7 @@ class Control {
               position.x += 1;
               updateInfoThisRound = true;
               isAtEnd = control.lockPosition();
+              let test = true;
             }
           } else if (e.key == 'ArrowLeft') {
             // var prevLink = document.getElementById('prev');   // what is prev in the html?
@@ -10017,7 +10085,7 @@ class Control {
           }
 
           // update display / text / audio
-          if (updateInfoThisRound) {
+          if (updateInfoThisRound && !isAtEnd) {
             if (constants.brailleMode == 'off') {
               control.UpdateAll();
             } else {
@@ -10070,8 +10138,14 @@ class Control {
       // braille cursor routing
       document.addEventListener('selectionchange', function (e) {
         if (constants.brailleMode == 'on') {
-          let pos = constants.brailleInput.selectionStart;
+          if (constants.lockSelection) {
+            return;
+          }
+          // we lock the selection while we're changing stuff so it doesn't loop
+          constants.lockSelection = true;
+
           // we're using braille cursor, update the selection from what was clicked
+          let pos = constants.brailleInput.selectionStart;
           pos = constants.brailleInput.selectionStart;
           if (pos < 0) {
             pos = 0;
@@ -10087,6 +10161,9 @@ class Control {
           if (testEnd) {
             audio.playEnd();
           }
+          setTimeout(function () {
+            constants.lockSelection = false;
+          }, 50);
         }
       });
 
@@ -10370,7 +10447,6 @@ class Control {
       }
     } else {
       // lock to min / max postions
-      let didLockHappen = false;
       if (position.y < 0) {
         position.y = 0;
         didLockHappen = true;
