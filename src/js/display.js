@@ -253,10 +253,6 @@ class Display {
       let targetLabel = this.boxplotGridPlaceholders[sectionPos];
       let haveTargetLabel = false;
       let adjustedPos = 0;
-      // bookmark: shiny issue: this is being called twice??
-      // and the issue happens on 2nd call, sometimes it skips like 75% or whatever
-      //
-      // on first call, we might call it multiple as we're setting up, I care but let's check that later
 
       if (constants.brailleData) {
         for (let i = 0; i < constants.brailleData.length; i++) {
@@ -959,6 +955,10 @@ class Display {
 
       // Step 2: normalize and allocate remaining characters and add to our main braille array
       let charsAvailable = constants.brailleDisplayLength - numAllocatedChars;
+      // Bug happened here: if our numAllocatedChars is bigger than brailleDisplayLength, it cuts off chars
+      // temp fix: just let it overflow by setting charsAvailable to positive if it's below 0. Or maybe 5 to still give us some play
+      // todo: real solution should probably be to kill outliers that are too close together
+      if (charsAvailable < 5) charsAvailable = 5;
       let allocateCharacters = this.AllocateCharacters(lenData, charsAvailable);
       // apply allocation
       let brailleData = lenData;
