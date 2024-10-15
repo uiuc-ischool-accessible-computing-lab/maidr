@@ -112,54 +112,51 @@ function InitMaidr(thisMaidr) {
     // actually do eventlisteners for all events
     this.SetEvents();
 
-// Set img role for chart
+    // Set img role for chart
     constants.chart.setAttribute('role', 'img');
-    
+
     // once everything is set up, announce the chart name (or title as a backup) to the user
     // setTimeout(function () {
     if ('name' in singleMaidr) {
-              
-        // Add the aria-label and title attributes to the chart
-        constants.chart.setAttribute('aria-label', announceText);
-        constants.chart.setAttribute('title', announceText);
+      // Add the aria-label and title attributes to the chart
+      constants.chart.setAttribute('aria-label', announceText);
+      constants.chart.setAttribute('title', announceText);
 
-        // display.announceText(singleMaidr.name);
-      } else if (
-        'title' in singleMaidr ||
-        ('labels' in singleMaidr && 'title' in singleMaidr.labels)
-      ) {
-        let title =
-          'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
+      // display.announceText(singleMaidr.name);
+    } else if (
+      'title' in singleMaidr ||
+      ('labels' in singleMaidr && 'title' in singleMaidr.labels)
+    ) {
+      let title =
+        'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
 
-        // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
-        let plotTypeString = Array.isArray(singleMaidr.type)
-          ? singleMaidr.type.slice(0, -1).join(', ') +
-            ' and ' +
-            singleMaidr.type.slice(-1)
-          : singleMaidr.type;
+      // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
+      let plotTypeString = Array.isArray(singleMaidr.type)
+        ? singleMaidr.type.slice(0, -1).join(', ') +
+          ' and ' +
+          singleMaidr.type.slice(-1)
+        : singleMaidr.type;
 
-        // Prepare the instruction text for multi-layered plot
-        let multiLayerInstruction =
-          'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
+      // Prepare the instruction text for multi-layered plot
+      let multiLayerInstruction =
+        'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
 
-        // Check if plotTypeString has multiple types
-        let isMultiLayered =
-          Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
+      // Check if plotTypeString has multiple types
+      let isMultiLayered =
+        Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
 
-        // Construct the final announceText string
-        let announceText = `${plotTypeString} plot of ${title}: Use Arrows to navigate data points. ${
-          isMultiLayered ? multiLayerInstruction : ' '
-        }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+      // Construct the final announceText string
+      let announceText = `${plotTypeString} plot of ${title}: Use Arrows to navigate data points. ${
+        isMultiLayered ? multiLayerInstruction : ' '
+      }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
 
-        // Add the aria-label and title attributes to the chart
-        constants.chart.setAttribute('aria-label', announceText);
-        constants.chart.setAttribute('title', announceText);
+      // Add the aria-label and title attributes to the chart
+      constants.chart.setAttribute('aria-label', announceText);
+      constants.chart.setAttribute('title', announceText);
 
-
-
-        // Display the announcement text
-        // display.announceText(announceText);
-      }
+      // Display the announcement text
+      // display.announceText(announceText);
+    }
     // }, 100);
   }
 }
@@ -439,7 +436,7 @@ function CreateChartComponents() {
         constants.review_id_container +
         '" class="hidden sr-only sr-only-focusable"><input id="' +
         constants.review_id +
-        '" type="text" size="50" /></div>'
+        '" type="text" size="50" autocomplete="off" /></div>'
     );
 
   // some tweaks
