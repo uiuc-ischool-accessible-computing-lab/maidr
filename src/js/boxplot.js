@@ -177,10 +177,7 @@ class BoxPlot {
       constants.minY = 0;
       constants.maxY = this.plotData.length - 1;
     }
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / this.plotData.length),
-      constants.MAX_SPEED
-    );
+    constants.autoPlayRate = Math.ceil(constants.AUTOPLAY_DURATION / 7);
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
       constants.MIN_SPEED = constants.autoPlayRate;

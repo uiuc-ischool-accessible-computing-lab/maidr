@@ -288,9 +288,8 @@ class Segmented {
       }
     }
     constants.maxX = this.level.length;
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / this.plotData.length
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
