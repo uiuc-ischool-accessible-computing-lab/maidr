@@ -2607,10 +2607,10 @@ class Control {
 
       constants.autoplayId = setInterval(function () {
         position.x += step;
-        if (position.x < 0 || end - 1 < position.x) {
+        if (position.x < 0 || plot.plotData.length - 1 < position.x) {
           constants.KillAutoplay();
           control.lockPosition();
-        } else if (position.x >= end) {
+        } else if (position.x == end) {
           constants.KillAutoplay();
           control.UpdateAllAutoPlay();
         } else {
