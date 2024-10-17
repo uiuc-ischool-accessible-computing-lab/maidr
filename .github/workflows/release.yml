@@ -38,26 +38,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run semantic-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { exec: execCommand } = require('@actions/exec');
-            const maxRetry = 3;
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-            for (let attempt = 1; attempt <= maxRetry; attempt++) {
-              try {
-                await execCommand('yarn', ['semantic-release']);
-                break;
-              } catch (error) {
-                if (attempt < maxRetry) {
-                  console.error(`Attempt ${attempt} failed. Retrying in 60 seconds...`);
-                  await delay(60000);
-                } else {
-                  throw error;
-                }
-              }
-            }
+        run: |
+          maxRetry=3
+          delay=60
+          for attempt in $(seq 1 $maxRetry); do
+            if yarn semantic-release; then
+              break
+            elif [ $attempt -lt $maxRetry ]; then
+              echo "Attempt $attempt failed. Retrying in $delay seconds..."
+              sleep $delay
+            else
+              echo "All attempts failed."
+              exit 1
+            fi
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        
