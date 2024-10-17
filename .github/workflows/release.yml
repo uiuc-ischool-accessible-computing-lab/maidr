@@ -41,12 +41,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const exec = require('@actions/exec');
+            const { exec } = require('@actions/exec');
             const maxRetry = 3;
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             for (let attempt = 1; attempt <= maxRetry; attempt++) {
               try {
-                await exec.exec('yarn', ['semantic-release']);
+                await exec('yarn', ['semantic-release']);
                 break;
               } catch (error) {
                 if (attempt < maxRetry) {
