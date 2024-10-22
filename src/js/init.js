@@ -20,9 +20,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
   // set focus events for all maidr ids
   DestroyMaidr(); // just in case
   window.maidrIds = [];
+  let firstMaidr;
   for (let i = 0; i < maidrObjects.length; i++) {
     let maidrId = maidrObjects[i].id;
     maidrIds.push(maidrId);
+    if (!firstMaidr && maidrObjects[i]) {
+      firstMaidr = maidrObjects[i];
+    }
     let maidrElemn = document.getElementById(maidrId);
     if (maidrElemn) {
       maidrElemn.setAttribute('tabindex', '0');
@@ -32,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
       // blur done elsewhere
     }
   }
+
+  // init components like alt text on just the first chart
+  CreateChartComponents(firstMaidr, true);
 
   // events etc for user study page
   // run tracker stuff only on user study page
@@ -90,7 +97,11 @@ function InitMaidr(thisMaidr) {
     } else {
       constants.chartType = singleMaidr.type;
     }
+    DestroyChartComponents(); // destroy so that we start fresh, in case we've created on the wrong chart
     CreateChartComponents(singleMaidr);
+
+    window.menu = new Menu();
+    window.chatLLM = new ChatLLM();
     window.control = new Control(); // this inits the actual chart object and Position
     window.review = new Review();
     window.display = new Display();
@@ -365,11 +376,11 @@ function SetEvents() {
  * - Also sets the constants associated with these elements
  *
  */
-function CreateChartComponents() {
+function CreateChartComponents(thisMaidr, chartOnly = false) {
   // init html stuff. aria live regions, braille input, etc
 
   // core chart
-  let chart = document.getElementById(singleMaidr.id);
+  let chart = document.getElementById(thisMaidr.id);
 
   // we create a structure with a main container, and a chart container
   let main_container = document.createElement('div');
@@ -381,91 +392,116 @@ function CreateChartComponents() {
   main_container.appendChild(chart);
   chart.parentNode.replaceChild(chart_container, chart);
   chart_container.appendChild(chart);
-  chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
+  if (!chartOnly) chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
 
   constants.chart = chart;
   constants.chart_container = chart_container;
   constants.main_container = main_container;
 
-  // braille input, pre sibling of chart container
-  constants.chart_container.insertAdjacentHTML(
-    'beforebegin',
-    '<div class="hidden" id="' +
-      constants.braille_container_id +
-      '">\n<input id="' +
-      constants.braille_input_id +
-      '" class="braille-input" type="text" size="' +
-      constants.brailleDisplayLength +
-      '" ' +
-      'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
-      'autocomplete="off" ' +
-      '/>\n</div>\n'
-  );
-
-  // info aria live, next sibling of chart container
-  constants.chart_container.insertAdjacentHTML(
-    'afterend',
-    '<br>\n<div id="' +
-      constants.info_id +
-      '" aria-live="assertive" aria-atomic="true">\n<p id="x"></p>\n<p id="y"></p>\n</div>\n'
-  );
-
-  // announcements, next sibling of info
-  document
-    .getElementById(constants.info_id)
-    .insertAdjacentHTML(
-      'afterend',
-      '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
-    );
-
-  // end chime audio element
-  // TODO: external media file is not working as a stereo audio so commenting this out until we find a solution
-  // document
-  // .getElementById(constants.info_id)
-  // .insertAdjacentHTML(
-  // 'afterend',
-  // '<div class="hidden"> <audio src="../src/terminalBell.mp3" id="end_chime"></audio> </div>'
-  // );
-
-  // review mode form field
-  document
-    .getElementById(constants.info_id)
-    .insertAdjacentHTML(
+  if (!chartOnly) {
+    // braille input, pre sibling of chart container
+    constants.chart_container.insertAdjacentHTML(
       'beforebegin',
-      '<div id="' +
-        constants.review_id_container +
-        '" class="hidden sr-only sr-only-focusable"><input id="' +
-        constants.review_id +
-        '" type="text" size="50" autocomplete="off" /></div>'
+      '<div class="hidden" id="' +
+        constants.braille_container_id +
+        '">\n<input id="' +
+        constants.braille_input_id +
+        '" class="braille-input" type="text" size="' +
+        constants.brailleDisplayLength +
+        '" ' +
+        'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
+        'autocomplete="off" ' +
+        '/>\n</div>\n'
     );
 
-  // some tweaks
-  constants.chart_container.setAttribute('role', 'application');
+    // info aria live, next sibling of chart container
+    constants.chart_container.insertAdjacentHTML(
+      'afterend',
+      '<br>\n<div id="' +
+        constants.info_id +
+        '" aria-live="assertive" aria-atomic="true">\n<p id="x"></p>\n<p id="y"></p>\n</div>\n'
+    );
 
-  // set page elements
-  constants.brailleContainer = document.getElementById(
-    constants.braille_container_id
-  );
-  constants.brailleInput = document.getElementById(constants.braille_input_id);
-  constants.infoDiv = document.getElementById(constants.info_id);
-  constants.announceContainer = document.getElementById(
-    constants.announcement_container_id
-  );
-  constants.nonMenuFocus = constants.chart;
-  constants.endChime = document.getElementById(constants.end_chime_id);
-  constants.review_container = document.querySelector(
-    '#' + constants.review_id_container
-  );
-  constants.review = document.querySelector('#' + constants.review_id);
+    // announcements, next sibling of info
+    document
+      .getElementById(constants.info_id)
+      .insertAdjacentHTML(
+        'afterend',
+        '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
+      );
 
-  // help menu
-  window.menu = new Menu();
+    // review mode form field
+    document
+      .getElementById(constants.info_id)
+      .insertAdjacentHTML(
+        'beforebegin',
+        '<div id="' +
+          constants.review_id_container +
+          '" class="hidden sr-only sr-only-focusable"><input id="' +
+          constants.review_id +
+          '" type="text" size="50" autocomplete="off" /></div>'
+      );
 
-  // LLM question modal
-  window.chatLLM = new ChatLLM();
+    // some tweaks
+    constants.chart_container.setAttribute('role', 'application');
 
-  // Description modal
-  window.description = new Description(); // developement on hold
+    // set page elements
+    constants.brailleContainer = document.getElementById(
+      constants.braille_container_id
+    );
+    constants.brailleInput = document.getElementById(
+      constants.braille_input_id
+    );
+    constants.infoDiv = document.getElementById(constants.info_id);
+    constants.announceContainer = document.getElementById(
+      constants.announcement_container_id
+    );
+    constants.nonMenuFocus = constants.chart;
+    constants.endChime = document.getElementById(constants.end_chime_id);
+    constants.review_container = document.querySelector(
+      '#' + constants.review_id_container
+    );
+    constants.review = document.querySelector('#' + constants.review_id);
+    //window.description = new Description(); // developement on hold
+  }
+
+  // set screen reader text and attributes
+  let altText = '';
+  // set role of main chart
+  document.getElementById(thisMaidr.id).setAttribute('role', 'img');
+  if ('name' in thisMaidr) {
+    altText = thisMaidr.name;
+  } else if (
+    'title' in thisMaidr ||
+    ('labels' in thisMaidr && 'title' in thisMaidr.labels)
+  ) {
+    let title = 'title' in thisMaidr ? thisMaidr.title : thisMaidr.labels.title;
+
+    // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
+    let plotTypeString = Array.isArray(thisMaidr.type)
+      ? thisMaidr.type.slice(0, -1).join(', ') +
+        ' and ' +
+        thisMaidr.type.slice(-1)
+      : thisMaidr.type;
+
+    // Prepare the instruction text for multi-layered plot
+    let multiLayerInstruction =
+      'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
+
+    // Check if plotTypeString has multiple types
+    let isMultiLayered =
+      Array.isArray(thisMaidr.type) && thisMaidr.type.length > 1;
+
+    // Construct the final announceText string
+    altText = `${plotTypeString} plot of ${title}: Use Arrows to navigate data points. ${
+      isMultiLayered ? multiLayerInstruction : ' '
+    }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+  }
+  if (altText.length > 0) {
+    // Add the aria-label and title attributes to the chart
+    document.getElementById(thisMaidr.id).setAttribute('aria-label', altText);
+    document.getElementById(thisMaidr.id).setAttribute('title', altText);
+  }
 }
 
 /**
@@ -503,13 +539,13 @@ function DestroyChartComponents() {
     constants.review_container.remove();
   }
 
-  if (typeof menu != 'undefined') {
+  if (typeof menu !== 'undefined' && menu !== null) {
     menu.Destroy();
   }
-  if (typeof description != 'undefined') {
+  if (typeof description !== 'undefined' && description !== null) {
     description.Destroy();
   }
-  if (typeof chatLLM != 'undefined') {
+  if (typeof chatLLM !== 'undefined' && chatLLM !== null) {
     chatLLM.Destroy();
   }
 
