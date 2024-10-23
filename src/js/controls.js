@@ -27,7 +27,8 @@ class Control {
     this.InitChartClass();
     this.SetBTSControls();
     this.SetPrefixControls();
-    this.SetControls();
+    this.SetMouseControls();
+    this.SetKeyControls();
   }
 
   /**
@@ -291,6 +292,40 @@ class Control {
   }
 
   /**
+   * Sets up event listeners for mouse controls
+   * If you're on a chart, and within 24px of a point, set your position there and update the chart
+   * If you're near multiple, figure it out.
+   */
+  SetMouseControls() {
+    // we run this on the actual selector supplied by the user, which they'll have to have of course
+    if ('selector' in singleMaidr) {
+      let selectedElems = document.querySelectorAll(singleMaidr.selector);
+      if (selectedElems.length > 1) {
+        selectedElems.forEach((elem) => {
+          constants.events.push([
+            elem,
+            'click',
+            function (e) {
+              if (
+                constants.chartType == 'bar' ||
+                constants.chartType == 'hist'
+              ) {
+                let index = Array.from(selectedElems).indexOf(elem);
+                position.x = index;
+                control.UpdateAll();
+              } else if (constants.chartType == 'box') {
+              } else if (constants.chartType == 'heat') {
+              } else if (constants.chartType == 'point') {
+              } else if (constants.chartType == 'smooth') {
+              }
+            },
+          ]);
+        });
+      }
+    }
+  }
+
+  /**
    * Sets up event listeners for main controls
    *  - Arrow keys: basic motion
    *  - Shift + Arrow keys: Autoplay outward
@@ -302,7 +337,7 @@ class Control {
    *
    * @returns {void}
    */
-  async SetControls() {
+  SetKeyControls() {
     constants.events.push([
       document,
       'keydown',
