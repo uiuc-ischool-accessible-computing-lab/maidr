@@ -442,6 +442,7 @@ class Constants {
     'ariaMode',
     'openAIAuthKey',
     'geminiAuthKey',
+    'emailAuthKey',
     'skillLevel',
     'skillLevelOther',
     'LLMModel',
@@ -1017,6 +1018,9 @@ class Menu {
                                 </select>
                                 <label for="LLM_model">LLM Model</label>
                             </p>
+                            <p id="email_auth_key_container" class="multi_container">
+                              <input type="email" size="50" id="email_auth_key"><button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button><label for="gemini_auth_key">Email Authentication</label>
+                            </p>
                             <p id="openai_auth_key_container" class="multi_container hidden">
                               <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
                               <input type="password" size="50" id="openai_auth_key"><button aria-label="Delete OpenAI key" title="Delete OpenAI key" id="delete_openai_key" class="invis_button">&times;</button><label for="openai_auth_key">OpenAI Authentication Key</label>
@@ -1274,6 +1278,9 @@ class Menu {
       document.getElementById('openai_auth_key').value =
         constants.openAIAuthKey;
     }
+    if (typeof constants.emailAuthKey == 'string') {
+      document.getElementById('email_auth_key').value = constants.emailAuthKey;
+    }
     if (typeof constants.geminiAuthKey == 'string') {
       document.getElementById('gemini_auth_key').value =
         constants.geminiAuthKey;
@@ -1367,6 +1374,7 @@ class Menu {
 
     constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
     constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
+    constants.emailAuthKey = document.getElementById('email_auth_key').value;
     constants.skillLevel = document.getElementById('skill_level').value;
     constants.skillLevelOther =
       document.getElementById('skill_level_other').value;
@@ -1873,13 +1881,21 @@ class ChatLLM {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
-      chatLLM.OpenAIPrompt(text, img);
+      if (constants.emailAuthKey) {
+        chatLLM.OpenAIPromptAPI(text, img);
+      } else {
+        chatLLM.OpenAIPrompt(text, img);
+      }
     }
     if (constants.LLMGeminiMulti || constants.LLMModel == 'gemini') {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
-      chatLLM.GeminiPrompt(text, img);
+      if (constants.emailAuthKey) {
+        chatLLM.GeminiPromptAPI(text, img);
+      } else {
+        chatLLM.GeminiPrompt(text, img);
+      }
     }
   }
 
@@ -2117,6 +2133,34 @@ class ChatLLM {
         // also todo: handle errors somehow
       });
   }
+
+  OpenAIPromptAPI(text, img = null) {
+    // request init
+    let url = 'http://localhost:7071/api/openai';
+    let auth = constants.openAIAuthKey;
+    let requestJson = chatLLM.OpenAIJson(text, img);
+    console.log('LLM request: ', requestJson);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: constants.emailAuthKey,
+      },
+      body: JSON.stringify(requestJson),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        chatLLM.ProcessLLMResponse(data, 'openai');
+      })
+      .catch((error) => {
+        chatLLM.WaitingSound(false);
+        console.error('Error:', error);
+        chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
+        // also todo: handle errors somehow
+      });
+  }
+
   OpenAIJson(text, img = null) {
     let sysMessage = constants.LLMSystemMessage;
     let backupMessage =
@@ -2163,6 +2207,109 @@ class ChatLLM {
     }
 
     return this.requestJson;
+  }
+
+  GeminiJson(text, img = null) {
+    let sysMessage = constants.LLMSystemMessage;
+    let backupMessage =
+      'Describe ' + singleMaidr.type + ' charts to a blind person';
+
+    let payload = {
+      generationConfig: {},
+      safetySettings: [],
+      contents: [],
+    };
+
+    // System message as the initial "role" and "text" content for context
+    let sysContent = {
+      role: 'user',
+      parts: [
+        {
+          text: sysMessage || backupMessage, // Fallback if sysMessage is unavailable
+        },
+      ],
+    };
+
+    // Add preferences if available
+    if (constants.LLMPreferences) {
+      sysContent.parts.push({
+        text: constants.LLMPreferences,
+      });
+    }
+
+    payload.contents.push(sysContent);
+
+    // Add user input content, including image if available
+    let userContent = {
+      role: 'user',
+      parts: [],
+    };
+
+    if (img) {
+      // If there’s an image, add both text and image data
+      userContent.parts.push(
+        {
+          text: text,
+        },
+        {
+          inlineData: {
+            data: img, // Expecting base64-encoded image data
+            mimeType: 'image/png', // Adjust if different image formats are possible
+          },
+        }
+      );
+    } else {
+      // If no image, only add the text
+      userContent.parts.push({
+        text: text,
+      });
+    }
+
+    // Add user content to the contents array
+    payload.contents.push(userContent);
+
+    return payload;
+  }
+
+  async GeminiPromptAPI(text, imgBase64 = null) {
+    let url = 'http://localhost:7071/api/gemini';
+
+    // Create the prompt
+    let prompt = constants.LLMSystemMessage;
+    if (constants.LLMPreferences) {
+      prompt += constants.LLMPreferences;
+    }
+    prompt += '\n\n' + text; // Use the text parameter as the prompt
+
+    if (imgBase64 == null) {
+      imgBase64 = constants.LLMImage;
+    } else {
+      constants.LLMImage = imgBase64;
+    }
+    constants.LLMImage = imgBase64;
+
+    let requestJson = chatLLM.GeminiJson(prompt, imgBase64);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: constants.emailAuthKey,
+      },
+      body: JSON.stringify(requestJson),
+    });
+    if (response.ok) {
+      const responseJson = await response.json();
+      responseJson.text = () => {
+        return responseJson.candidates[0].content.parts[0].text;
+      };
+      chatLLM.ProcessLLMResponse(responseJson, 'gemini');
+    } else {
+      chatLLM.WaitingSound(false);
+      console.error('Error:', error);
+      chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
+      // also todo: handle errors somehow
+    }
   }
 
   async GeminiPrompt(text, imgBase64 = null) {
