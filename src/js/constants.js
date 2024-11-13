@@ -1510,9 +1510,10 @@ class Menu {
     let data = JSON.parse(localStorage.getItem('settings_data'));
     if (data) {
       for (let i = 0; i < constants.userSettingsKeys.length; i++) {
-        constants[constants.userSettingsKeys[i]] =
-          data[constants.userSettingsKeys[i]] ||
-          constants[constants.userSettingsKeys[i]];
+        const key = constants.userSettingsKeys[i];
+        if (key in data) {
+          constants[key] = data[key];
+        }
       }
     }
     this.PopulateData();
