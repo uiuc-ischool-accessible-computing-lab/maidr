@@ -407,13 +407,6 @@ class Constants {
    */
   canTrack = 0; // 0 / 1, can we track user data
   /**
-   * Whether or not we're currently tracking user data.
-   * @type {boolean}
-   * @default 1
-   * @memberof AdvancedUserSettings
-   */
-  isTracking = 0;
-  /**
    * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
    * @type {boolean}
    * @default false
@@ -1030,7 +1023,7 @@ class Menu {
                             </p>
                             <p><input type="checkbox" ${
                               constants.autoInitLLM ? 'checked' : ''
-                            } id="init_llm_on_load" name="init_llm_on_load"><label for="init_llm_on_load">Start first LLM chat chart load</label></p>
+                            } id="init_llm_on_load" name="init_llm_on_load"><label for="init_llm_on_load">Start LLM right away</label></p>
                             <p>
                                 <select id="skill_level">
                                     <option value="basic">Basic</option>
@@ -1501,7 +1494,7 @@ class Menu {
     localStorage.setItem('settings_data', JSON.stringify(data));
 
     // also save to tracking if we're doing that
-    if (constants.isTracking) {
+    if (constants.canTrack) {
       // but not auth keys
       data.openAIAuthKey = 'hidden';
       data.geminiAuthKey = 'hidden';
@@ -2020,7 +2013,7 @@ class ChatLLM {
     }
 
     // if we're tracking, log the data
-    if (constants.isTracking) {
+    if (constants.canTrack) {
       let chatHist = chatLLM.CopyChatHistory();
       tracker.SetData('ChatHistory', chatHist);
     }
@@ -2716,9 +2709,12 @@ class Helper {
  * @class
  */
 class Tracker {
+  // URL
+  logUrl = 'https://accessiblegraphapi.azurewebsites.net/api/SaveData'; // TODO Replace
+  isLocal = false;
+
   constructor() {
     this.DataSetup();
-    constants.isTracking = true;
   }
 
   /**
@@ -2734,6 +2730,7 @@ class Tracker {
       data.vendor = Object.assign(navigator.vendor);
       data.language = Object.assign(navigator.language);
       data.platform = Object.assign(navigator.platform);
+      data.log_type = 'system_data';
       data.events = [];
       data.settings = [];
 
@@ -2758,8 +2755,36 @@ class Tracker {
    * Saves the tracker data to local storage.
    * @param {Object} data - The data to be saved.
    */
-  SaveTrackerData(data) {
-    localStorage.setItem(constants.project_id, JSON.stringify(data));
+  async SaveTrackerData(data) {
+    // test to console first
+    console.log('Saving tracker data...');
+    console.log(data);
+    return;
+    if (this.isLocal) {
+      localStorage.setItem(constants.project_id, JSON.stringify(data));
+    } else {
+      // test this first
+      try {
+        const response = await fetch(this.logUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(logData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Data saved successfully:', result);
+        return result;
+      } catch (error) {
+        console.error('Error saving data:', error);
+        return null;
+      }
+    }
   }
 
   /**
@@ -3003,18 +3028,29 @@ class Tracker {
     //console.log('logged an event');
   }
 
+  /**
+   * Saves data to the server using a POST request.
+   * @param {Object} logData - The data to be saved.
+   * @returns {Promise<Object>} The result of the save operation.
+   */
+
   SetData(key, value) {
-    let data = this.GetTrackerData();
-    let arrayKeys = ['events', 'ChatHistory', 'settings'];
-    if (!arrayKeys.includes(key)) {
-      data[key] = value;
-    } else {
-      if (!data[key]) {
-        data[key] = [];
+    if (this.isLocal) {
+      let data = this.GetTrackerData();
+      let arrayKeys = ['events', 'ChatHistory', 'settings'];
+      if (!arrayKeys.includes(key)) {
+        data[key] = value;
+      } else {
+        if (!data[key]) {
+          data[key] = [];
+        }
+        data[key].push(value);
       }
-      data[key].push(value);
+      this.SaveTrackerData(data);
+    } else {
+      value['log_type'] = key;
+      this.SaveTrackerData(value);
     }
-    this.SaveTrackerData(data);
   }
 
   /**
