@@ -1019,7 +1019,7 @@ class Menu {
                                 <label for="LLM_model">LLM Model</label>
                             </p>
                             <p id="email_auth_key_container" class="multi_container">
-                              <input type="email" size="50" id="email_auth_key"><button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button><label for="gemini_auth_key">Email Authentication</label>
+                              <input type="email" size="50" id="email_auth_key"><button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button><label for="gemini_auth_key">Email Authentication</label><button type="button" id="verify">Verify</button>
                             </p>
                             <p id="openai_auth_key_container" class="multi_container hidden">
                               <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
@@ -1087,6 +1087,13 @@ class Menu {
       function (e) {
         menu.SaveData();
         menu.Toggle(false);
+      },
+    ]);
+    constants.events.push([
+      document.getElementById('verify'),
+      'click',
+      function (e) {
+        menu.VerifyEmail();
       },
     ]);
     constants.events.push([
@@ -1401,6 +1408,41 @@ class Menu {
     }
   }
 
+  VerifyEmail() {
+    let email = document.getElementById('email_auth_key').value;
+    if (email && email.indexOf('@') !== -1) {
+      let url = `https://maidr-service.azurewebsites.net/api/send_email?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D`;
+
+      let requestJson = {
+        email: email,
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authentication: constants.emailAuthKey,
+        },
+        body: JSON.stringify(requestJson),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.success) {
+            alert('Link sent to email address: ' + email);
+          } else {
+            console.log(data);
+            alert(data.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error.data);
+        });
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  }
+
   /**
    * Sets the aria attributes on the HTML elements in the menu
    * @returns {void}
@@ -1693,6 +1735,13 @@ class ChatLLM {
       },
     ]);
     constants.events.push([
+      document.getElementById('delete_email_key'),
+      'click',
+      function (e) {
+        document.getElementById('email_auth_key').value = '';
+      },
+    ]);
+    constants.events.push([
       document.getElementById('delete_gemini_key'),
       'click',
       function (e) {
@@ -1881,20 +1930,20 @@ class ChatLLM {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
-      if (constants.emailAuthKey) {
-        chatLLM.OpenAIPromptAPI(text, img);
-      } else {
+      if (constants.openAIAuthKey) {
         chatLLM.OpenAIPrompt(text, img);
+      } else {
+        chatLLM.OpenAIPromptAPI(text, img);
       }
     }
     if (constants.LLMGeminiMulti || constants.LLMModel == 'gemini') {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
-      if (constants.emailAuthKey) {
-        chatLLM.GeminiPromptAPI(text, img);
-      } else {
+      if (constants.geminiAuthKey) {
         chatLLM.GeminiPrompt(text, img);
+      } else {
+        chatLLM.GeminiPromptAPI(text, img);
       }
     }
   }
@@ -2136,7 +2185,8 @@ class ChatLLM {
 
   OpenAIPromptAPI(text, img = null) {
     // request init
-    let url = 'http://localhost:7071/api/openai';
+    let url =
+      'https://maidr-service.azurewebsites.net/api/openai?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
     let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
     console.log('LLM request: ', requestJson);
@@ -2145,7 +2195,7 @@ class ChatLLM {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: constants.emailAuthKey,
+        Authentication: constants.emailAuthKey,
       },
       body: JSON.stringify(requestJson),
     })
@@ -2272,7 +2322,8 @@ class ChatLLM {
   }
 
   async GeminiPromptAPI(text, imgBase64 = null) {
-    let url = 'http://localhost:7071/api/gemini';
+    let url =
+      'https://maidr-service.azurewebsites.net/api/gemini?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
 
     // Create the prompt
     let prompt = constants.LLMSystemMessage;
@@ -2294,7 +2345,7 @@ class ChatLLM {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: constants.emailAuthKey,
+        Authentication: constants.emailAuthKey,
       },
       body: JSON.stringify(requestJson),
     });
