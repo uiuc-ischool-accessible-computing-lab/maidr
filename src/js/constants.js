@@ -442,6 +442,7 @@ class Constants {
     'ariaMode',
     'openAIAuthKey',
     'geminiAuthKey',
+    'claudeAuthKey',
     'emailAuthKey',
     'skillLevel',
     'skillLevelOther',
@@ -449,6 +450,7 @@ class Constants {
     'LLMPreferences',
     'LLMOpenAiMulti',
     'LLMGeminiMulti',
+    'LLMModels',
     'autoInitLLM',
   ];
 
@@ -498,6 +500,13 @@ class Constants {
    * @memberof LLMSettings
    */
   LLMModel = 'openai';
+  /**
+   * Current LLM model in use. Can be 'openai' (default) or 'gemini' or 'claude'. More to be added.
+   * @type {("openai"|"gemini"|"claude")}
+   * @default 'openai'
+   * @memberof LLMSettings
+   */
+  LLMModels = { openai: true };
   /**
    * The default system message for the LLM. Helps the LLM understand the context of the chart and its role.
    * @type {string}
@@ -829,6 +838,7 @@ class Resources {
         empty: 'Empty',
         openai: 'OpenAI Vision',
         gemini: 'Gemini Pro Vision',
+        claude: 'Claude',
         multi: 'Multiple AI',
         processing: 'Processing Chart...',
       },
@@ -1009,14 +1019,22 @@ class Menu {
                                 constants.ariaMode == 'polite' ? 'checked' : ''
                               }><label for="aria_mode_polite">Polite</label></p>
                               </fieldset></div>
-                            <h5 class="modal-title">LLM Settings</h5>
-                            <p>
+                            <p class="hidden">
                                 <select id="LLM_model">
                                     <option value="openai">OpenAI Vision</option>
                                     <option value="gemini">Gemini Pro Vision</option>
                                     <option value="multi">Multiple</option>
                                 </select>
                                 <label for="LLM_model">LLM Model</label>
+                            </p>
+                            <h5 class="modal-title">LLM Settings</h5>
+                            <p>
+                              <fieldset>
+                                <legend>LLM Models (select up to 2)</legend>
+                                <p><input type="checkbox" id="LLM_model_openai" name="LLM_model" value="openai"><label for="LLM_model_openai">OpenAI Vision</label></p>
+                                <p><input type="checkbox" id="LLM_model_gemini" name="LLM_model" value="gemini"><label for="LLM_model_gemini">Gemini Pro Vision</label></p>
+                                <p><input type="checkbox" id="LLM_model_claude" name="LLM_model" value="claude"><label for="LLM_model_claude">Claude</label></p>
+                              </fieldset>
                             </p>
                             <p id="email_auth_key_container" class="multi_container">
                               <input type="email" size="50" id="email_auth_key"><button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button><label for="gemini_auth_key">Email Authentication</label><button type="button" id="verify">Verify</button>
@@ -1028,6 +1046,10 @@ class Menu {
                             <p id="gemini_auth_key_container" class="multi_container hidden">
                               <span id="gemini_multi_container" class="hidden"><input type="checkbox" id="gemini_multi" name="gemini_multi" aria-label="Use Gemini in Multi modal mode"></span>
                               <input type="password" size="50" id="gemini_auth_key"><button aria-label="Delete Gemini key" title="Delete Gemini key" id="delete_gemini_key" class="invis_button">&times;</button><label for="gemini_auth_key">Gemini Authentication Key</label>
+                            </p>
+                             <p id="claude_auth_key_container" class="multi_container hidden">
+                              <span id="claude_multi_container" class="hidden"><input type="checkbox" id="claude_multi" name="claude_multi" aria-label="Use Claude in Multi modal mode"></span>
+                              <input type="password" size="50" id="claude_auth_key"><button aria-label="Delete Claude key" title="Delete Claude key" id="delete_claude_key" class="invis_button">&times;</button><label for="claude_auth_key">Claude Authentication Key</label>
                             </p>
                             <p><input type="checkbox" ${
                               constants.autoInitLLM ? 'checked' : ''
@@ -1178,6 +1200,54 @@ class Menu {
       },
     ]);
 
+    constants.events.push([
+      document.getElementById('LLM_model_openai'),
+      'change',
+      function (e) {
+        if (e.target.checked) {
+          document
+            .getElementById('openai_auth_key_container')
+            .classList.remove('hidden');
+        } else {
+          document
+            .getElementById('openai_auth_key_container')
+            .classList.add('hidden');
+        }
+      },
+    ]);
+
+    constants.events.push([
+      document.getElementById('LLM_model_gemini'),
+      'change',
+      function (e) {
+        if (e.target.checked) {
+          document
+            .getElementById('gemini_auth_key_container')
+            .classList.remove('hidden');
+        } else {
+          document
+            .getElementById('gemini_auth_key_container')
+            .classList.add('hidden');
+        }
+      },
+    ]);
+
+    constants.events.push([
+      document.getElementById('LLM_model_claude'),
+      'change',
+      function (e) {
+        // if (e.target.checked) {
+        document
+          .getElementById('claude_auth_key_container')
+          .classList.add('hidden');
+        // } else {
+        //   document
+        //     .getElementById('claude_auth_key_container')
+        //     .classList.add('hidden');
+        // }
+      },
+    ]);
+
     // Skill level other events
     constants.events.push([
       document.getElementById('skill_level'),
@@ -1213,6 +1283,20 @@ class Menu {
         },
       ]);
     }
+
+    // Limit selections to 2 AI models
+    const llmCheckboxes = document.querySelectorAll('input[name="LLM_model"]');
+    llmCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const checked = document.querySelectorAll(
+          'input[name="LLM_model"]:checked'
+        );
+        if (checked.length > 2) {
+          checkbox.checked = false;
+          alert('You can select up to 2 AI models.');
+        }
+      });
+    });
   }
 
   /**
@@ -1292,12 +1376,15 @@ class Menu {
       document.getElementById('gemini_auth_key').value =
         constants.geminiAuthKey;
     }
+    if (typeof constants.claudeAuthKey == 'string') {
+      document.getElementById('claude_auth_key').value =
+        constants.claudeAuthKey;
+    }
     document.getElementById('skill_level').value = constants.skillLevel;
     if (constants.skillLevelOther) {
       document.getElementById('skill_level_other').value =
         constants.skillLevelOther;
     }
-    document.getElementById('LLM_model').value = constants.LLMModel;
 
     // aria mode
     if (constants.ariaMode == 'assertive') {
@@ -1307,44 +1394,18 @@ class Menu {
       document.getElementById('aria_mode_polite').checked = true;
       document.getElementById('aria_mode_assertive').checked = false;
     }
-    // hide either openai or gemini auth key field
-    if (constants.LLMModel == 'openai') {
+
+    for (let model in constants.LLMModels) {
+      document.getElementById(`LLM_model_${model}`).checked = true;
+
       document
-        .getElementById('openai_auth_key_container')
+        .getElementById(`${model}_auth_key_container`)
         .classList.remove('hidden');
-      document
-        .getElementById('gemini_auth_key_container')
-        .classList.add('hidden');
-    } else if (constants.LLMModel == 'gemini') {
-      document
-        .getElementById('openai_auth_key_container')
-        .classList.add('hidden');
-      document
-        .getElementById('gemini_auth_key_container')
-        .classList.remove('hidden');
-    } else if (constants.LLMModel == 'multi') {
-      // multi LLM mode
-      document
-        .getElementById('openai_auth_key_container')
-        .classList.remove('hidden');
-      document
-        .getElementById('gemini_auth_key_container')
-        .classList.remove('hidden');
-      document
-        .getElementById('openai_multi_container')
-        .classList.remove('hidden');
-      document
-        .getElementById('gemini_multi_container')
-        .classList.remove('hidden');
-      document.getElementById('openai_multi').checked = false;
-      if (constants.LLMOpenAiMulti) {
-        document.getElementById('openai_multi').checked = true;
-      }
-      document.getElementById('gemini_multi').checked = false;
-      if (constants.LLMGeminiMulti) {
-        document.getElementById('gemini_multi').checked = true;
-      }
     }
+    document
+      .getElementById(`claude_auth_key_container`)
+      .classList.add('hidden');
+
     // skill level other
     if (constants.skillLevel == 'other') {
       document
@@ -1381,11 +1442,22 @@ class Menu {
 
     constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
     constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
+    constants.claudeAuthKey = document.getElementById('claude_auth_key').value;
     constants.emailAuthKey = document.getElementById('email_auth_key').value;
     constants.skillLevel = document.getElementById('skill_level').value;
     constants.skillLevelOther =
       document.getElementById('skill_level_other').value;
-    constants.LLMModel = document.getElementById('LLM_model').value;
+    // constants.LLMModel = document.getElementById('LLM_model').value;
+
+    const llmCheckboxes = document.querySelectorAll('input[name="LLM_model"]');
+    llmCheckboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        constants.LLMModels[checkbox.value] = true;
+      } else {
+        delete constants.LLMModels[checkbox.value];
+      }
+    });
+
     constants.LLMPreferences = document.getElementById('LLM_preferences').value;
     constants.LLMOpenAiMulti = document.getElementById('openai_multi').checked;
     constants.LLMGeminiMulti = document.getElementById('gemini_multi').checked;
@@ -1524,14 +1596,16 @@ class Menu {
     ) {
       shouldReset = true;
     }
-    if (
-      !shouldReset &&
-      (constants.LLMOpenAiMulti !=
-        document.getElementById('openai_multi').checked ||
-        constants.LLMGeminiMulti !=
-          document.getElementById('gemini_multi').checked)
-    ) {
-      shouldReset = true;
+
+    // check if LLMModels have changed
+    let llmCheckboxes = document.querySelectorAll('input[name="LLM_model"]');
+    for (let i = 0; i < llmCheckboxes.length; i++) {
+      if (
+        !shouldReset &&
+        constants.LLMModels[llmCheckboxes[i].value] != llmCheckboxes[i].checked
+      ) {
+        shouldReset = true;
+      }
     }
 
     return shouldReset;
@@ -1554,6 +1628,7 @@ class Menu {
       // but not auth keys
       data.openAIAuthKey = 'hidden';
       data.geminiAuthKey = 'hidden';
+      data.claudeAuthKey = 'hidden';
       // and need a timestamp
       data.timestamp = new Date().toISOString();
       tracker.SetData('settings', data);
@@ -1589,11 +1664,9 @@ class ChatLLM {
     if (constants.autoInitLLM) {
       // only run if we have API keys set
       if (
-        (constants.LLMModel == 'openai' && constants.openAIAuthKey) ||
-        (constants.LLMModel == 'gemini' && constants.geminiAuthKey) ||
-        (constants.LLMModel == 'multi' &&
-          constants.openAIAuthKey &&
-          constants.geminiAuthKey)
+        ('gemini' in constants.LLMModels && constants.geminiAuthKey) ||
+        ('openai' in constants.LLMModels && constants.openAIAuthKey) ||
+        ('claude' in constants.LLMModels && constants.claudeAuthKey)
       ) {
         this.InitChatMessage();
       }
@@ -1908,7 +1981,7 @@ class ChatLLM {
 
     // if this is the user's first message (or we're gemini, in which case we need to send every time), prepend prompt with user position
     if (
-      (this.firstOpen || constants.LLMModel == 'gemini') &&
+      (this.firstOpen || 'gemini' in constants.LLMModels) &&
       !firsttime &&
       constants.verboseText.length > 0
     ) {
@@ -1926,7 +1999,7 @@ class ChatLLM {
       this.WaitingSound(true);
     }
 
-    if (constants.LLMOpenAiMulti || constants.LLMModel == 'openai') {
+    if ('openai' in constants.LLMModels) {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
@@ -1936,7 +2009,7 @@ class ChatLLM {
         chatLLM.OpenAIPromptAPI(text, img);
       }
     }
-    if (constants.LLMGeminiMulti || constants.LLMModel == 'gemini') {
+    if ('gemini' in constants.LLMModels) {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
@@ -1944,6 +2017,17 @@ class ChatLLM {
         chatLLM.GeminiPrompt(text, img);
       } else {
         chatLLM.GeminiPromptAPI(text, img);
+      }
+    }
+
+    if ('claude' in constants.LLMModels) {
+      if (firsttime) {
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'claude');
+      }
+      if (constants.claudeAuthKey) {
+        chatLLM.ClaudePrompt(text, img);
+      } else {
+        chatLLM.ClaudePromptAPI(text, img);
       }
     }
   }
@@ -2032,7 +2116,7 @@ class ChatLLM {
   }
 
   InitChatMessage() {
-    // get name from resource
+    // get name from resource]
     let LLMName = resources.GetString(constants.LLMModel);
     this.firstTime = false;
     this.DisplayChatMessage(LLMName, resources.GetString('processing'), true);
@@ -2047,7 +2131,6 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    console.log('LLM response: ', data);
     let text = '';
     let LLMName = resources.GetString(model);
 
@@ -2079,6 +2162,17 @@ class ChatLLM {
         chatLLM.WaitingSound(false);
       } else {
         // todo: display actual response
+      }
+    }
+    if (model == 'claude') {
+      console.log('Claude response: ', data);
+      if (data.text()) {
+        text = data.text();
+        chatLLM.DisplayChatMessage(LLMName, text);
+      }
+      if (data.error) {
+        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.WaitingSound(false);
       }
     }
 
@@ -2147,6 +2241,96 @@ class ChatLLM {
     }
 
     return responseText;
+  }
+
+  ClaudeJson(text, img = null) {
+    const anthropicVersion = 'vertex-2023-10-16';
+    const maxTokens = 256;
+
+    const payload = {
+      anthropic_version: anthropicVersion,
+      max_tokens: maxTokens,
+      messages: [],
+    };
+
+    // Construct the user message object
+    const userMessage = {
+      role: 'user',
+      content: [],
+    };
+
+    // Add the image content if provided
+    if (img) {
+      userMessage.content.push(
+        {
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: 'image/jpeg', // Update if other formats are supported
+            data: img,
+          },
+        },
+        {
+          type: 'text',
+          text: text,
+        }
+      );
+    } else {
+      // Add only the text content if no image is provided
+      userMessage.content.push({
+        type: 'text',
+        text: text,
+      });
+    }
+
+    // Add the user message to the messages array
+    payload.messages.push(userMessage);
+
+    return payload;
+  }
+
+  ClaudePromptAPI(text, imgBase64 = null) {
+    console.log('Claude prompt API');
+    let url =
+      'https://maidr-service.azurewebsites.net/api/claude?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+
+    // Create the prompt
+    let prompt = constants.LLMSystemMessage;
+    if (constants.LLMPreferences) {
+      prompt += constants.LLMPreferences;
+    }
+    prompt += '\n\n' + text; // Use the text parameter as the prompt
+
+    if (imgBase64 == null) {
+      imgBase64 = constants.LLMImage;
+    } else {
+      constants.LLMImage = imgBase64;
+    }
+    constants.LLMImage = imgBase64;
+
+    let requestJson = chatLLM.ClaudeJson(prompt, imgBase64);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authentication: constants.emailAuthKey,
+      },
+      body: JSON.stringify(requestJson),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.text = function () {
+          return data.content[0].text;
+        };
+        chatLLM.ProcessLLMResponse(data, 'claude');
+      })
+      .catch((error) => {
+        chatLLM.WaitingSound(false);
+        console.error('Error:', error);
+        chatLLM.DisplayChatMessage('Claude', 'Error processing request.', true);
+        // also todo: handle errors somehow
+      });
   }
 
   /**
@@ -2562,7 +2746,7 @@ class ChatLLM {
         var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
         if (model == 'openai') {
           resolve(jpegData);
-        } else if (model == 'gemini') {
+        } else if (model == 'gemini' || model == 'claude') {
           let base64Data = jpegData.split(',')[1];
           resolve(base64Data);
           //resolve(jpegData);
