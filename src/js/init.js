@@ -39,47 +39,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // init components like alt text on just the first chart
   CreateChartComponents(firstMaidr, true);
-
-  // events etc for user study page
-  // run tracker stuff only on user study page
-  if (constants.canTrack) {
-    window.tracker = new Tracker();
-    if (document.getElementById('download_data_trigger')) {
-      // we're on the intro page, so enable the download data button
-      document
-        .getElementById('download_data_trigger')
-        .addEventListener('click', function (e) {
-          tracker.DownloadTrackerData();
-        });
-    }
-
-    // general events
-    document.addEventListener('keydown', function (e) {
-      // reset tracking with Ctrl + F5 / command + F5, and Ctrl + Shift + R / command + Shift + R
-      // future todo: this should probably be a button with a confirmation. This is dangerous
-      if (
-        (e.key == 'F5' && (constants.isMac ? e.metaKey : e.ctrlKey)) ||
-        (e.key == 'R' && (constants.isMac ? e.metaKey : e.ctrlKey))
-      ) {
-        e.preventDefault();
-        tracker.Delete();
-        location.reload(true);
-      }
-
-      // main event tracker, built for individual charts
-      if (e.key == 'F10') {
-        tracker.DownloadTrackerData();
-      } else {
-        if (plot) {
-          tracker.LogEvent(e);
-        }
-      }
-
-      // Stuff to only run if we're on a chart (so check if the info div exists?)
-      if (document.getElementById('info')) {
-      }
-    });
-  }
 });
 
 /**
@@ -99,6 +58,7 @@ function InitMaidr(thisMaidr) {
     }
     DestroyChartComponents(); // destroy so that we start fresh, in case we've created on the wrong chart
     CreateChartComponents(singleMaidr);
+    InitTracker();
 
     window.menu = new Menu();
     window.chatLLM = new ChatLLM();
@@ -504,6 +464,44 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
   }
 }
 
+function InitTracker() {
+  // events etc for user study page
+  // run tracker stuff only on user study page
+  if (constants.canTrack) {
+    window.tracker = new Tracker();
+    if (document.getElementById('download_data_trigger')) {
+      // we're on the intro page, so enable the download data button
+      document
+        .getElementById('download_data_trigger')
+        .addEventListener('click', function (e) {
+          tracker.DownloadTrackerData();
+        });
+    }
+
+    // general events
+    document.addEventListener('keydown', function (e) {
+      // reset tracking with Ctrl + F5 / command + F5, and Ctrl + Shift + R / command + Shift + R
+      // future todo: this should probably be a button with a confirmation. This is dangerous
+      if (
+        (e.key == 'F5' && (constants.isMac ? e.metaKey : e.ctrlKey)) ||
+        (e.key == 'R' && (constants.isMac ? e.metaKey : e.ctrlKey))
+      ) {
+        e.preventDefault();
+        tracker.Delete();
+        location.reload(true);
+      }
+
+      // main event tracker, built for individual charts
+      if (e.key == 'F10') {
+        tracker.DownloadTrackerData();
+      } else {
+        if (plot) {
+          tracker.LogEvent(e);
+        }
+      }
+    });
+  }
+}
 /**
  * Removes all chart components from the DOM and resets related variables to null.
  * @function

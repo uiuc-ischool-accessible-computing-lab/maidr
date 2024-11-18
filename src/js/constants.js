@@ -2711,7 +2711,8 @@ class Helper {
  */
 class Tracker {
   // URL
-  logUrl = 'https://accessiblegraphapi.azurewebsites.net/api/SaveData'; // TODO Replace
+  logUrl =
+    'https://maidr-service.azurewebsites.net/api/log?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D'; // TODO Replace
   isLocal = false;
 
   constructor() {
@@ -2723,14 +2724,13 @@ class Tracker {
    */
   DataSetup() {
     let prevData = this.GetTrackerData();
-    if (prevData) {
-      // good to go already, do nothing, but make sure we have our containers
-    } else {
+    if (!this.isLocal || !prevData) {
       let data = {};
       data.userAgent = Object.assign(navigator.userAgent);
       data.vendor = Object.assign(navigator.vendor);
       data.language = Object.assign(navigator.language);
       data.platform = Object.assign(navigator.platform);
+      data.geolocation = Object.assign(navigator.geolocation);
       data.log_type = 'system_data';
       data.events = [];
       data.settings = [];
@@ -2757,10 +2757,7 @@ class Tracker {
    * @param {Object} data - The data to be saved.
    */
   async SaveTrackerData(data) {
-    // test to console first
-    console.log('Saving tracker data...');
-    console.log(data);
-    return;
+    console.log('about to save data', data);
     if (this.isLocal) {
       localStorage.setItem(constants.project_id, JSON.stringify(data));
     } else {
@@ -2771,7 +2768,7 @@ class Tracker {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(logData),
+          body: JSON.stringify(data),
         });
 
         if (!response.ok) {
