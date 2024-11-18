@@ -129,6 +129,7 @@ class Constants {
    * @default 'verbose'
    */
   textMode = 'verbose';
+
   /**
    * The current braille mode. Can be 'off' or 'on'.
    * @type {("off"|"on")}
@@ -296,7 +297,7 @@ class Constants {
    * @default 5000
    * @memberof AudioProperties
    */
-  AUTOPLAY_DURATION = 5000; // 5s
+  AUTOPLAY_DURATION = 2000; // 5s
 
   // user settings
   /**
@@ -438,7 +439,7 @@ class Constants {
     'colorSelected',
     'MIN_FREQUENCY',
     'MAX_FREQUENCY',
-    'keypressInterval',
+    'AUTOPLAY_DURATION',
     'ariaMode',
     'openAIAuthKey',
     'geminiAuthKey',
@@ -605,10 +606,13 @@ class Constants {
    * @memberof PlatformControls
    */
   end = this.isMac ? 'fn + Right arrow' : 'End';
+  /**
+   * The interval we wait for an L + X prefix event
+   */
+  keypressInterval = 2000; // ms or 2s
 
   // internal controls
   // todo: are these even used? Sean doesn't think so (May 2024)
-  keypressInterval = 2000; // ms or 2s
   tabMovement = null;
 
   // debug stuff
@@ -944,7 +948,11 @@ class Menu {
                                         <td>Auto-play speed down</td>
                                         <td>Comma (,)</td>
                                     </tr>
-                                                                        <tr>
+                                    <tr>
+                                        <td>Auto-play speed reset</td>
+                                        <td>Slash (/)</td>
+                                    </tr>
+                                    <tr>
                                         <td>Check label for the title of current plot</td>
                                         <td>l t</td>
                                     </tr>
@@ -987,16 +995,11 @@ class Menu {
                             <h5 class="modal-title">Settings</h5>
                             <p><input type="range" id="vol" name="vol" min="0" max="1" step=".05"><label for="vol">Volume</label></p>
                             <!-- <p><input type="checkbox" id="show_rect" name="show_rect"><label for="show_rect">Show Outline</label></p> //-->
-                            <p><input type="number" min="4" max="2000" step="1" id="braille_display_length" name="braille_display_length"><label for="braille_display_length">Braille Display Size</label></p>
-                            <p><input type="number" min="${
-                              constants.MIN_SPEED
-                            }" max="500" step="${
-    constants.INTERVAL
-  }" id="autoplay_rate" name="autoplay_rate"><label for="autoplay_rate">Autoplay Rate</label></p>
                             <p><input type="color" id="color_selected" name="color_selected"><label for="color_selected">Outline Color</label></p>
+                            <p><input type="number" min="4" max="2000" step="1" id="braille_display_length" name="braille_display_length"><label for="braille_display_length">Braille Display Size</label></p>
                             <p><input type="number" min="10" max="2000" step="10" id="min_freq" name="min_freq"><label for="min_freq">Min Frequency (Hz)</label></p>
                             <p><input type="number" min="20" max="2010" step="10" id="max_freq" name="max_freq"><label for="max_freq">Max Frequency (Hz)</label></p>
-                            <p><input type="number" min="500" max="5000" step="500" id="keypress_interval" name="keypress_interval"><label for="keypress_interval">Keypress Interval (ms)</label></p>
+                                                     <p>                            <p><input type="number" min="500" max="500000" step="500" id="AUTOPLAY_DURATION">Autoplay Duration (ms)</label></p>
                             <div><fieldset>
                               <legend>Aria Mode</legend>
                               <p><input type="radio" id="aria_mode_assertive" name="aria_mode" value="assertive" ${
@@ -1262,14 +1265,13 @@ class Menu {
    */
   PopulateData() {
     document.getElementById('vol').value = constants.vol;
-    document.getElementById('autoplay_rate').value = constants.autoPlayRate;
     document.getElementById('braille_display_length').value =
       constants.brailleDisplayLength;
     document.getElementById('color_selected').value = constants.colorSelected;
     document.getElementById('min_freq').value = constants.MIN_FREQUENCY;
     document.getElementById('max_freq').value = constants.MAX_FREQUENCY;
-    document.getElementById('keypress_interval').value =
-      constants.keypressInterval;
+    document.getElementById('AUTOPLAY_DURATION').value =
+      constants.AUTOPLAY_DURATION;
     if (typeof constants.openAIAuthKey == 'string') {
       document.getElementById('openai_auth_key').value =
         constants.openAIAuthKey;
@@ -1355,15 +1357,14 @@ class Menu {
     let shouldReset = this.ShouldLLMReset();
 
     constants.vol = document.getElementById('vol').value;
-    constants.autoPlayRate = document.getElementById('autoplay_rate').value;
     constants.brailleDisplayLength = document.getElementById(
       'braille_display_length'
     ).value;
     constants.colorSelected = document.getElementById('color_selected').value;
     constants.MIN_FREQUENCY = document.getElementById('min_freq').value;
     constants.MAX_FREQUENCY = document.getElementById('max_freq').value;
-    constants.keypressInterval =
-      document.getElementById('keypress_interval').value;
+    constants.AUTOPLAY_DURATION =
+      document.getElementById('AUTOPLAY_DURATION').value;
 
     constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
     constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
@@ -1517,7 +1518,8 @@ class Menu {
     if (data) {
       for (let i = 0; i < constants.userSettingsKeys.length; i++) {
         constants[constants.userSettingsKeys[i]] =
-          data[constants.userSettingsKeys[i]];
+          data[constants.userSettingsKeys[i]] ||
+          constants[constants.userSettingsKeys[i]];
       }
     }
     this.PopulateData();
@@ -1982,7 +1984,7 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    console.log('LLM response: ', data);
+    //console.log('LLM response: ', data);
     let text = '';
     let LLMName = resources.GetString(model);
 
@@ -2096,7 +2098,7 @@ class ChatLLM {
     let url = 'https://api.openai.com/v1/chat/completions';
     let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
-    console.log('LLM request: ', requestJson);
+    //console.log('LLM request: ', requestJson);
 
     fetch(url, {
       method: 'POST',
@@ -2200,9 +2202,9 @@ class ChatLLM {
       };
 
       // Generate the content
-      console.log('LLM request: ', prompt, image);
+      //console.log('LLM request: ', prompt, image);
       const result = await model.generateContent([prompt, image]);
-      console.log(result.response.text());
+      //console.log(result.response.text());
 
       // Process the response
       chatLLM.ProcessLLMResponse(result.response, 'gemini');
@@ -2846,9 +2848,6 @@ class Tracker {
     if (!this.isUndefinedOrNull(constants.vol)) {
       eventToLog.volume = Object.assign(constants.vol);
     }
-    if (!this.isUndefinedOrNull(constants.autoPlayRate)) {
-      eventToLog.autoplay_rate = Object.assign(constants.autoPlayRate);
-    }
     if (!this.isUndefinedOrNull(constants.colorSelected)) {
       eventToLog.color = Object.assign(constants.colorSelected);
     }
@@ -2859,6 +2858,9 @@ class Tracker {
     }
     if (!this.isUndefinedOrNull(constants.duration)) {
       eventToLog.tone_duration = Object.assign(constants.duration);
+    }
+    if (!this.isUndefinedOrNull(constants.AUTOPLAY_DURATION)) {
+      eventToLog.AUTOPLAY_DURATION = Object.assign(constants.AUTOPLAY_DURATION);
     }
     if (!this.isUndefinedOrNull(constants.autoPlayOutlierRate)) {
       eventToLog.autoplay_outlier_rate = Object.assign(
@@ -3967,10 +3969,6 @@ class Display {
       let targetLabel = this.boxplotGridPlaceholders[sectionPos];
       let haveTargetLabel = false;
       let adjustedPos = 0;
-      // bookmark: shiny issue: this is being called twice??
-      // and the issue happens on 2nd call, sometimes it skips like 75% or whatever
-      //
-      // on first call, we might call it multiple as we're setting up, I care but let's check that later
 
       if (constants.brailleData) {
         for (let i = 0; i < constants.brailleData.length; i++) {
@@ -4673,6 +4671,10 @@ class Display {
 
       // Step 2: normalize and allocate remaining characters and add to our main braille array
       let charsAvailable = constants.brailleDisplayLength - numAllocatedChars;
+      // Bug happened here: if our numAllocatedChars is bigger than brailleDisplayLength, it cuts off chars
+      // temp fix: just let it overflow by setting charsAvailable to positive if it's below 0. Or maybe 5 to still give us some play
+      // todo: real solution should probably be to kill outliers that are too close together
+      if (charsAvailable < 5) charsAvailable = 5;
       let allocateCharacters = this.AllocateCharacters(lenData, charsAvailable);
       // apply allocation
       let brailleData = lenData;
@@ -5086,9 +5088,8 @@ class BarChart {
       }
     }
     constants.maxX = this.columnLabels.length;
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / this.plotData.length
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -5419,10 +5420,7 @@ class BoxPlot {
       constants.minY = 0;
       constants.maxY = this.plotData.length - 1;
     }
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / this.plotData.length),
-      constants.MAX_SPEED
-    );
+    constants.autoPlayRate = Math.ceil(constants.AUTOPLAY_DURATION / 7);
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
       constants.MIN_SPEED = constants.autoPlayRate;
@@ -6123,9 +6121,8 @@ class HeatMap {
     constants.maxX = this.data[0].length - 1;
     constants.minY = Math.min(...this.data.map((row) => Math.min(...row)));
     constants.maxY = Math.max(...this.data.map((row) => Math.max(...row)));
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -6797,9 +6794,8 @@ class ScatterPlot {
       constants.minY = Math.min(...yValues);
       constants.maxY = Math.max(...yValues);
 
-      constants.autoPlayRate = Math.min(
-        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-        constants.MAX_SPEED
+      constants.autoPlayRate = Math.ceil(
+        constants.AUTOPLAY_DURATION / (constants.maxX + 1)
       );
       constants.DEFAULT_SPEED = constants.autoPlayRate;
       if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -7349,9 +7345,8 @@ class Histogram {
         }
       }
     }
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / this.plotData.length
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -7372,13 +7367,13 @@ class Histogram {
           this.activeElementColor = this.activeElement.getAttribute('fill');
           // Get new color to highlight and replace fill value
           this.activeElement.setAttribute(
-              'fill',
-              constants.GetBetterColor(this.activeElementColor)
+            'fill',
+            constants.GetBetterColor(this.activeElementColor)
           );
           // Case where fill is within the style attribute
         } else if (
-            this.activeElement.hasAttribute('style') &&
-            this.activeElement.getAttribute('style').indexOf('fill') !== -1
+          this.activeElement.hasAttribute('style') &&
+          this.activeElement.getAttribute('style').indexOf('fill') !== -1
         ) {
           let styleString = this.activeElement.getAttribute('style');
           // Extract all style attributes and values
@@ -7386,7 +7381,7 @@ class Histogram {
           this.activeElementColor = styleArray[styleArray.indexOf('fill') + 1];
           // Get new color to highlight and replace fill value in style array
           styleArray[styleArray.indexOf('fill') + 1] = constants.GetBetterColor(
-              this.activeElementColor
+            this.activeElementColor
           );
           // Recreate style string and set style attribute
           styleString = constants.GetStyleStringFromArray(styleArray);
@@ -7411,8 +7406,8 @@ class Histogram {
         this.activeElement.setAttribute('fill', this.activeElementColor);
         this.activeElement = null;
       } else if (
-          this.activeElement.hasAttribute('style') &&
-          this.activeElement.getAttribute('style').indexOf('fill') !== -1
+        this.activeElement.hasAttribute('style') &&
+        this.activeElement.getAttribute('style').indexOf('fill') !== -1
       ) {
         let styleString = this.activeElement.getAttribute('style');
         let styleArray = constants.GetStyleArrayFromString(styleString);
@@ -7487,9 +7482,8 @@ class LinePlot {
       singleMaidr.data[0].y
     );
 
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -7991,9 +7985,8 @@ class Segmented {
       }
     }
     constants.maxX = this.level.length;
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / this.plotData.length
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -10637,10 +10630,10 @@ class Control {
 
       constants.autoplayId = setInterval(function () {
         position.x += step;
-        if (position.x < 0 || end - 1 < position.x) {
+        if (position.x < 0 || plot.plotData.length - 1 < position.x) {
           constants.KillAutoplay();
           control.lockPosition();
-        } else if (position.x >= end) {
+        } else if (position.x == end) {
           constants.KillAutoplay();
           control.UpdateAllAutoPlay();
         } else {
@@ -11109,9 +11102,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
   // set focus events for all maidr ids
   DestroyMaidr(); // just in case
   window.maidrIds = [];
+  let firstMaidr;
   for (let i = 0; i < maidrObjects.length; i++) {
     let maidrId = maidrObjects[i].id;
     maidrIds.push(maidrId);
+    if (!firstMaidr && maidrObjects[i]) {
+      firstMaidr = maidrObjects[i];
+    }
     let maidrElemn = document.getElementById(maidrId);
     if (maidrElemn) {
       maidrElemn.setAttribute('tabindex', '0');
@@ -11121,6 +11118,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
       // blur done elsewhere
     }
   }
+
+  // init components like alt text on just the first chart
+  CreateChartComponents(firstMaidr, true);
 
   // events etc for user study page
   // run tracker stuff only on user study page
@@ -11179,7 +11179,11 @@ function InitMaidr(thisMaidr) {
     } else {
       constants.chartType = singleMaidr.type;
     }
+    DestroyChartComponents(); // destroy so that we start fresh, in case we've created on the wrong chart
     CreateChartComponents(singleMaidr);
+
+    window.menu = new Menu();
+    window.chatLLM = new ChatLLM();
     window.control = new Control(); // this inits the actual chart object and Position
     window.review = new Review();
     window.display = new Display();
@@ -11201,41 +11205,52 @@ function InitMaidr(thisMaidr) {
     // actually do eventlisteners for all events
     this.SetEvents();
 
+    // Set img role for chart
+    constants.chart.setAttribute('role', 'img');
+
     // once everything is set up, announce the chart name (or title as a backup) to the user
-    setTimeout(function () {
-      if ('name' in singleMaidr) {
-        display.announceText(singleMaidr.name);
-      } else if (
-        'title' in singleMaidr ||
-        ('labels' in singleMaidr && 'title' in singleMaidr.labels)
-      ) {
-        let title =
-          'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
+    // setTimeout(function () {
+    if ('name' in singleMaidr) {
+      // Add the aria-label and title attributes to the chart
+      constants.chart.setAttribute('aria-label', announceText);
+      constants.chart.setAttribute('title', announceText);
 
-        // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
-        let plotTypeString = Array.isArray(singleMaidr.type)
-          ? singleMaidr.type.slice(0, -1).join(', ') +
-            ' and ' +
-            singleMaidr.type.slice(-1)
-          : singleMaidr.type;
+      // display.announceText(singleMaidr.name);
+    } else if (
+      'title' in singleMaidr ||
+      ('labels' in singleMaidr && 'title' in singleMaidr.labels)
+    ) {
+      let title =
+        'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
 
-        // Prepare the instruction text for multi-layered plot
-        let multiLayerInstruction =
-          'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
+      // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
+      let plotTypeString = Array.isArray(singleMaidr.type)
+        ? singleMaidr.type.slice(0, -1).join(', ') +
+          ' and ' +
+          singleMaidr.type.slice(-1)
+        : singleMaidr.type;
 
-        // Check if plotTypeString has multiple types
-        let isMultiLayered =
-          Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
+      // Prepare the instruction text for multi-layered plot
+      let multiLayerInstruction =
+        'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
 
-        // Construct the final announceText string
-        let announceText = `${plotTypeString} plot of ${title}: Use Arrows to navigate data points. ${
-          isMultiLayered ? multiLayerInstruction : ' '
-        }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+      // Check if plotTypeString has multiple types
+      let isMultiLayered =
+        Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
 
-        // Display the announcement text
-        display.announceText(announceText);
-      }
-    }, 100);
+      // Construct the final announceText string
+      let announceText = `${plotTypeString} plot of ${title}: Click to activate. Use Arrows to navigate data points. ${
+        isMultiLayered ? multiLayerInstruction : ' '
+      }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+
+      // Add the aria-label and title attributes to the chart
+      constants.chart.setAttribute('aria-label', announceText);
+      constants.chart.setAttribute('title', announceText);
+
+      // Display the announcement text
+      // display.announceText(announceText);
+    }
+    // }, 100);
   }
 }
 
@@ -11443,11 +11458,11 @@ function SetEvents() {
  * - Also sets the constants associated with these elements
  *
  */
-function CreateChartComponents() {
+function CreateChartComponents(thisMaidr, chartOnly = false) {
   // init html stuff. aria live regions, braille input, etc
 
   // core chart
-  let chart = document.getElementById(singleMaidr.id);
+  let chart = document.getElementById(thisMaidr.id);
 
   // we create a structure with a main container, and a chart container
   let main_container = document.createElement('div');
@@ -11459,91 +11474,116 @@ function CreateChartComponents() {
   main_container.appendChild(chart);
   chart.parentNode.replaceChild(chart_container, chart);
   chart_container.appendChild(chart);
-  chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
+  if (!chartOnly) chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
 
   constants.chart = chart;
   constants.chart_container = chart_container;
   constants.main_container = main_container;
 
-  // braille input, pre sibling of chart container
-  constants.chart_container.insertAdjacentHTML(
-    'beforebegin',
-    '<div class="hidden" id="' +
-      constants.braille_container_id +
-      '">\n<input id="' +
-      constants.braille_input_id +
-      '" class="braille-input" type="text" size="' +
-      constants.brailleDisplayLength +
-      '" ' +
-      'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
-      'autocomplete="off" ' +
-      '/>\n</div>\n'
-  );
-
-  // info aria live, next sibling of chart container
-  constants.chart_container.insertAdjacentHTML(
-    'afterend',
-    '<br>\n<div id="' +
-      constants.info_id +
-      '" aria-live="assertive" aria-atomic="true">\n<p id="x"></p>\n<p id="y"></p>\n</div>\n'
-  );
-
-  // announcements, next sibling of info
-  document
-    .getElementById(constants.info_id)
-    .insertAdjacentHTML(
-      'afterend',
-      '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
-    );
-
-  // end chime audio element
-  // TODO: external media file is not working as a stereo audio so commenting this out until we find a solution
-  // document
-  // .getElementById(constants.info_id)
-  // .insertAdjacentHTML(
-  // 'afterend',
-  // '<div class="hidden"> <audio src="../src/terminalBell.mp3" id="end_chime"></audio> </div>'
-  // );
-
-  // review mode form field
-  document
-    .getElementById(constants.info_id)
-    .insertAdjacentHTML(
+  if (!chartOnly) {
+    // braille input, pre sibling of chart container
+    constants.chart_container.insertAdjacentHTML(
       'beforebegin',
-      '<div id="' +
-        constants.review_id_container +
-        '" class="hidden sr-only sr-only-focusable"><input id="' +
-        constants.review_id +
-        '" type="text" size="50" /></div>'
+      '<div class="hidden" id="' +
+        constants.braille_container_id +
+        '">\n<input id="' +
+        constants.braille_input_id +
+        '" class="braille-input" type="text" size="' +
+        constants.brailleDisplayLength +
+        '" ' +
+        'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
+        'autocomplete="off" ' +
+        '/>\n</div>\n'
     );
 
-  // some tweaks
-  constants.chart_container.setAttribute('role', 'application');
+    // info aria live, next sibling of chart container
+    constants.chart_container.insertAdjacentHTML(
+      'afterend',
+      '<br>\n<div id="' +
+        constants.info_id +
+        '" aria-live="assertive" aria-atomic="true">\n<p id="x"></p>\n<p id="y"></p>\n</div>\n'
+    );
 
-  // set page elements
-  constants.brailleContainer = document.getElementById(
-    constants.braille_container_id
-  );
-  constants.brailleInput = document.getElementById(constants.braille_input_id);
-  constants.infoDiv = document.getElementById(constants.info_id);
-  constants.announceContainer = document.getElementById(
-    constants.announcement_container_id
-  );
-  constants.nonMenuFocus = constants.chart;
-  constants.endChime = document.getElementById(constants.end_chime_id);
-  constants.review_container = document.querySelector(
-    '#' + constants.review_id_container
-  );
-  constants.review = document.querySelector('#' + constants.review_id);
+    // announcements, next sibling of info
+    document
+      .getElementById(constants.info_id)
+      .insertAdjacentHTML(
+        'afterend',
+        '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
+      );
 
-  // help menu
-  window.menu = new Menu();
+    // review mode form field
+    document
+      .getElementById(constants.info_id)
+      .insertAdjacentHTML(
+        'beforebegin',
+        '<div id="' +
+          constants.review_id_container +
+          '" class="hidden sr-only sr-only-focusable"><input id="' +
+          constants.review_id +
+          '" type="text" size="50" autocomplete="off" /></div>'
+      );
 
-  // LLM question modal
-  window.chatLLM = new ChatLLM();
+    // some tweaks
+    constants.chart_container.setAttribute('role', 'application');
 
-  // Description modal
-  window.description = new Description(); // developement on hold
+    // set page elements
+    constants.brailleContainer = document.getElementById(
+      constants.braille_container_id
+    );
+    constants.brailleInput = document.getElementById(
+      constants.braille_input_id
+    );
+    constants.infoDiv = document.getElementById(constants.info_id);
+    constants.announceContainer = document.getElementById(
+      constants.announcement_container_id
+    );
+    constants.nonMenuFocus = constants.chart;
+    constants.endChime = document.getElementById(constants.end_chime_id);
+    constants.review_container = document.querySelector(
+      '#' + constants.review_id_container
+    );
+    constants.review = document.querySelector('#' + constants.review_id);
+    //window.description = new Description(); // developement on hold
+  }
+
+  // set screen reader text and attributes
+  let altText = '';
+  // set role of main chart
+  document.getElementById(thisMaidr.id).setAttribute('role', 'img');
+  if ('name' in thisMaidr) {
+    altText = thisMaidr.name;
+  } else if (
+    'title' in thisMaidr ||
+    ('labels' in thisMaidr && 'title' in thisMaidr.labels)
+  ) {
+    let title = 'title' in thisMaidr ? thisMaidr.title : thisMaidr.labels.title;
+
+    // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
+    let plotTypeString = Array.isArray(thisMaidr.type)
+      ? thisMaidr.type.slice(0, -1).join(', ') +
+        ' and ' +
+        thisMaidr.type.slice(-1)
+      : thisMaidr.type;
+
+    // Prepare the instruction text for multi-layered plot
+    let multiLayerInstruction =
+      'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
+
+    // Check if plotTypeString has multiple types
+    let isMultiLayered =
+      Array.isArray(thisMaidr.type) && thisMaidr.type.length > 1;
+
+    // Construct the final announceText string
+    altText = `${plotTypeString} plot of ${title}: Click to activate. Use Arrows to navigate data points. ${
+      isMultiLayered ? multiLayerInstruction : ' '
+    }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
+  }
+  if (altText.length > 0) {
+    // Add the aria-label and title attributes to the chart
+    document.getElementById(thisMaidr.id).setAttribute('aria-label', altText);
+    document.getElementById(thisMaidr.id).setAttribute('title', altText);
+  }
 }
 
 /**
@@ -11581,13 +11621,13 @@ function DestroyChartComponents() {
     constants.review_container.remove();
   }
 
-  if (typeof menu != 'undefined') {
+  if (typeof menu !== 'undefined' && menu !== null) {
     menu.Destroy();
   }
-  if (typeof description != 'undefined') {
+  if (typeof description !== 'undefined' && description !== null) {
     description.Destroy();
   }
-  if (typeof chatLLM != 'undefined') {
+  if (typeof chatLLM !== 'undefined' && chatLLM !== null) {
     chatLLM.Destroy();
   }
 

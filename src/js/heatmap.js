@@ -134,9 +134,8 @@ class HeatMap {
     constants.maxX = this.data[0].length - 1;
     constants.minY = Math.min(...this.data.map((row) => Math.min(...row)));
     constants.maxY = Math.max(...this.data.map((row) => Math.max(...row)));
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {

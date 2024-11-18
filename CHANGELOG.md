@@ -1,3 +1,53 @@
+# [2.21.0](https://github.com/xability/maidr/compare/v2.20.0...v2.21.0) (2024-10-24)
+
+
+### Features
+
+* add an instruction on how to activate maidr plot ([98237b4](https://github.com/xability/maidr/commit/98237b443caa4871bceb32079c45f436b25c9dc3))
+
+# [2.20.0](https://github.com/xability/maidr/compare/v2.19.1...v2.20.0) (2024-10-23)
+
+
+### Features
+
+* provide alt text for maidr plot before init ([#586](https://github.com/xability/maidr/issues/586)) ([749f262](https://github.com/xability/maidr/commit/749f26269d594d376225c6e35af156295bf7ad35))
+
+## [2.19.1](https://github.com/xability/maidr/compare/v2.19.0...v2.19.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* address failure in release action ([#583](https://github.com/xability/maidr/issues/583)) ([64b90f4](https://github.com/xability/maidr/commit/64b90f469e118001583a6e65f2e02533ec48678e))
+* address failure in release action ([#584](https://github.com/xability/maidr/issues/584)) ([992a18a](https://github.com/xability/maidr/commit/992a18a959cdf087516127bf315cfafd217789d0))
+* barplot autoplay left ([#582](https://github.com/xability/maidr/issues/582)) ([749da16](https://github.com/xability/maidr/commit/749da1674b233a3d99b24b31218e2c221b721000))
+* include retry logic for semantic-release job ([#577](https://github.com/xability/maidr/issues/577)) ([5c67114](https://github.com/xability/maidr/commit/5c6711465f90e3a18fde5e7ec6e8d24eac778a8f))
+* update semantic-release job to utilize bash instead of js ([#585](https://github.com/xability/maidr/issues/585)) ([89ce7db](https://github.com/xability/maidr/commit/89ce7db17da912820e1e0d17f708dde7f67a5c43))
+
+# [2.19.0](https://github.com/xability/maidr/compare/v2.18.0...v2.19.0) (2024-10-16)
+
+
+### Bug Fixes
+
+* prevent autocomplete for review input ([#579](https://github.com/xability/maidr/issues/579)) ([4742cb4](https://github.com/xability/maidr/commit/4742cb453781e537e6da75abf4a6cab527b3c280))
+* replaying current point with Space doesn't work on histogram ([d0c565a](https://github.com/xability/maidr/commit/d0c565af3072d7216a278ead282621f618c51a98))
+
+
+### Features
+
+* scale autoplay rate to chart size, expose var AUTOPLAY_RATE to users ([#580](https://github.com/xability/maidr/issues/580)) ([ebb19a9](https://github.com/xability/maidr/commit/ebb19a9e3df4d8953593abfa81fa1a88787e1237))
+
+# [2.18.0](https://github.com/xability/maidr/compare/v2.17.3...v2.18.0) (2024-10-12)
+
+
+### Bug Fixes
+
+* **help:** add a missing keybinding for the autoplay speed reset ([8c3fadf](https://github.com/xability/maidr/commit/8c3fadff2f96b98fe5c0b1b07ac2cf5600cb40bd))
+
+
+### Features
+
+* add alt-text for maidr plot ([#568](https://github.com/xability/maidr/issues/568)) ([7752123](https://github.com/xability/maidr/commit/7752123dc16390acd4af2c4dc93e7a094b4bad9d))
+
 ## [2.17.3](https://github.com/xability/maidr/compare/v2.17.2...v2.17.3) (2024-10-08)
 
 

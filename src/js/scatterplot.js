@@ -406,9 +406,8 @@ class ScatterPlot {
       constants.minY = Math.min(...yValues);
       constants.maxY = Math.max(...yValues);
 
-      constants.autoPlayRate = Math.min(
-        Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-        constants.MAX_SPEED
+      constants.autoPlayRate = Math.ceil(
+        constants.AUTOPLAY_DURATION / (constants.maxX + 1)
       );
       constants.DEFAULT_SPEED = constants.autoPlayRate;
       if (constants.autoPlayRate < constants.MIN_SPEED) {

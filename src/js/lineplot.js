@@ -59,9 +59,8 @@ class LinePlot {
       singleMaidr.data[0].y
     );
 
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / (constants.maxX + 1)
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {

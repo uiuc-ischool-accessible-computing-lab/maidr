@@ -118,9 +118,8 @@ class Histogram {
         }
       }
     }
-    constants.autoPlayRate = Math.min(
-      Math.ceil(constants.AUTOPLAY_DURATION / (constants.maxX + 1)),
-      constants.MAX_SPEED
+    constants.autoPlayRate = Math.ceil(
+      constants.AUTOPLAY_DURATION / this.plotData.length
     );
     constants.DEFAULT_SPEED = constants.autoPlayRate;
     if (constants.autoPlayRate < constants.MIN_SPEED) {
@@ -141,13 +140,13 @@ class Histogram {
           this.activeElementColor = this.activeElement.getAttribute('fill');
           // Get new color to highlight and replace fill value
           this.activeElement.setAttribute(
-              'fill',
-              constants.GetBetterColor(this.activeElementColor)
+            'fill',
+            constants.GetBetterColor(this.activeElementColor)
           );
           // Case where fill is within the style attribute
         } else if (
-            this.activeElement.hasAttribute('style') &&
-            this.activeElement.getAttribute('style').indexOf('fill') !== -1
+          this.activeElement.hasAttribute('style') &&
+          this.activeElement.getAttribute('style').indexOf('fill') !== -1
         ) {
           let styleString = this.activeElement.getAttribute('style');
           // Extract all style attributes and values
@@ -155,7 +154,7 @@ class Histogram {
           this.activeElementColor = styleArray[styleArray.indexOf('fill') + 1];
           // Get new color to highlight and replace fill value in style array
           styleArray[styleArray.indexOf('fill') + 1] = constants.GetBetterColor(
-              this.activeElementColor
+            this.activeElementColor
           );
           // Recreate style string and set style attribute
           styleString = constants.GetStyleStringFromArray(styleArray);
@@ -180,8 +179,8 @@ class Histogram {
         this.activeElement.setAttribute('fill', this.activeElementColor);
         this.activeElement = null;
       } else if (
-          this.activeElement.hasAttribute('style') &&
-          this.activeElement.getAttribute('style').indexOf('fill') !== -1
+        this.activeElement.hasAttribute('style') &&
+        this.activeElement.getAttribute('style').indexOf('fill') !== -1
       ) {
         let styleString = this.activeElement.getAttribute('style');
         let styleArray = constants.GetStyleArrayFromString(styleString);

@@ -10,19 +10,19 @@ assignees: ''
 
 ## Description
 
-Please provide a clear and concise description of the feature you would like to request.
+<!-- Please provide a clear and concise description of the feature you would like to request. -->
 
 ## Motivation
 
-Explain why this feature is important and how it would benefit the project.
+<!-- Explain why this feature is important and how it would benefit the project. -->
 
 ## Proposed Solution
 
-Outline your proposed solution or any ideas you have for implementing this feature.
+<!-- Outline your proposed solution or any ideas you have for implementing this feature. -->
 
 ## Additional Context
 
-Add any additional context or screenshots about the feature request here.
+<!-- Add any additional context or screenshots about the feature request here. -->
 
 ## Checklist
 
