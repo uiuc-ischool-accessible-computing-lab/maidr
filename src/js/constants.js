@@ -3197,6 +3197,10 @@ class Tracker {
       // don't store their auth keys
       settings.openAIAuthKey = 'hidden';
       settings.geminiAuthKey = 'hidden';
+      if (constants.emailAuthKey) {
+        settings.username = constants.emailAuthKey;
+      }
+      settings;
       this.SetData('settings', settings);
     }
   }
@@ -3215,6 +3219,9 @@ class Tracker {
     eventToLog.altKey = Object.assign(e.altKey);
     eventToLog.ctrlKey = Object.assign(e.ctrlKey);
     eventToLog.shiftKey = Object.assign(e.shiftKey);
+    if (constants.emailAuthKey) {
+      eventToLog.username = Object.assign(constants.emailAuthKey);
+    }
     if (e.path) {
       eventToLog.focus = Object.assign(e.path[0].tagName);
     }
