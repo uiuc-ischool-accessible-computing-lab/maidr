@@ -1033,7 +1033,10 @@ class Menu {
                               </fieldset>
                             </p>
                             <p id="email_auth_key_container" class="multi_container">
-                              <input type="email" size="50" id="email_auth_key"><button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button><label for="gemini_auth_key">Email Authentication</label><button type="button" id="verify">Verify</button>
+                              <input type="email" size="50" id="email_auth_key" aria-label="Enter your email address">
+                              <button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button>
+                              <label for="gemini_auth_key">Email Authentication</label>
+                              <button type="button" id="verify">Verify</button>
                             </p>
                             <p id="openai_auth_key_container" class="multi_container hidden">
                               <span id="openai_multi_container" class="hidden"><input type="checkbox" id="openai_multi" name="openai_multi" aria-label="Use OpenAI in Multi modal mode"></span>
