@@ -1,14 +1,8 @@
-// events and init functions
-// we do some setup, but most of the work is done when user focuses on an element matching an id from maidr user data
 document.addEventListener('DOMContentLoaded', function (e) {
-  // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
-
-  // create global vars
   window.constants = new Constants();
   window.resources = new Resources();
   window.logError = new LogError();
 
-  // set focus events for all charts matching maidr ids
   let maidrObjects = [];
   if (typeof maidr != 'undefined') {
     if (!Array.isArray(maidr)) {
@@ -17,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
       maidrObjects = maidr;
     }
   }
-  // set focus events for all maidr ids
-  DestroyMaidr(); // just in case
+
+  DestroyMaidr();
   window.maidrIds = [];
   let firstMaidr;
   for (let i = 0; i < maidrObjects.length; i++) {
@@ -33,22 +27,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
       maidrElemn.addEventListener('focus', function (e) {
         ShouldWeInitMaidr(maidrObjects[i]);
       });
-      // blur done elsewhere
     }
   }
 
-  // init components like alt text on just the first chart
   CreateChartComponents(firstMaidr, true);
 });
 
-/**
- * Initializes the Maidr app for a given chart, taken from the matching ID of the focused chart
- * @param {Object} thisMaidr - The json schema for the chart to be initialized.
- */
 function InitMaidr(thisMaidr) {
-  // there's a rare bug where constants isn't defined yet, so we check for that
   if (typeof constants != 'undefined') {
-    // init vars and html
     window.singleMaidr = thisMaidr;
     constants.chartId = singleMaidr.id;
     if (Array.isArray(singleMaidr.type)) {
@@ -56,18 +42,17 @@ function InitMaidr(thisMaidr) {
     } else {
       constants.chartType = singleMaidr.type;
     }
-    DestroyChartComponents(); // destroy so that we start fresh, in case we've created on the wrong chart
+    DestroyChartComponents();
     CreateChartComponents(singleMaidr);
     InitTracker();
 
     window.menu = new Menu();
     window.chatLLM = new ChatLLM();
-    window.control = new Control(); // this inits the actual chart object and Position
+    window.control = new Control();
     window.review = new Review();
     window.display = new Display();
     window.audio = new Audio();
 
-    // blur destruction events
     let controlElements = [
       constants.chart,
       constants.brailleInput,
@@ -77,23 +62,15 @@ function InitMaidr(thisMaidr) {
       constants.events.push([controlElements[i], 'blur', ShouldWeDestroyMaidr]);
     }
 
-    // kill autoplay event
     constants.events.push([document, 'keydown', KillAutoplayEvent]);
 
-    // actually do eventlisteners for all events
     this.SetEvents();
 
-    // Set img role for chart
     constants.chart.setAttribute('role', 'img');
 
-    // once everything is set up, announce the chart name (or title as a backup) to the user
-    // setTimeout(function () {
     if ('name' in singleMaidr) {
-      // Add the aria-label and title attributes to the chart
       constants.chart.setAttribute('aria-label', announceText);
       constants.chart.setAttribute('title', announceText);
-
-      // display.announceText(singleMaidr.name);
     } else if (
       'title' in singleMaidr ||
       ('labels' in singleMaidr && 'title' in singleMaidr.labels)
@@ -101,77 +78,45 @@ function InitMaidr(thisMaidr) {
       let title =
         'title' in singleMaidr ? singleMaidr.title : singleMaidr.labels.title;
 
-      // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
       let plotTypeString = Array.isArray(singleMaidr.type)
         ? singleMaidr.type.slice(0, -1).join(', ') +
           ' and ' +
           singleMaidr.type.slice(-1)
         : singleMaidr.type;
 
-      // Prepare the instruction text for multi-layered plot
       let multiLayerInstruction =
         'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
 
-      // Check if plotTypeString has multiple types
       let isMultiLayered =
         Array.isArray(singleMaidr.type) && singleMaidr.type.length > 1;
 
-      // Construct the final announceText string
       let announceText = `${plotTypeString} plot of ${title}: Click to activate. Use Arrows to navigate data points. ${
         isMultiLayered ? multiLayerInstruction : ' '
       }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
 
-      // Add the aria-label and title attributes to the chart
       constants.chart.setAttribute('aria-label', announceText);
       constants.chart.setAttribute('title', announceText);
-
-      // Display the announcement text
-      // display.announceText(announceText);
     }
-    // }, 100);
   }
 }
 
-/**
- * Determines whether to initialize Maidr based on conditions:
-  - maidr isn't enabled (check if singleMaidr is undefined or false)
-  - the chart we're moving to isn't the same as the one we're on
-  If successful, calls InitMaidr. If not, does nothing.
-  note: if we move from one to another, destroy the current first
- * @param {Object} thisMaidr - The Maidr object to be initialized.
- */
 function ShouldWeInitMaidr(thisMaidr) {
   if (typeof singleMaidr == 'undefined') {
-    // not enabled
     InitMaidr(thisMaidr);
   } else if (!singleMaidr) {
-    // not enabled
     InitMaidr(thisMaidr);
   } else if (thisMaidr.id !== singleMaidr.id) {
-    // different chart, destroy first
     DestroyMaidr();
     InitMaidr(thisMaidr);
   }
 }
 
-/**
- * Determines whether Maidr should be destroyed based conditions: 
-   - we've tabbed away from the chart or any component
-   - we're allowed to tab within the system (ie, braille input, review mode, etc)
- * If tab movement is 0, do nothing. If tab movement is 1 or -1, move to before/after and then destroy.
- * @param {Event} e - The blur event from the Tab key that triggers this function.
- */
 function ShouldWeDestroyMaidr(e) {
-  // timeout to delay blur event.
-  // I forget why this is necessary, but it is. - smm
   setTimeout(() => {
     if (constants.tabMovement == 0) {
-      // do nothing, this is an allowed move
-      // but also reset so we can leave later
       constants.tabMovement = null;
     } else {
       if (constants.tabMovement == 1 || constants.tabMovement == -1) {
-        // move to before / after, and then destroy
         FocusBeforeOrAfter();
       }
       DestroyMaidr();
@@ -179,24 +124,14 @@ function ShouldWeDestroyMaidr(e) {
   }, 0);
 }
 
-/**
- * Creates a temporary div element and sets focus on it before or after the main container based on the tab movement direction.
- * @function
- * @name FocusBeforeOrAfter
- * @returns {void}
- */
 function FocusBeforeOrAfter() {
-  // Tab / forward
   if (constants.tabMovement == 1) {
     let focusTemp = document.createElement('div');
     focusTemp.setAttribute('tabindex', '0');
     constants.main_container.after(focusTemp);
     focusTemp.focus();
     focusTemp.remove();
-  }
-  // Shift + Tab / backward
-  else if (constants.tabMovement == -1) {
-    // create an element to focus on, add it before currentFocus, focus it, then remove it
+  } else if (constants.tabMovement == -1) {
     let focusTemp = document.createElement('div');
     focusTemp.setAttribute('tabindex', '0');
     constants.main_container.before(focusTemp);
@@ -205,13 +140,8 @@ function FocusBeforeOrAfter() {
   }
 }
 
-/**
- * Removes all events, global variables, and chart components associated with Maidr, resetting it to its uninitialized state.
- */
 function DestroyMaidr() {
-  // chart cleanup
   if (constants.chartType == 'bar' || constants.chartType == 'hist') {
-    // deselect, if possible
     if (typeof plot.DeselectAll === 'function') {
       plot.DeselectAll();
     }
@@ -220,7 +150,6 @@ function DestroyMaidr() {
     }
   }
 
-  // remove events
   for (let i = 0; i < constants.events.length; i++) {
     if (Array.isArray(constants.events[i][0])) {
       for (let j = 0; j < constants.events[i][0].length; j++) {
@@ -254,7 +183,6 @@ function DestroyMaidr() {
   constants.events = [];
   constants.postLoadEvents = [];
 
-  // remove global vars
   constants.chartId = null;
   constants.chartType = null;
   constants.tabMovement = null;
@@ -267,28 +195,18 @@ function DestroyMaidr() {
   window.audio = null;
   window.singleMaidr = null;
 }
-/**
- * Kills autoplay if the user presses the control key (Windows) or command key (Mac).
- * @param {KeyboardEvent} e - The keyboard event object.
- */
+
 function KillAutoplayEvent(e) {
-  // Kill autoplay
   if (
     constants.isMac
       ? e.key == 'Meta' || e.key == 'ContextMenu'
       : e.key == 'Control'
   ) {
-    // ctrl (either one)
     constants.KillAutoplay();
   }
 }
 
-/**
- * Adds all events and post load events to the DOM elements.
- * Assumes that all events are in constants.events and all post load events are in constants.postLoadEvents.
- */
 function SetEvents() {
-  // add all events
   for (let i = 0; i < constants.events.length; i++) {
     if (Array.isArray(constants.events[i][0])) {
       for (let j = 0; j < constants.events[i][0].length; j++) {
@@ -304,8 +222,6 @@ function SetEvents() {
       );
     }
   }
-  // add all post load events
-  // we delay adding post load events just a tick so the chart loads
   setTimeout(function () {
     for (let i = 0; i < constants.postLoadEvents.length; i++) {
       if (Array.isArray(constants.postLoadEvents[i][0])) {
@@ -325,41 +241,24 @@ function SetEvents() {
   }, 100);
 }
 
-/**
- * Initializes the html chart components needed, such as:
- * - Creates a structure with a main container and a chart container
- * - Resets the parents from just chart to main container > chart container > chart
- * - Creates a braille input
- * - Creates an info aria live region
- * - Creates announcements aria live region
- * - Creates a review mode form field
- * - Also sets the constants associated with these elements
- *
- */
 function CreateChartComponents(thisMaidr, chartOnly = false) {
-  // init html stuff. aria live regions, braille input, etc
-
-  // core chart
   let chart = document.getElementById(thisMaidr.id);
 
-  // we create a structure with a main container, and a chart container
   let main_container = document.createElement('div');
   main_container.id = constants.main_container_id;
   let chart_container = document.createElement('div');
   chart_container.id = constants.chart_container_id;
-  // update parents from just chart, to main container > chart container > chart
   chart.parentNode.replaceChild(main_container, chart);
   main_container.appendChild(chart);
   chart.parentNode.replaceChild(chart_container, chart);
   chart_container.appendChild(chart);
-  if (!chartOnly) chart.focus(); // focus used to be on chart and just got lost as we rearranged, so redo focus
+  if (!chartOnly) chart.focus();
 
   constants.chart = chart;
   constants.chart_container = chart_container;
   constants.main_container = main_container;
 
   if (!chartOnly) {
-    // braille input, pre sibling of chart container
     constants.chart_container.insertAdjacentHTML(
       'beforebegin',
       '<div class="hidden" id="' +
@@ -369,12 +268,11 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
         '" class="braille-input" type="text" size="' +
         constants.brailleDisplayLength +
         '" ' +
-        'aria-brailleroledescription="" ' + // this kills the 2 char 'edit' that screen readers add
+        'aria-brailleroledescription="" ' +
         'autocomplete="off" ' +
         '/>\n</div>\n'
     );
 
-    // info aria live, next sibling of chart container
     constants.chart_container.insertAdjacentHTML(
       'afterend',
       '<br>\n<div id="' +
@@ -382,7 +280,6 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
         '" aria-live="assertive" aria-atomic="true">\n<p id="x"></p>\n<p id="y"></p>\n</div>\n'
     );
 
-    // announcements, next sibling of info
     document
       .getElementById(constants.info_id)
       .insertAdjacentHTML(
@@ -390,7 +287,6 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
         '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
       );
 
-    // review mode form field
     document
       .getElementById(constants.info_id)
       .insertAdjacentHTML(
@@ -399,13 +295,11 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
           constants.review_id_container +
           '" class="hidden sr-only sr-only-focusable"><input id="' +
           constants.review_id +
-          '" type="text" size="50" autocomplete="off" /></div>'
+          '" type="email" size="50" autocomplete="off" aria-label="Email input field" /></div>'
       );
 
-    // some tweaks
     constants.chart_container.setAttribute('role', 'application');
 
-    // set page elements
     constants.brailleContainer = document.getElementById(
       constants.braille_container_id
     );
@@ -422,12 +316,9 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
       '#' + constants.review_id_container
     );
     constants.review = document.querySelector('#' + constants.review_id);
-    //window.description = new Description(); // developement on hold
   }
 
-  // set screen reader text and attributes
   let altText = '';
-  // set role of main chart
   document.getElementById(thisMaidr.id).setAttribute('role', 'img');
   if ('name' in thisMaidr) {
     altText = thisMaidr.name;
@@ -437,40 +328,32 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
   ) {
     let title = 'title' in thisMaidr ? thisMaidr.title : thisMaidr.labels.title;
 
-    // Determine whether type is multiple or single. If multiple, put commas and "and" in between. If single, just put the type.
     let plotTypeString = Array.isArray(thisMaidr.type)
       ? thisMaidr.type.slice(0, -1).join(', ') +
         ' and ' +
         thisMaidr.type.slice(-1)
       : thisMaidr.type;
 
-    // Prepare the instruction text for multi-layered plot
     let multiLayerInstruction =
       'This is a multi-layered plot. Use PageUp and PageDown to switch between layers.';
 
-    // Check if plotTypeString has multiple types
     let isMultiLayered =
       Array.isArray(thisMaidr.type) && thisMaidr.type.length > 1;
 
-    // Construct the final announceText string
     altText = `${plotTypeString} plot of ${title}: Click to activate. Use Arrows to navigate data points. ${
       isMultiLayered ? multiLayerInstruction : ' '
     }Toggle B for Braille, T for Text, S for Sonification, and R for Review mode. Use H for Help.`;
   }
   if (altText.length > 0) {
-    // Add the aria-label and title attributes to the chart
     document.getElementById(thisMaidr.id).setAttribute('aria-label', altText);
     document.getElementById(thisMaidr.id).setAttribute('title', altText);
   }
 }
 
 function InitTracker() {
-  // events etc for user study page
-  // run tracker stuff only on user study page
   if (constants.canTrack) {
     window.tracker = new Tracker();
     if (document.getElementById('download_data_trigger')) {
-      // we're on the intro page, so enable the download data button
       document
         .getElementById('download_data_trigger')
         .addEventListener('click', function (e) {
@@ -478,10 +361,7 @@ function InitTracker() {
         });
     }
 
-    // general events
     document.addEventListener('keydown', function (e) {
-      // reset tracking with Ctrl + F5 / command + F5, and Ctrl + Shift + R / command + Shift + R
-      // future todo: this should probably be a button with a confirmation. This is dangerous
       if (
         (e.key == 'F5' && (constants.isMac ? e.metaKey : e.ctrlKey)) ||
         (e.key == 'R' && (constants.isMac ? e.metaKey : e.ctrlKey))
@@ -491,7 +371,6 @@ function InitTracker() {
         location.reload(true);
       }
 
-      // main event tracker, built for individual charts
       if (e.key == 'F10') {
         tracker.DownloadTrackerData();
       } else {
@@ -502,14 +381,8 @@ function InitTracker() {
     });
   }
 }
-/**
- * Removes all chart components from the DOM and resets related variables to null.
- * @function
- * @name DestroyChartComponents
- * @returns {void}
- */
+
 function DestroyChartComponents() {
-  // remove html stuff
   if (constants.chart_container != null) {
     if (constants.chart != null) {
       if (constants.chart_container.parentNode != null) {
@@ -550,8 +423,6 @@ function DestroyChartComponents() {
   const scatterSvg = document.querySelector('svg#scatter');
   const lineSvg = document.querySelector('svg#line');
   const heatSvg = document.querySelector('svg#heat');
-  // Incase autoplay was running when the highlighted plot points were being handled,
-  // kill autoplay first before removing highlight_point elements
   if (scatterSvg) {
     constants.KillAutoplay();
     scatterSvg.querySelectorAll('.highlight_point').forEach((element) => {
