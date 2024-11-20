@@ -405,7 +405,7 @@ class Constants {
    * @default 0
    * @memberof AdvancedUserSettings
    */
-  canTrack = 0; // 0 / 1, can we track user data
+  canTrack = 1; // 0 / 1, can we track user data
   /**
    * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
    * @type {boolean}
