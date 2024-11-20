@@ -1235,16 +1235,20 @@ class Menu {
       document.getElementById('LLM_model_claude'),
       'change',
       function (e) {
-        // if (e.target.checked) {
         document
           .getElementById('claude_auth_key_container')
           .classList.add('hidden');
-        // } else {
-        //   document
-        //     .getElementById('claude_auth_key_container')
-        //     .classList.add('hidden');
-        // }
       },
+    ]);
+
+    constants.events.push([
+      document
+        .getElementById('email_auth_key')
+        .addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            document.getElementById('verify').click();
+          }
+        }),
     ]);
 
     // Skill level other events
