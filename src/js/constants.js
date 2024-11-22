@@ -446,6 +446,7 @@ class Constants {
     'LLMGeminiMulti',
     'LLMModels',
     'autoInitLLM',
+    'clientToken',
   ];
 
   // LLM settings
@@ -643,6 +644,17 @@ class Constants {
    * @memberof DebugSettings
    */
   manualData = true; // pull from manual data like chart2music (true), or do the old method where we pull from the chart (false)
+
+  /**
+   * Base URL for the API calls to backend services.
+   */
+  // baseURL = 'https://maidr-service.azurewebsites.net/api/';
+  baseURL = 'http://localhost:7071/api/';
+
+  // code = '?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+  code = '';
+
+  clientToken = null;
 
   /**
    * Stops the autoplay if it is currently running.
@@ -1203,14 +1215,18 @@ class Menu {
       document.getElementById('LLM_model_openai'),
       'change',
       function (e) {
-        if (e.target.checked) {
-          document
-            .getElementById('openai_auth_key_container')
-            .classList.remove('hidden');
+        if (constants.clientToken && constants.emailAuthKey) {
+          console.log('Client token and email auth key already set');
         } else {
-          document
-            .getElementById('openai_auth_key_container')
-            .classList.add('hidden');
+          if (e.target.checked) {
+            document
+              .getElementById('openai_auth_key_container')
+              .classList.remove('hidden');
+          } else {
+            document
+              .getElementById('openai_auth_key_container')
+              .classList.add('hidden');
+          }
         }
       },
     ]);
@@ -1219,14 +1235,18 @@ class Menu {
       document.getElementById('LLM_model_gemini'),
       'change',
       function (e) {
-        if (e.target.checked) {
-          document
-            .getElementById('gemini_auth_key_container')
-            .classList.remove('hidden');
+        if (constants.clientToken && constants.emailAuthKey) {
+          console.log('Client token and email auth key already set');
         } else {
-          document
-            .getElementById('gemini_auth_key_container')
-            .classList.add('hidden');
+          if (e.target.checked) {
+            document
+              .getElementById('gemini_auth_key_container')
+              .classList.remove('hidden');
+          } else {
+            document
+              .getElementById('gemini_auth_key_container')
+              .classList.add('hidden');
+          }
         }
       },
     ]);
@@ -1235,9 +1255,13 @@ class Menu {
       document.getElementById('LLM_model_claude'),
       'change',
       function (e) {
-        document
-          .getElementById('claude_auth_key_container')
-          .classList.add('hidden');
+        if (constants.clientToken && constants.emailAuthKey) {
+          console.log('Client token and email auth key already set');
+        } else {
+          document
+            .getElementById('claude_auth_key_container')
+            .classList.add('hidden');
+        }
       },
     ]);
 
@@ -1397,12 +1421,17 @@ class Menu {
       document.getElementById('aria_mode_assertive').checked = false;
     }
 
-    for (let model in constants.LLMModels) {
-      document.getElementById(`LLM_model_${model}`).checked = true;
+    if (constants.emailAuthKey && constants.clientToken) {
+      console.log('email auth key and client token found');
+      this.DisableLLMAPIKeys();
+    } else {
+      for (let model in constants.LLMModels) {
+        document.getElementById(`LLM_model_${model}`).checked = true;
 
-      document
-        .getElementById(`${model}_auth_key_container`)
-        .classList.remove('hidden');
+        document
+          .getElementById(`${model}_auth_key_container`)
+          .classList.remove('hidden');
+      }
     }
     document
       .getElementById(`claude_auth_key_container`)
@@ -1481,38 +1510,75 @@ class Menu {
     }
   }
 
+  DisableLLMAPIKeys() {
+    document.getElementById('email_auth_key').disabled = true;
+
+    // hide verify button
+    document.getElementById('verify').classList.add('hidden');
+
+    // remove listener on enter
+    document
+      .getElementById('email_auth_key')
+      .removeEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          document.getElementById('verify').click();
+        }
+      });
+  }
+
+  isEmailTriggered = false;
+
   VerifyEmail() {
-    let email = document.getElementById('email_auth_key').value;
-    if (email && email.indexOf('@') !== -1) {
-      let url = `https://maidr-service.azurewebsites.net/api/send_email?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D`;
+    console.log('verify email');
+    if (!this.isEmailTriggered) {
+      this.isEmailTriggered = true;
+      let email = document.getElementById('email_auth_key').value;
+      if (email && email.indexOf('@') !== -1) {
+        let url = constants.baseURL + `send_email` + constants.code;
 
-      let requestJson = {
-        email: email,
-      };
+        let requestJson = {
+          email: email,
+        };
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authentication: constants.emailAuthKey,
-        },
-        body: JSON.stringify(requestJson),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data && data.success) {
-            alert('Link sent to email address: ' + email);
-          } else {
-            console.log(data);
-            alert(data.data);
-          }
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authentication: constants.emailAuthKey,
+          },
+          body: JSON.stringify(requestJson),
         })
-        .catch((error) => {
-          console.log(error);
-          alert(error.data);
-        });
-    } else {
-      alert('Please enter a valid email address.');
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.message && data.client_token) {
+              alert(data.message);
+              constants.clientToken = data.client_token;
+
+              this.DisableLLMAPIKeys();
+
+              for (let model in constants.LLMModels) {
+                document
+                  .getElementById(`${model}_auth_key_container`)
+                  .classList.add('hidden');
+              }
+
+              this.SaveDataToLocalStorage();
+              this.isEmailTriggered = false;
+            } else {
+              console.log(data);
+              alert(data.data);
+              this.isEmailTriggered = false;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error.data);
+            this.isEmailTriggered = false;
+          });
+      } else {
+        alert('Please enter a valid email address.');
+        this.isEmailTriggered = false;
+      }
     }
   }
 
@@ -1815,6 +1881,16 @@ class ChatLLM {
       'click',
       function (e) {
         document.getElementById('email_auth_key').value = '';
+        document.getElementById('email_auth_key').disabled = false;
+        constants.clientToken = '';
+        document.getElementById('verify').classList.remove('hidden');
+        document
+          .getElementById('email_auth_key')
+          .addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+              document.getElementById('verify').click();
+            }
+          });
       },
     ]);
     constants.events.push([
@@ -2294,8 +2370,7 @@ class ChatLLM {
 
   ClaudePromptAPI(text, imgBase64 = null) {
     console.log('Claude prompt API');
-    let url =
-      'https://maidr-service.azurewebsites.net/api/claude?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+    let url = constants.baseURL + 'claude' + constants.code;
 
     // Create the prompt
     let prompt = constants.LLMSystemMessage;
@@ -2317,7 +2392,7 @@ class ChatLLM {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authentication: constants.emailAuthKey,
+        Authentication: constants.emailAuthKey + ' ' + constants.clientToken,
       },
       body: JSON.stringify(requestJson),
     })
@@ -2372,17 +2447,15 @@ class ChatLLM {
 
   OpenAIPromptAPI(text, img = null) {
     // request init
-    let url =
-      'https://maidr-service.azurewebsites.net/api/openai?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+    let url = constants.baseURL + 'openai' + constants.code;
     let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
-    console.log('LLM request: ', requestJson);
 
     fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authentication: constants.emailAuthKey,
+        Authentication: constants.emailAuthKey + ' ' + constants.clientToken,
       },
       body: JSON.stringify(requestJson),
     })
@@ -2509,8 +2582,7 @@ class ChatLLM {
   }
 
   async GeminiPromptAPI(text, imgBase64 = null) {
-    let url =
-      'https://maidr-service.azurewebsites.net/api/gemini?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+    let url = constants.baseURL + 'gemini' + constants.code;
 
     // Create the prompt
     let prompt = constants.LLMSystemMessage;
@@ -2532,7 +2604,7 @@ class ChatLLM {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authentication: constants.emailAuthKey,
+        Authentication: constants.emailAuthKey + ' ' + constants.clientToken,
       },
       body: JSON.stringify(requestJson),
     });
@@ -3100,8 +3172,7 @@ class Helper {
  */
 class Tracker {
   // URL
-  logUrl =
-    'https://maidr-service.azurewebsites.net/api/log?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D'; // TODO Replace
+  logUrl = constants.baseURL + 'log' + constants.code; // TODO Replace
   isLocal = false;
 
   constructor() {
