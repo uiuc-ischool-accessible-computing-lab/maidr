@@ -3539,8 +3539,8 @@ class Tracker {
       // check if value is a dict
       if (typeof value === 'object' && value !== null) {
         value['log_type'] = key;
-        this.SaveTrackerData(value);
       }
+      this.SaveTrackerData(value);
     }
   }
 
