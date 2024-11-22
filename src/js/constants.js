@@ -1043,7 +1043,7 @@ class Menu {
                               </fieldset>
                             </p>
                             <p id="email_auth_key_container" class="multi_container">
-                              <input type="email" size="50" id="email_auth_key" aria-label="Enter your email address">
+                              <input type="text" size="50" id="email_auth_key" aria-label="Enter your email address">
                               <button aria-label="Delete Email Address" title="Delete Email Address" id="delete_email_key" class="invis_button">&times;</button>
                               <label for="email_authentication">Email Authentication</label>
                               <button type="button" id="verify">Verify</button>
@@ -1124,6 +1124,10 @@ class Menu {
       document.getElementById('verify'),
       'click',
       function (e) {
+        document.getElementById('email_auth_key').value = document
+          .getElementById('email_auth_key')
+          .value.trim();
+
         menu.VerifyEmail();
       },
     ]);
@@ -1268,6 +1272,13 @@ class Menu {
         .getElementById('email_auth_key')
         .addEventListener('keydown', function (event) {
           if (event.key === 'Enter') {
+            document.getElementById('email_auth_key').value = document
+              .getElementById('email_auth_key')
+              .value.trim();
+
+            document.getElementById('email_auth_key').selectionStart =
+              document.getElementById('email_auth_key').value.length;
+
             document.getElementById('verify').click();
           }
         }),
