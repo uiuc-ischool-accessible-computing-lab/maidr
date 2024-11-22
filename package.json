@@ -1,6 +1,6 @@
 {
   "name": "maidr",
-  "version": "2.22.1",
+  "version": "2.23.0",
   "description": "maidr: Multimodal Access and Interactive Data Representation. maidr is a system for non-visual access and control of statistical charts. It aims to provide an inclusive experience for users with visual impairments by offering multiple modes of interaction: braille, text, and sonification. This comprehensive  approach enhances the accessibility of data visualization and encourages a multi-model exploration on visualization. Check out the current build: [MAIDR Demo](https://xability.github.io/maidr/user_study_pilot/intro.html).",
   "main": "dist/maidr.js",
   "scripts": {

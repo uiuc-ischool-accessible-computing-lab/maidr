@@ -2406,7 +2406,7 @@ class ChatLLM {
     if (!this.requestJson) {
       this.requestJson = {};
       //this.requestJson.model = 'gpt-4-vision-preview';
-      this.requestJson.model = 'gpt-4o-2024-08-06';
+      this.requestJson.model = 'gpt-4o-2024-11-20';
       this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
 
       // sys message

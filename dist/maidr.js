@@ -12,77 +12,77 @@ class Constants {
    * @memberof HtmlIds
    * @default 'chart-container'
    */
-  chart_container_id = 'chart-container';
+  chart_container_id = "chart-container";
   /**
    * HTML id of the main container div.
    * @type {string}
    * @memberof HtmlIds
    * @default 'maidr-container'
    */
-  main_container_id = 'maidr-container';
+  main_container_id = "maidr-container";
   /**
    * HTML id of the div containing the braille display input
    * @type {string}
    * @memberof HtmlIds
    * @default 'braille-div'
    */
-  braille_container_id = 'braille-div';
+  braille_container_id = "braille-div";
   /**
    * HTML id of the actual braille input element.
    * @type {string}
    * @memberof HtmlIds
    * @default 'braille-input'
    */
-  braille_input_id = 'braille-input';
+  braille_input_id = "braille-input";
   /**
    * HTML id of the div containing the info box.
    * @type {string}
    * @memberof HtmlIds
    * @default 'info'
    */
-  info_id = 'info';
+  info_id = "info";
   /**
    * HTML id of the div containing announcements that hook directly into the screen reader via aria-live.
    * @type {string}
    * @memberof HtmlIds
    * @default 'announcements'
    */
-  announcement_container_id = 'announcements';
+  announcement_container_id = "announcements";
   /**
    * HTML id of the div containing the end chime. To be implemented in the future.
    * @type {string}
    * @memberof HtmlIds
    * @default 'end_chime'
    */
-  end_chime_id = 'end_chime';
+  end_chime_id = "end_chime";
   /**
    * HTML id of the main container div.
    * @type {string}
    * @memberof HtmlIds
    * @default 'container'
    */
-  container_id = 'container';
+  container_id = "container";
   /**
    * The main project id, used throughout the application.
    * @type {string}
    * @memberof HtmlIds
    * @default 'maidr'
    */
-  project_id = 'maidr';
+  project_id = "maidr";
   /**
    * HTML id of the div containing the review text.
    * @type {string}
    * @memberof HtmlIds
    * @default 'review_container'
    */
-  review_id_container = 'review_container';
+  review_id_container = "review_container";
   /**
    * HTML id of the review input element.
    * @type {string}
    * @memberof HtmlIds
    * @default 'review'
    */
-  review_id = 'review';
+  review_id = "review";
   /**
    * Storage element, used to store the last focused element before moving to the review input so we can switch back to it easily.
    * @type {HTMLElement}
@@ -99,7 +99,7 @@ class Constants {
    * @type {string}
    * @memberof HtmlIds
    */
-  chartId = '';
+  chartId = "";
   /**
    * @typedef {Object} EventListenerSetupObject
    * @property {HTMLElement} element - The element to attach the event listener to.
@@ -128,7 +128,7 @@ class Constants {
    * @memberof BTSModes
    * @default 'verbose'
    */
-  textMode = 'verbose';
+  textMode = "verbose";
 
   /**
    * The current braille mode. Can be 'off' or 'on'.
@@ -136,7 +136,7 @@ class Constants {
    * @memberof BTSModes
    * @default 'off'
    */
-  brailleMode = 'off';
+  brailleMode = "off";
 
   /**
    * We lock the selection so we don't pick up programatic selection changes
@@ -151,14 +151,14 @@ class Constants {
    * @memberof BTSModes
    * @default 'on'
    */
-  sonifMode = 'on';
+  sonifMode = "on";
   /**
    * The current review mode. Can be 'on' or 'off'.
    * @type {("on"|"off")}
    * @memberof BTSModes
    * @default 'off'
    */
-  reviewMode = 'off';
+  reviewMode = "off";
 
   // basic chart properties
   /**
@@ -199,14 +199,14 @@ class Constants {
    * @memberof HtmlIds
    * @default ''
    */
-  plotId = ''; // update with id in chart specific js
+  plotId = ""; // update with id in chart specific js
   /**
    * The chart type, sort of a short name of the chart such as 'box', 'bar', 'line', etc.
    * @type {string}
    * @default ''
    * @memberof BasicChartProperties
    */
-  chartType = '';
+  chartType = "";
   /**
    * The navigation orientation of the chart. 0 = row navigation (up/down), 1 = col navigation (left/right).
    * @type {number}
@@ -220,7 +220,7 @@ class Constants {
    * @default 'horz'
    * @memberof BasicChartProperties
    */
-  plotOrientation = 'horz';
+  plotOrientation = "horz";
 
   /**
    * @namespace AudioProperties
@@ -330,7 +330,7 @@ class Constants {
    * @default '#03C809' (green)
    * @memberof UserSettings
    */
-  colorSelected = '#03C809';
+  colorSelected = "#03C809";
   /**
    * The length of the braille display in characters. Braille displays have a variety of sizes; 40 is pretty common, 32 is quite reliable. Set this to your actual display length so that the system can scale and display braille properly for you (where possible).
    * @type {number}
@@ -398,14 +398,14 @@ class Constants {
    * @default 50
    * @memberof AdvancedUserSettings
    */
-  colorUnselected = '#595959'; // deprecated, todo: find all instances replace with storing old color method
+  colorUnselected = "#595959"; // deprecated, todo: find all instances replace with storing old color method
   /**
    * Whether or not we're logging user data. This is off by default, but is used for research purposes.
    * @type {boolean}
    * @default 0
    * @memberof AdvancedUserSettings
    */
-  canTrack = 0; // 0 / 1, can we track user data
+  canTrack = 1; // 0 / 1, can we track user data
   /**
    * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
    * @type {boolean}
@@ -419,33 +419,33 @@ class Constants {
    * @default 'assertive'
    * @memberof AdvancedUserSettings
    */
-  ariaMode = 'assertive';
+  ariaMode = "assertive";
 
   /**
    * Full list of user settings, used internally to save and load settings.
    * @type {string[]}
    */
   userSettingsKeys = [
-    'vol',
-    'autoPlayRate',
-    'brailleDisplayLength',
-    'colorSelected',
-    'MIN_FREQUENCY',
-    'MAX_FREQUENCY',
-    'AUTOPLAY_DURATION',
-    'ariaMode',
-    'openAIAuthKey',
-    'geminiAuthKey',
-    'claudeAuthKey',
-    'emailAuthKey',
-    'skillLevel',
-    'skillLevelOther',
-    'LLMModel',
-    'LLMPreferences',
-    'LLMOpenAiMulti',
-    'LLMGeminiMulti',
-    'LLMModels',
-    'autoInitLLM',
+    "vol",
+    "autoPlayRate",
+    "brailleDisplayLength",
+    "colorSelected",
+    "MIN_FREQUENCY",
+    "MAX_FREQUENCY",
+    "AUTOPLAY_DURATION",
+    "ariaMode",
+    "openAIAuthKey",
+    "geminiAuthKey",
+    "claudeAuthKey",
+    "emailAuthKey",
+    "skillLevel",
+    "skillLevelOther",
+    "LLMModel",
+    "LLMPreferences",
+    "LLMOpenAiMulti",
+    "LLMGeminiMulti",
+    "LLMModels",
+    "autoInitLLM",
   ];
 
   // LLM settings
@@ -486,14 +486,14 @@ class Constants {
    * @default 'high'
    * @memberof LLMSettings
    */
-  LLMDetail = 'high'; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
+  LLMDetail = "high"; // low (default for testing, like 100 tokens) / high (default for real, like 1000 tokens)
   /**
    * Current LLM model in use. Can be 'openai' (default) or 'gemini' or 'multi'. More to be added.
    * @type {("openai"|"gemini"|"multi")}
    * @default 'openai'
    * @memberof LLMSettings
    */
-  LLMModel = 'openai';
+  LLMModel = "openai";
   /**
    * Current LLM model in use. Can be 'openai' (default) or 'gemini' or 'claude'. More to be added.
    * @type {("openai"|"gemini"|"claude")}
@@ -508,21 +508,21 @@ class Constants {
    * @memberof LLMSettings
    */
   LLMSystemMessage =
-    'You are a helpful assistant describing the chart to a blind person. ';
+    "You are a helpful assistant describing the chart to a blind person. ";
   /**
    * The level of skill the user has with statistical charts. Can be 'basic', 'intermediate', 'expert', or 'other'. This is passed to the LLM on the initial message to help it speak correctly to the user. If 'other' is selected, the user can provide a custom skill level.
    * @type {("basic"|"intermediate"|"expert"|"other")}
    * @default 'basic'
    * @memberof LLMSettings
    */
-  skillLevel = 'basic'; // basic / intermediate / expert
+  skillLevel = "basic"; // basic / intermediate / expert
   /**
    * Custom skill level, used if the user selects 'other' as their skill level.
    * @type {string}
    * @default ''
    * @memberof LLMSettings
    */
-  skillLevelOther = ''; // custom skill level
+  skillLevelOther = ""; // custom skill level
   /**
    * The LLM can send the first default message containing the chart image on initialization, so when the user opens the chat window the LLM already has an initial response and is ready for a conversation.
    * @type {boolean}
@@ -536,7 +536,7 @@ class Constants {
    * @default ''
    * @memberof LLMSettings
    */
-  verboseText = '';
+  verboseText = "";
   /**
    * An internal variable used to turn the waiting beep on and off.
    * @type {number}
@@ -584,31 +584,31 @@ class Constants {
    * @type {boolean}
    * @memberof PlatformControls
    */
-  isMac = navigator.userAgent.toLowerCase().includes('mac'); // true if macOS
+  isMac = navigator.userAgent.toLowerCase().includes("mac"); // true if macOS
   /**
    * The control key for the user's platform. Can be 'Cmd' or 'Ctrl'. Used in keyboard shortcut display in help.
    * @type {"Cmd"|"Ctrl"}
    * @memberof PlatformControls
    */
-  control = this.isMac ? 'Cmd' : 'Ctrl';
+  control = this.isMac ? "Cmd" : "Ctrl";
   /**
    * The alt key for the user's platform. Can be 'option' or 'Alt'. Used in keyboard shortcut display in help.
    * @type {"option"|"Alt"}
    * @memberof PlatformControls
    */
-  alt = this.isMac ? 'option' : 'Alt';
+  alt = this.isMac ? "option" : "Alt";
   /**
    * The home key for the user's platform. Can be 'fn + Left arrow' or 'Home'. Used in keyboard shortcut display in help.
    * @type {"fn + Left arrow"|"Home"}
    * @memberof PlatformControls
    */
-  home = this.isMac ? 'fn + Left arrow' : 'Home';
+  home = this.isMac ? "fn + Left arrow" : "Home";
   /**
    * The end key for the user's platform. Can be 'fn + Right arrow' or 'End'. Used in keyboard shortcut display in help.
    * @type {"fn + Right arrow"|"End"}
    * @memberof PlatformControls
    */
-  end = this.isMac ? 'fn + Right arrow' : 'End';
+  end = this.isMac ? "fn + Right arrow" : "End";
   /**
    * The interval we wait for an L + X prefix event
    */
@@ -704,13 +704,13 @@ class Constants {
    */
   ConvertHexToRGBString(hexColorString) {
     return (
-      'rgb(' +
+      "rgb(" +
       parseInt(hexColorString.slice(1, 3), 16) +
-      ',' +
+      "," +
       parseInt(hexColorString.slice(3, 5), 16) +
-      ',' +
+      "," +
       parseInt(hexColorString.slice(5, 7), 16) +
-      ')'
+      ")"
     );
   }
 
@@ -720,12 +720,12 @@ class Constants {
    * @returns {string} - hexadecimal color (e.g., "#595959").
    */
   ConvertRGBStringToHex(rgbColorString) {
-    let rgb = rgbColorString.replace(/[^\d,]/g, '').split(',');
+    let rgb = rgbColorString.replace(/[^\d,]/g, "").split(",");
     return (
-      '#' +
-      rgb[0].toString(16).padStart(2, '0') +
-      rgb[1].toString(16).padStart(2, '0') +
-      rgb[2].toString(16).padStart(2, '0')
+      "#" +
+      rgb[0].toString(16).padStart(2, "0") +
+      rgb[1].toString(16).padStart(2, "0") +
+      rgb[2].toString(16).padStart(2, "0")
     );
   }
 
@@ -737,11 +737,11 @@ class Constants {
    */
   ColorInvert(color) {
     // invert an rgb color
-    let rgb = color.replace(/[^\d,]/g, '').split(',');
+    let rgb = color.replace(/[^\d,]/g, "").split(",");
     let r = 255 - rgb[0];
     let g = 255 - rgb[1];
     let b = 255 - rgb[2];
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
+    return "rgb(" + r + "," + g + "," + b + ")";
   }
 
   /**
@@ -750,11 +750,11 @@ class Constants {
    * @returns {string} The better color
    */
   GetBetterColor(oldColor) {
-    if (oldColor.indexOf('#') !== -1) {
+    if (oldColor.indexOf("#") !== -1) {
       oldColor = this.ConvertHexToRGBString(oldColor);
     }
     let newColor = this.ColorInvert(oldColor);
-    let rgb = newColor.replace(/[^\d,]/g, '').split(',');
+    let rgb = newColor.replace(/[^\d,]/g, "").split(",");
     if (
       rgb[1] < rgb[0] + 10 &&
       rgb[1] > rgb[0] - 10 &&
@@ -776,7 +776,7 @@ class Constants {
    */
   GetStyleArrayFromString(styleString) {
     // Get an array of CSS style attributes and values from a style string
-    return styleString.replaceAll(' ', '').split(/[:;]/);
+    return styleString.replaceAll(" ", "").split(/[:;]/);
   }
 
   /**
@@ -786,16 +786,16 @@ class Constants {
    */
   GetStyleStringFromArray(styleArray) {
     // Get CSS style string from an array of style attributes and values
-    let styleString = '';
+    let styleString = "";
     for (let i = 0; i < styleArray.length; i++) {
       if (i % 2 === 0) {
         if (i !== styleArray.length - 1) {
-          styleString += styleArray[i] + ': ';
+          styleString += styleArray[i] + ": ";
         } else {
           styleString += styleArray[i];
         }
       } else {
-        styleString += styleArray[i] + '; ';
+        styleString += styleArray[i] + "; ";
       }
     }
     return styleString;
@@ -808,36 +808,36 @@ class Constants {
 class Resources {
   constructor() {}
 
-  language = 'en'; // Current language, 2 char lang code
-  knowledgeLevel = 'basic'; // basic, intermediate, expert
+  language = "en"; // Current language, 2 char lang code
+  knowledgeLevel = "basic"; // basic, intermediate, expert
 
   // language strings, per 2 char language code
   strings = {
     en: {
       basic: {
-        upper_outlier: 'Upper Outlier',
-        lower_outlier: 'Lower Outlier',
-        min: 'Minimum',
-        max: 'Maximum',
-        25: '25%',
-        50: '50%',
-        75: '75%',
-        q1: '25%',
-        q2: '50%',
-        q3: '75%',
-        son_on: 'Sonification on',
-        son_off: 'Sonification off',
-        son_des: 'Sonification descrete',
-        son_comp: 'Sonification compare',
-        son_ch: 'Sonification chord',
-        son_sep: 'Sonification separate',
-        son_same: 'Sonification combined',
-        empty: 'Empty',
-        openai: 'OpenAI Vision',
-        gemini: 'Gemini Pro Vision',
-        claude: 'Claude',
-        multi: 'Multiple AI',
-        processing: 'Processing Chart...',
+        upper_outlier: "Upper Outlier",
+        lower_outlier: "Lower Outlier",
+        min: "Minimum",
+        max: "Maximum",
+        25: "25%",
+        50: "50%",
+        75: "75%",
+        q1: "25%",
+        q2: "50%",
+        q3: "75%",
+        son_on: "Sonification on",
+        son_off: "Sonification off",
+        son_des: "Sonification descrete",
+        son_comp: "Sonification compare",
+        son_ch: "Sonification chord",
+        son_sep: "Sonification separate",
+        son_same: "Sonification combined",
+        empty: "Empty",
+        openai: "OpenAI Vision",
+        gemini: "Gemini Pro Vision",
+        claude: "Claude",
+        multi: "Multiple AI",
+        processing: "Processing Chart...",
       },
     },
   };
@@ -1007,12 +1007,12 @@ class Menu {
                             <div><fieldset>
                               <legend>Aria Mode</legend>
                               <p><input type="radio" id="aria_mode_assertive" name="aria_mode" value="assertive" ${
-                                constants.ariaMode == 'assertive'
-                                  ? 'checked'
-                                  : ''
+                                constants.ariaMode == "assertive"
+                                  ? "checked"
+                                  : ""
                               }><label for="aria_mode_assertive">Assertive</label></p>
                               <p><input type="radio" id="aria_mode_polite" name="aria_mode" value="polite" ${
-                                constants.ariaMode == 'polite' ? 'checked' : ''
+                                constants.ariaMode == "polite" ? "checked" : ""
                               }><label for="aria_mode_polite">Polite</label></p>
                               </fieldset></div>
                             <p class="hidden">
@@ -1051,7 +1051,7 @@ class Menu {
                               <input type="password" size="50" id="claude_auth_key"><button aria-label="Delete Claude key" title="Delete Claude key" id="delete_claude_key" class="invis_button">&times;</button><label for="claude_auth_key">Claude Authentication Key</label>
                             </p>
                             <p><input type="checkbox" ${
-                              constants.autoInitLLM ? 'checked' : ''
+                              constants.autoInitLLM ? "checked" : ""
                             } id="init_llm_on_load" name="init_llm_on_load"><label for="init_llm_on_load">Start LLM right away</label></p>
                             <p>
                                 <select id="skill_level">
@@ -1088,40 +1088,40 @@ class Menu {
   CreateMenu() {
     // menu element creation
     document
-      .querySelector('body')
-      .insertAdjacentHTML('beforeend', this.menuHtml);
+      .querySelector("body")
+      .insertAdjacentHTML("beforeend", this.menuHtml);
 
     // menu close events
-    let allClose = document.querySelectorAll('#close_menu, #menu .close');
+    let allClose = document.querySelectorAll("#close_menu, #menu .close");
     for (let i = 0; i < allClose.length; i++) {
       constants.events.push([
         allClose[i],
-        'click',
+        "click",
         function (e) {
           menu.Toggle(false);
         },
       ]);
     }
     constants.events.push([
-      document.getElementById('save_and_close_menu'),
-      'click',
+      document.getElementById("save_and_close_menu"),
+      "click",
       function (e) {
         menu.SaveData();
         menu.Toggle(false);
       },
     ]);
     constants.events.push([
-      document.getElementById('verify'),
-      'click',
+      document.getElementById("verify"),
+      "click",
       function (e) {
         menu.VerifyEmail();
       },
     ]);
     constants.events.push([
-      document.getElementById('menu'),
-      'keyup',
+      document.getElementById("menu"),
+      "keyup",
       function (e) {
-        if (e.key == 'Esc') {
+        if (e.key == "Esc") {
           // esc
           menu.Toggle(false);
         }
@@ -1131,15 +1131,15 @@ class Menu {
     // Menu open events
     constants.events.push([
       document,
-      'keyup',
+      "keyup",
       function (e) {
         // don't fire on input elements
         if (
-          e.target.tagName.toLowerCase() == 'input' ||
-          e.target.tagName.toLowerCase() == 'textarea'
+          e.target.tagName.toLowerCase() == "input" ||
+          e.target.tagName.toLowerCase() == "textarea"
         ) {
           return;
-        } else if (e.key == 'h') {
+        } else if (e.key == "h") {
           menu.Toggle(true);
         }
       },
@@ -1147,98 +1147,98 @@ class Menu {
 
     // toggle auth key fields
     constants.events.push([
-      document.getElementById('LLM_model'),
-      'change',
+      document.getElementById("LLM_model"),
+      "change",
       function (e) {
-        if (e.target.value == 'openai') {
+        if (e.target.value == "openai") {
           document
-            .getElementById('openai_auth_key_container')
-            .classList.remove('hidden');
+            .getElementById("openai_auth_key_container")
+            .classList.remove("hidden");
           document
-            .getElementById('gemini_auth_key_container')
-            .classList.add('hidden');
+            .getElementById("gemini_auth_key_container")
+            .classList.add("hidden");
           document
-            .getElementById('openai_multi_container')
-            .classList.add('hidden');
+            .getElementById("openai_multi_container")
+            .classList.add("hidden");
           document
-            .getElementById('gemini_multi_container')
-            .classList.add('hidden');
-          document.getElementById('openai_multi').checked = true;
-          document.getElementById('gemini_multi').checked = false;
-        } else if (e.target.value == 'gemini') {
+            .getElementById("gemini_multi_container")
+            .classList.add("hidden");
+          document.getElementById("openai_multi").checked = true;
+          document.getElementById("gemini_multi").checked = false;
+        } else if (e.target.value == "gemini") {
           document
-            .getElementById('openai_auth_key_container')
-            .classList.add('hidden');
+            .getElementById("openai_auth_key_container")
+            .classList.add("hidden");
           document
-            .getElementById('gemini_auth_key_container')
-            .classList.remove('hidden');
+            .getElementById("gemini_auth_key_container")
+            .classList.remove("hidden");
           document
-            .getElementById('openai_multi_container')
-            .classList.add('hidden');
+            .getElementById("openai_multi_container")
+            .classList.add("hidden");
           document
-            .getElementById('gemini_multi_container')
-            .classList.add('hidden');
-          document.getElementById('openai_multi').checked = false;
-          document.getElementById('gemini_multi').checked = true;
-        } else if (e.target.value == 'multi') {
+            .getElementById("gemini_multi_container")
+            .classList.add("hidden");
+          document.getElementById("openai_multi").checked = false;
+          document.getElementById("gemini_multi").checked = true;
+        } else if (e.target.value == "multi") {
           document
-            .getElementById('openai_auth_key_container')
-            .classList.remove('hidden');
+            .getElementById("openai_auth_key_container")
+            .classList.remove("hidden");
           document
-            .getElementById('gemini_auth_key_container')
-            .classList.remove('hidden');
+            .getElementById("gemini_auth_key_container")
+            .classList.remove("hidden");
           document
-            .getElementById('openai_multi_container')
-            .classList.remove('hidden');
+            .getElementById("openai_multi_container")
+            .classList.remove("hidden");
           document
-            .getElementById('gemini_multi_container')
-            .classList.remove('hidden');
-          document.getElementById('openai_multi').checked = true;
-          document.getElementById('gemini_multi').checked = true;
+            .getElementById("gemini_multi_container")
+            .classList.remove("hidden");
+          document.getElementById("openai_multi").checked = true;
+          document.getElementById("gemini_multi").checked = true;
         }
       },
     ]);
 
     constants.events.push([
-      document.getElementById('LLM_model_openai'),
-      'change',
-      function (e) {
-        if (e.target.checked) {
-          document
-            .getElementById('openai_auth_key_container')
-            .classList.remove('hidden');
-        } else {
-          document
-            .getElementById('openai_auth_key_container')
-            .classList.add('hidden');
-        }
-      },
-    ]);
-
-    constants.events.push([
-      document.getElementById('LLM_model_gemini'),
-      'change',
+      document.getElementById("LLM_model_openai"),
+      "change",
       function (e) {
         if (e.target.checked) {
           document
-            .getElementById('gemini_auth_key_container')
-            .classList.remove('hidden');
+            .getElementById("openai_auth_key_container")
+            .classList.remove("hidden");
         } else {
           document
-            .getElementById('gemini_auth_key_container')
-            .classList.add('hidden');
+            .getElementById("openai_auth_key_container")
+            .classList.add("hidden");
         }
       },
     ]);
 
     constants.events.push([
-      document.getElementById('LLM_model_claude'),
-      'change',
+      document.getElementById("LLM_model_gemini"),
+      "change",
+      function (e) {
+        if (e.target.checked) {
+          document
+            .getElementById("gemini_auth_key_container")
+            .classList.remove("hidden");
+        } else {
+          document
+            .getElementById("gemini_auth_key_container")
+            .classList.add("hidden");
+        }
+      },
+    ]);
+
+    constants.events.push([
+      document.getElementById("LLM_model_claude"),
+      "change",
       function (e) {
         // if (e.target.checked) {
         document
-          .getElementById('claude_auth_key_container')
-          .classList.add('hidden');
+          .getElementById("claude_auth_key_container")
+          .classList.add("hidden");
         // } else {
         //   document
         //     .getElementById('claude_auth_key_container')
@@ -1249,17 +1249,17 @@ class Menu {
 
     // Skill level other events
     constants.events.push([
-      document.getElementById('skill_level'),
-      'change',
+      document.getElementById("skill_level"),
+      "change",
       function (e) {
-        if (e.target.value == 'other') {
+        if (e.target.value == "other") {
           document
-            .getElementById('skill_level_other_container')
-            .classList.remove('hidden');
+            .getElementById("skill_level_other_container")
+            .classList.remove("hidden");
         } else {
           document
-            .getElementById('skill_level_other_container')
-            .classList.add('hidden');
+            .getElementById("skill_level_other_container")
+            .classList.add("hidden");
         }
       },
     ]);
@@ -1267,16 +1267,16 @@ class Menu {
     // trigger notification that LLM will be reset
     // this is done on change of LLM model, multi settings, or skill level
     let LLMResetIds = [
-      'LLM_model',
-      'openai_multi',
-      'gemini_multi',
-      'skill_level',
-      'LLM_preferences',
+      "LLM_model",
+      "openai_multi",
+      "gemini_multi",
+      "skill_level",
+      "LLM_preferences",
     ];
     for (let i = 0; i < LLMResetIds.length; i++) {
       constants.events.push([
         document.getElementById(LLMResetIds[i]),
-        'change',
+        "change",
         function (e) {
           menu.NotifyOfLLMReset();
         },
@@ -1286,13 +1286,13 @@ class Menu {
     // Limit selections to 2 AI models
     const llmCheckboxes = document.querySelectorAll('input[name="LLM_model"]');
     llmCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
+      checkbox.addEventListener("change", () => {
         const checked = document.querySelectorAll(
           'input[name="LLM_model"]:checked'
         );
         if (checked.length > 2) {
           checkbox.checked = false;
-          alert('You can select up to 2 AI models.');
+          alert("You can select up to 2 AI models.");
         }
       });
     });
@@ -1304,11 +1304,11 @@ class Menu {
    */
   Destroy() {
     // menu element destruction
-    let menu = document.getElementById('menu');
+    let menu = document.getElementById("menu");
     if (menu) {
       menu.remove();
     }
-    let backdrop = document.getElementById('menu_modal_backdrop');
+    let backdrop = document.getElementById("menu_modal_backdrop");
     if (backdrop) {
       backdrop.remove();
     }
@@ -1320,16 +1320,16 @@ class Menu {
    * @return {void}
    */
   Toggle(onoff = false) {
-    if (typeof onoff == 'undefined') {
-      if (document.getElementById('menu').classList.contains('hidden')) {
+    if (typeof onoff == "undefined") {
+      if (document.getElementById("menu").classList.contains("hidden")) {
         onoff = true;
       } else {
         onoff = false;
       }
     }
     // don't open if we have another modal open already
-    if (onoff && document.getElementById('chatLLM')) {
-      if (!document.getElementById('chatLLM').classList.contains('hidden')) {
+    if (onoff && document.getElementById("chatLLM")) {
+      if (!document.getElementById("chatLLM").classList.contains("hidden")) {
         return;
       }
     }
@@ -1338,13 +1338,13 @@ class Menu {
       this.whereWasMyFocus = document.activeElement;
       this.PopulateData();
       constants.tabMovement = 0;
-      document.getElementById('menu').classList.remove('hidden');
-      document.getElementById('menu_modal_backdrop').classList.remove('hidden');
-      document.querySelector('#menu .close').focus();
+      document.getElementById("menu").classList.remove("hidden");
+      document.getElementById("menu_modal_backdrop").classList.remove("hidden");
+      document.querySelector("#menu .close").focus();
     } else {
       // close
-      document.getElementById('menu').classList.add('hidden');
-      document.getElementById('menu_modal_backdrop').classList.add('hidden');
+      document.getElementById("menu").classList.add("hidden");
+      document.getElementById("menu_modal_backdrop").classList.add("hidden");
       this.whereWasMyFocus.focus();
       this.whereWasMyFocus = null;
     }
@@ -1355,42 +1355,42 @@ class Menu {
    * @return {void}
    */
   PopulateData() {
-    document.getElementById('vol').value = constants.vol;
-    document.getElementById('braille_display_length').value =
+    document.getElementById("vol").value = constants.vol;
+    document.getElementById("braille_display_length").value =
       constants.brailleDisplayLength;
-    document.getElementById('color_selected').value = constants.colorSelected;
-    document.getElementById('min_freq').value = constants.MIN_FREQUENCY;
-    document.getElementById('max_freq').value = constants.MAX_FREQUENCY;
-    document.getElementById('AUTOPLAY_DURATION').value =
+    document.getElementById("color_selected").value = constants.colorSelected;
+    document.getElementById("min_freq").value = constants.MIN_FREQUENCY;
+    document.getElementById("max_freq").value = constants.MAX_FREQUENCY;
+    document.getElementById("AUTOPLAY_DURATION").value =
       constants.AUTOPLAY_DURATION;
-    if (typeof constants.openAIAuthKey == 'string') {
-      document.getElementById('openai_auth_key').value =
+    if (typeof constants.openAIAuthKey == "string") {
+      document.getElementById("openai_auth_key").value =
         constants.openAIAuthKey;
     }
-    if (typeof constants.emailAuthKey == 'string') {
-      document.getElementById('email_auth_key').value = constants.emailAuthKey;
+    if (typeof constants.emailAuthKey == "string") {
+      document.getElementById("email_auth_key").value = constants.emailAuthKey;
     }
-    if (typeof constants.geminiAuthKey == 'string') {
-      document.getElementById('gemini_auth_key').value =
+    if (typeof constants.geminiAuthKey == "string") {
+      document.getElementById("gemini_auth_key").value =
         constants.geminiAuthKey;
     }
-    if (typeof constants.claudeAuthKey == 'string') {
-      document.getElementById('claude_auth_key').value =
+    if (typeof constants.claudeAuthKey == "string") {
+      document.getElementById("claude_auth_key").value =
         constants.claudeAuthKey;
     }
-    document.getElementById('skill_level').value = constants.skillLevel;
+    document.getElementById("skill_level").value = constants.skillLevel;
     if (constants.skillLevelOther) {
-      document.getElementById('skill_level_other').value =
+      document.getElementById("skill_level_other").value =
         constants.skillLevelOther;
     }
 
     // aria mode
-    if (constants.ariaMode == 'assertive') {
-      document.getElementById('aria_mode_assertive').checked = true;
-      document.getElementById('aria_mode_polite').checked = false;
+    if (constants.ariaMode == "assertive") {
+      document.getElementById("aria_mode_assertive").checked = true;
+      document.getElementById("aria_mode_polite").checked = false;
     } else {
-      document.getElementById('aria_mode_polite').checked = true;
-      document.getElementById('aria_mode_assertive').checked = false;
+      document.getElementById("aria_mode_polite").checked = true;
+      document.getElementById("aria_mode_assertive").checked = false;
     }
 
     for (let model in constants.LLMModels) {
@@ -1398,25 +1398,25 @@ class Menu {
 
       document
         .getElementById(`${model}_auth_key_container`)
-        .classList.remove('hidden');
+        .classList.remove("hidden");
     }
     document
       .getElementById(`claude_auth_key_container`)
-      .classList.add('hidden');
+      .classList.add("hidden");
 
     // skill level other
-    if (constants.skillLevel == 'other') {
+    if (constants.skillLevel == "other") {
       document
-        .getElementById('skill_level_other_container')
-        .classList.remove('hidden');
+        .getElementById("skill_level_other_container")
+        .classList.remove("hidden");
     }
     // LLM preferences
     if (constants.LLMPreferences) {
-      document.getElementById('LLM_preferences').value =
+      document.getElementById("LLM_preferences").value =
         constants.LLMPreferences;
     }
-    if (document.getElementById('LLM_reset_notification')) {
-      document.getElementById('LLM_reset_notification').remove();
+    if (document.getElementById("LLM_reset_notification")) {
+      document.getElementById("LLM_reset_notification").remove();
     }
   }
 
@@ -1427,23 +1427,23 @@ class Menu {
   SaveData() {
     let shouldReset = this.ShouldLLMReset();
 
-    constants.vol = document.getElementById('vol').value;
+    constants.vol = document.getElementById("vol").value;
     constants.brailleDisplayLength = document.getElementById(
-      'braille_display_length'
+      "braille_display_length"
     ).value;
-    constants.colorSelected = document.getElementById('color_selected').value;
-    constants.MIN_FREQUENCY = document.getElementById('min_freq').value;
-    constants.MAX_FREQUENCY = document.getElementById('max_freq').value;
+    constants.colorSelected = document.getElementById("color_selected").value;
+    constants.MIN_FREQUENCY = document.getElementById("min_freq").value;
+    constants.MAX_FREQUENCY = document.getElementById("max_freq").value;
     constants.AUTOPLAY_DURATION =
-      document.getElementById('AUTOPLAY_DURATION').value;
+      document.getElementById("AUTOPLAY_DURATION").value;
 
-    constants.openAIAuthKey = document.getElementById('openai_auth_key').value;
-    constants.geminiAuthKey = document.getElementById('gemini_auth_key').value;
-    constants.claudeAuthKey = document.getElementById('claude_auth_key').value;
-    constants.emailAuthKey = document.getElementById('email_auth_key').value;
-    constants.skillLevel = document.getElementById('skill_level').value;
+    constants.openAIAuthKey = document.getElementById("openai_auth_key").value;
+    constants.geminiAuthKey = document.getElementById("gemini_auth_key").value;
+    constants.claudeAuthKey = document.getElementById("claude_auth_key").value;
+    constants.emailAuthKey = document.getElementById("email_auth_key").value;
+    constants.skillLevel = document.getElementById("skill_level").value;
     constants.skillLevelOther =
-      document.getElementById('skill_level_other').value;
+      document.getElementById("skill_level_other").value;
     // constants.LLMModel = document.getElementById('LLM_model').value;
 
     const llmCheckboxes = document.querySelectorAll('input[name="LLM_model"]');
@@ -1455,16 +1455,16 @@ class Menu {
       }
     });
 
-    constants.LLMPreferences = document.getElementById('LLM_preferences').value;
-    constants.LLMOpenAiMulti = document.getElementById('openai_multi').checked;
-    constants.LLMGeminiMulti = document.getElementById('gemini_multi').checked;
-    constants.autoInitLLM = document.getElementById('init_llm_on_load').checked;
+    constants.LLMPreferences = document.getElementById("LLM_preferences").value;
+    constants.LLMOpenAiMulti = document.getElementById("openai_multi").checked;
+    constants.LLMGeminiMulti = document.getElementById("gemini_multi").checked;
+    constants.autoInitLLM = document.getElementById("init_llm_on_load").checked;
 
     // aria
-    if (document.getElementById('aria_mode_assertive').checked) {
-      constants.ariaMode = 'assertive';
-    } else if (document.getElementById('aria_mode_polite').checked) {
-      constants.ariaMode = 'polite';
+    if (document.getElementById("aria_mode_assertive").checked) {
+      constants.ariaMode = "assertive";
+    } else if (document.getElementById("aria_mode_polite").checked) {
+      constants.ariaMode = "polite";
     }
 
     this.SaveDataToLocalStorage();
@@ -1478,8 +1478,8 @@ class Menu {
   }
 
   VerifyEmail() {
-    let email = document.getElementById('email_auth_key').value;
-    if (email && email.indexOf('@') !== -1) {
+    let email = document.getElementById("email_auth_key").value;
+    if (email && email.indexOf("@") !== -1) {
       let url = `https://maidr-service.azurewebsites.net/api/send_email?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D`;
 
       let requestJson = {
@@ -1487,9 +1487,9 @@ class Menu {
       };
 
       fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authentication: constants.emailAuthKey,
         },
         body: JSON.stringify(requestJson),
@@ -1497,7 +1497,7 @@ class Menu {
         .then((response) => response.json())
         .then((data) => {
           if (data && data.success) {
-            alert('Link sent to email address: ' + email);
+            alert("Link sent to email address: " + email);
           } else {
             console.log(data);
             alert(data.data);
@@ -1508,7 +1508,7 @@ class Menu {
           alert(error.data);
         });
     } else {
-      alert('Please enter a valid email address.');
+      alert("Please enter a valid email address.");
     }
   }
 
@@ -1518,29 +1518,29 @@ class Menu {
    */
   UpdateHtml() {
     // set aria attributes
-    constants.infoDiv.setAttribute('aria-live', constants.ariaMode);
+    constants.infoDiv.setAttribute("aria-live", constants.ariaMode);
     document
       .getElementById(constants.announcement_container_id)
-      .setAttribute('aria-live', constants.ariaMode);
+      .setAttribute("aria-live", constants.ariaMode);
 
-    document.getElementById('init_llm_on_load').checked = constants.autoInitLLM;
-    const scatter = document.getElementsByClassName('highlight_point');
-    const heatmap = document.getElementById('highlight_rect');
-    const line = document.getElementById('highlight_point');
+    document.getElementById("init_llm_on_load").checked = constants.autoInitLLM;
+    const scatter = document.getElementsByClassName("highlight_point");
+    const heatmap = document.getElementById("highlight_rect");
+    const line = document.getElementById("highlight_point");
 
     if (scatter !== null && scatter.length > 0) {
       for (let i = 0; i < scatter.length; i++) {
-        scatter[i].setAttribute('stroke', constants.colorSelected);
-        scatter[i].setAttribute('fill', constants.colorSelected);
+        scatter[i].setAttribute("stroke", constants.colorSelected);
+        scatter[i].setAttribute("fill", constants.colorSelected);
       }
     }
 
     if (heatmap !== null) {
-      heatmap.setAttribute('stroke', constants.colorSelected);
+      heatmap.setAttribute("stroke", constants.colorSelected);
     }
 
     if (line !== null) {
-      line.setAttribute('stroke', constants.colorSelected);
+      line.setAttribute("stroke", constants.colorSelected);
     }
   }
 
@@ -1552,19 +1552,19 @@ class Menu {
     let html =
       '<p id="LLM_reset_notification">Note: Changes in LLM settings will reset any existing conversation.</p>';
 
-    if (document.getElementById('LLM_reset_notification')) {
-      document.getElementById('LLM_reset_notification').remove();
+    if (document.getElementById("LLM_reset_notification")) {
+      document.getElementById("LLM_reset_notification").remove();
     }
     document
-      .getElementById('save_and_close_menu')
-      .parentElement.insertAdjacentHTML('afterend', html);
+      .getElementById("save_and_close_menu")
+      .parentElement.insertAdjacentHTML("afterend", html);
 
     // add to aria button text
     document
-      .getElementById('save_and_close_menu')
+      .getElementById("save_and_close_menu")
       .setAttribute(
-        'aria-labelledby',
-        'save_and_close_text LLM_reset_notification'
+        "aria-labelledby",
+        "save_and_close_text LLM_reset_notification"
       );
   }
   /**
@@ -1576,20 +1576,20 @@ class Menu {
     let shouldReset = false;
     if (
       !shouldReset &&
-      constants.skillLevel != document.getElementById('skill_level').value
+      constants.skillLevel != document.getElementById("skill_level").value
     ) {
       shouldReset = true;
     }
     if (
       !shouldReset &&
       constants.LLMPreferences !=
-        document.getElementById('LLM_preferences').value
+        document.getElementById("LLM_preferences").value
     ) {
       shouldReset = true;
     }
     if (
       !shouldReset &&
-      constants.LLMModel != document.getElementById('LLM_model').value
+      constants.LLMModel != document.getElementById("LLM_model").value
     ) {
       shouldReset = true;
     }
@@ -1618,24 +1618,24 @@ class Menu {
       data[constants.userSettingsKeys[i]] =
         constants[constants.userSettingsKeys[i]];
     }
-    localStorage.setItem('settings_data', JSON.stringify(data));
+    localStorage.setItem("settings_data", JSON.stringify(data));
 
     // also save to tracking if we're doing that
     if (constants.canTrack) {
       // but not auth keys
-      data.openAIAuthKey = 'hidden';
-      data.geminiAuthKey = 'hidden';
-      data.claudeAuthKey = 'hidden';
+      data.openAIAuthKey = "hidden";
+      data.geminiAuthKey = "hidden";
+      data.claudeAuthKey = "hidden";
       // and need a timestamp
       data.timestamp = new Date().toISOString();
-      tracker.SetData('settings', data);
+      tracker.SetData("settings", data);
     }
   }
   /**
    * Loads data from 'settings_data' localStorage, and updates contants variables
    */
   LoadDataFromLocalStorage() {
-    let data = JSON.parse(localStorage.getItem('settings_data'));
+    let data = JSON.parse(localStorage.getItem("settings_data"));
     if (data) {
       for (let i = 0; i < constants.userSettingsKeys.length; i++) {
         const key = constants.userSettingsKeys[i];
@@ -1663,9 +1663,9 @@ class ChatLLM {
     if (constants.autoInitLLM) {
       // only run if we have API keys set
       if (
-        ('gemini' in constants.LLMModels && constants.geminiAuthKey) ||
-        ('openai' in constants.LLMModels && constants.openAIAuthKey) ||
-        ('claude' in constants.LLMModels && constants.claudeAuthKey)
+        ("gemini" in constants.LLMModels && constants.geminiAuthKey) ||
+        ("openai" in constants.LLMModels && constants.openAIAuthKey) ||
+        ("claude" in constants.LLMModels && constants.claudeAuthKey)
       ) {
         this.InitChatMessage();
       }
@@ -1718,7 +1718,7 @@ class ChatLLM {
         </div>
         <div id="chatLLM_modal_backdrop" class="modal-backdrop hidden"></div>
     `;
-    document.querySelector('body').insertAdjacentHTML('beforeend', html);
+    document.querySelector("body").insertAdjacentHTML("beforeend", html);
   }
 
   /**
@@ -1727,21 +1727,21 @@ class ChatLLM {
    */
   SetEvents() {
     // chatLLM close events
-    let allClose = document.querySelectorAll('#close_chatLLM, #chatLLM .close');
+    let allClose = document.querySelectorAll("#close_chatLLM, #chatLLM .close");
     for (let i = 0; i < allClose.length; i++) {
       constants.events.push([
         allClose[i],
-        'click',
+        "click",
         function (e) {
           chatLLM.Toggle(false);
         },
       ]);
     }
     constants.events.push([
-      document.getElementById('chatLLM'),
-      'keyup',
+      document.getElementById("chatLLM"),
+      "keyup",
       function (e) {
-        if (e.key == 'Esc') {
+        if (e.key == "Esc") {
           // esc
           chatLLM.Toggle(false);
         }
@@ -1751,9 +1751,9 @@ class ChatLLM {
     // ChatLLM open/close toggle
     constants.events.push([
       document,
-      'keyup',
+      "keyup",
       function (e) {
-        if ((e.key == '?' && (e.ctrlKey || e.metaKey)) || e.key == '¿') {
+        if ((e.key == "?" && (e.ctrlKey || e.metaKey)) || e.key == "¿") {
           chatLLM.Toggle();
         }
       },
@@ -1761,21 +1761,21 @@ class ChatLLM {
 
     // ChatLLM request events
     constants.events.push([
-      document.getElementById('chatLLM_submit'),
-      'click',
+      document.getElementById("chatLLM_submit"),
+      "click",
       function (e) {
-        let text = document.getElementById('chatLLM_input').value;
-        chatLLM.DisplayChatMessage('User', text);
+        let text = document.getElementById("chatLLM_input").value;
+        chatLLM.DisplayChatMessage("User", text);
         chatLLM.Submit(text);
       },
     ]);
     constants.events.push([
-      document.getElementById('chatLLM_input'),
-      'keyup',
+      document.getElementById("chatLLM_input"),
+      "keyup",
       function (e) {
-        if (e.key == 'Enter' && !e.shiftKey) {
-          let text = document.getElementById('chatLLM_input').value;
-          chatLLM.DisplayChatMessage('User', text);
+        if (e.key == "Enter" && !e.shiftKey) {
+          let text = document.getElementById("chatLLM_input").value;
+          chatLLM.DisplayChatMessage("User", text);
           chatLLM.Submit(text);
         }
       },
@@ -1784,15 +1784,15 @@ class ChatLLM {
     // ChatLLM suggestion events
     // actual suggestions:
     let suggestions = document.querySelectorAll(
-      '#chatLLM .LLM_suggestions button:not(#more_suggestions)'
+      "#chatLLM .LLM_suggestions button:not(#more_suggestions)"
     );
     for (let i = 0; i < suggestions.length; i++) {
       constants.events.push([
         suggestions[i],
-        'click',
+        "click",
         function (e) {
           let text = e.target.innerHTML;
-          chatLLM.DisplayChatMessage('User', text);
+          chatLLM.DisplayChatMessage("User", text);
           chatLLM.Submit(text);
         },
       ]);
@@ -1800,31 +1800,31 @@ class ChatLLM {
 
     // Delete OpenAI and Gemini keys
     constants.events.push([
-      document.getElementById('delete_openai_key'),
-      'click',
+      document.getElementById("delete_openai_key"),
+      "click",
       function (e) {
-        document.getElementById('openai_auth_key').value = '';
+        document.getElementById("openai_auth_key").value = "";
       },
     ]);
     constants.events.push([
-      document.getElementById('delete_email_key'),
-      'click',
+      document.getElementById("delete_email_key"),
+      "click",
       function (e) {
-        document.getElementById('email_auth_key').value = '';
+        document.getElementById("email_auth_key").value = "";
       },
     ]);
     constants.events.push([
-      document.getElementById('delete_gemini_key'),
-      'click',
+      document.getElementById("delete_gemini_key"),
+      "click",
       function (e) {
-        document.getElementById('gemini_auth_key').value = '';
+        document.getElementById("gemini_auth_key").value = "";
       },
     ]);
 
     // Reset chatLLM
     constants.events.push([
-      document.getElementById('reset_chatLLM'),
-      'click',
+      document.getElementById("reset_chatLLM"),
+      "click",
       function (e) {
         chatLLM.ResetLLM();
       },
@@ -1832,15 +1832,15 @@ class ChatLLM {
 
     // copy to clipboard
     constants.events.push([
-      document.getElementById('chatLLM'),
-      'click',
+      document.getElementById("chatLLM"),
+      "click",
       function (e) {
         chatLLM.CopyChatHistory(e);
       },
     ]);
     constants.events.push([
-      document.getElementById('chatLLM'),
-      'keyup',
+      document.getElementById("chatLLM"),
+      "keyup",
       function (e) {
         chatLLM.CopyChatHistory(e);
       },
@@ -1858,96 +1858,96 @@ class ChatLLM {
    * @param {Event|undefined} e - The event that triggered the copy action. If undefined, the entire chat history is copied.
    */
   CopyChatHistory(e) {
-    let text = '';
-    if (typeof e == 'undefined') {
+    let text = "";
+    if (typeof e == "undefined") {
       // check for passthrough
       // get html of the full chat history
-      text = document.getElementById('chatLLM_chat_history').innerHTML;
-    } else if (e.type == 'click') {
+      text = document.getElementById("chatLLM_chat_history").innerHTML;
+    } else if (e.type == "click") {
       // check for buttons
-      if (e.target.id == 'chatLLM_copy_all') {
+      if (e.target.id == "chatLLM_copy_all") {
         // get html of the full chat history
-        text = document.getElementById('chatLLM_chat_history').innerHTML;
-      } else if (e.target.classList.contains('chatLLM_message_copy_button')) {
+        text = document.getElementById("chatLLM_chat_history").innerHTML;
+      } else if (e.target.classList.contains("chatLLM_message_copy_button")) {
         // get the text of the element before the button
-        text = e.target.closest('p').previousElementSibling.innerHTML;
+        text = e.target.closest("p").previousElementSibling.innerHTML;
       }
-    } else if (e.type == 'keyup') {
+    } else if (e.type == "keyup") {
       // check for alt shift c or ctrl shift c
-      if (e.key == 'C' && (e.ctrlKey || e.metaKey || e.altKey) && e.shiftKey) {
+      if (e.key == "C" && (e.ctrlKey || e.metaKey || e.altKey) && e.shiftKey) {
         e.preventDefault();
         // get the last message
         let elem = document.querySelector(
-          '#chatLLM_chat_history > .chatLLM_message_other:last-of-type'
+          "#chatLLM_chat_history > .chatLLM_message_other:last-of-type"
         );
         if (elem) {
           text = elem.innerHTML;
         }
       } else if (
-        e.key == 'A' &&
+        e.key == "A" &&
         (e.ctrlKey || e.metaKey || e.altKey) &&
         e.shiftKey
       ) {
         e.preventDefault();
         // get html of the full chat history
-        text = document.getElementById('chatLLM_chat_history').innerHTML;
+        text = document.getElementById("chatLLM_chat_history").innerHTML;
       }
     }
 
-    if (text == '') {
+    if (text == "") {
       return;
     } else {
       // clear the html, removing buttons etc
-      let cleanElems = document.createElement('div');
+      let cleanElems = document.createElement("div");
       cleanElems.innerHTML = text;
-      let removeThese = cleanElems.querySelectorAll('.chatLLM_message_copy');
+      let removeThese = cleanElems.querySelectorAll(".chatLLM_message_copy");
       removeThese.forEach((elem) => elem.remove());
 
       // convert from html to markdown
       let markdown = this.htmlToMarkdown(cleanElems);
       // this messes up a bit with spacing, so kill more than 2 newlines in a row
-      markdown = markdown.replace(/\n{3,}/g, '\n\n');
+      markdown = markdown.replace(/\n{3,}/g, "\n\n");
 
       try {
         navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
       } catch (err) {
-        console.error('Failed to copy: ', err);
+        console.error("Failed to copy: ", err);
       }
       return markdown;
     }
   }
 
   htmlToMarkdown(element) {
-    let markdown = '';
+    let markdown = "";
 
     const convertElementToMarkdown = (element) => {
       switch (element.tagName) {
-        case 'H1':
+        case "H1":
           return `# ${element.textContent}`;
-        case 'H2':
+        case "H2":
           return `## ${element.textContent}`;
-        case 'H3':
+        case "H3":
           return `### ${element.textContent}`;
-        case 'H4':
+        case "H4":
           return `#### ${element.textContent}`;
-        case 'H5':
+        case "H5":
           return `##### ${element.textContent}`;
-        case 'H6':
+        case "H6":
           return `###### ${element.textContent}`;
-        case 'P':
+        case "P":
           return element.textContent;
-        case 'DIV':
+        case "DIV":
           // For divs, process each child and add newlines as needed
           return (
             Array.from(element.childNodes)
               .map((child) => convertElementToMarkdown(child))
-              .join('\n') + '\n\n'
+              .join("\n") + "\n\n"
           );
         default:
           // For any other element, process its children recursively
           return Array.from(element.childNodes)
             .map((child) => convertElementToMarkdown(child))
-            .join('');
+            .join("");
       }
     };
 
@@ -1955,7 +1955,7 @@ class ChatLLM {
       markdown += convertElementToMarkdown(element);
     } else if (
       element.nodeType === Node.TEXT_NODE &&
-      element.textContent.trim() !== ''
+      element.textContent.trim() !== ""
     ) {
       markdown += element.textContent.trim();
     }
@@ -1980,14 +1980,14 @@ class ChatLLM {
 
     // if this is the user's first message (or we're gemini, in which case we need to send every time), prepend prompt with user position
     if (
-      (this.firstOpen || 'gemini' in constants.LLMModels) &&
+      (this.firstOpen || "gemini" in constants.LLMModels) &&
       !firsttime &&
       constants.verboseText.length > 0
     ) {
       text =
         "Here is the current position in the chart; no response necessarily needed, use this info only if it's relevant to future questions: " +
         constants.verboseText +
-        '. My question is: ' +
+        ". My question is: " +
         text;
 
       this.firstOpen = false;
@@ -1998,9 +1998,9 @@ class ChatLLM {
       this.WaitingSound(true);
     }
 
-    if ('openai' in constants.LLMModels) {
+    if ("openai" in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, "openai");
       }
       if (constants.openAIAuthKey) {
         chatLLM.OpenAIPrompt(text, img);
@@ -2008,9 +2008,9 @@ class ChatLLM {
         chatLLM.OpenAIPromptAPI(text, img);
       }
     }
-    if ('gemini' in constants.LLMModels) {
+    if ("gemini" in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, "gemini");
       }
       if (constants.geminiAuthKey) {
         chatLLM.GeminiPrompt(text, img);
@@ -2019,9 +2019,9 @@ class ChatLLM {
       }
     }
 
-    if ('claude' in constants.LLMModels) {
+    if ("claude" in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'claude');
+        img = await this.ConvertSVGtoJPG(singleMaidr.id, "claude");
       }
       if (constants.claudeAuthKey) {
         chatLLM.ClaudePrompt(text, img);
@@ -2086,7 +2086,7 @@ class ChatLLM {
       }, 30000);
 
       // set queue for multi
-      if (constants.LLMModel != 'multi') {
+      if (constants.LLMModel != "multi") {
         constants.waitingQueue = 1;
       } else {
         constants.waitingQueue = 0;
@@ -2118,7 +2118,7 @@ class ChatLLM {
     // get name from resource]
     let LLMName = resources.GetString(constants.LLMModel);
     this.firstTime = false;
-    this.DisplayChatMessage(LLMName, resources.GetString('processing'), true);
+    this.DisplayChatMessage(LLMName, resources.GetString("processing"), true);
     let defaultPrompt = this.GetDefaultPrompt();
     this.Submit(defaultPrompt, true);
   }
@@ -2130,47 +2130,47 @@ class ChatLLM {
    */
   ProcessLLMResponse(data, model) {
     chatLLM.WaitingSound(false);
-    let text = '';
+    let text = "";
     let LLMName = resources.GetString(model);
 
-    if (model == 'openai') {
+    if (model == "openai") {
       text = data.choices[0].message.content;
       let i = this.requestJson.messages.length;
       this.requestJson.messages[i] = {};
-      this.requestJson.messages[i].role = 'assistant';
+      this.requestJson.messages[i].role = "assistant";
       this.requestJson.messages[i].content = text;
 
       if (data.error) {
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.DisplayChatMessage(LLMName, "Error processing request.", true);
         chatLLM.WaitingSound(false);
       } else {
         chatLLM.DisplayChatMessage(LLMName, text);
       }
-    } else if (model == 'gemini') {
+    } else if (model == "gemini") {
       if (data.text()) {
         text = data.text();
         chatLLM.DisplayChatMessage(LLMName, text);
       } else {
         if (!data.error) {
-          data.error = 'Error processing request.';
+          data.error = "Error processing request.";
           chatLLM.WaitingSound(false);
         }
       }
       if (data.error) {
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.DisplayChatMessage(LLMName, "Error processing request.", true);
         chatLLM.WaitingSound(false);
       } else {
         // todo: display actual response
       }
     }
-    if (model == 'claude') {
-      console.log('Claude response: ', data);
+    if (model == "claude") {
+      console.log("Claude response: ", data);
       if (data.text()) {
         text = data.text();
         chatLLM.DisplayChatMessage(LLMName, text);
       }
       if (data.error) {
-        chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
+        chatLLM.DisplayChatMessage(LLMName, "Error processing request.", true);
         chatLLM.WaitingSound(false);
       }
     }
@@ -2178,7 +2178,7 @@ class ChatLLM {
     // if we're tracking, log the data
     if (constants.canTrack) {
       let chatHist = chatLLM.CopyChatHistory();
-      tracker.SetData('ChatHistory', chatHist);
+      tracker.SetData("ChatHistory", chatHist);
     }
   }
 
@@ -2192,11 +2192,11 @@ class ChatLLM {
     if (this.requestJson.messages.length > 2) {
       // subsequent responses
       responseText = {
-        id: 'chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7',
-        object: 'chat.completion',
+        id: "chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7",
+        object: "chat.completion",
         created: 1703129508,
         //model: 'gpt-4-1106-vision-preview',
-        model: 'gpt4-o',
+        model: "gpt4-o",
         usage: {
           prompt_tokens: 451,
           completion_tokens: 16,
@@ -2205,10 +2205,10 @@ class ChatLLM {
         choices: [
           {
             message: {
-              role: 'assistant',
-              content: 'A fake response from the LLM. Nice.',
+              role: "assistant",
+              content: "A fake response from the LLM. Nice.",
             },
-            finish_reason: 'length',
+            finish_reason: "length",
             index: 0,
           },
         ],
@@ -2216,10 +2216,10 @@ class ChatLLM {
     } else {
       // first response
       responseText = {
-        id: 'chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7',
-        object: 'chat.completion',
+        id: "chatcmpl-8Y44iRCRrohYbAqm8rfBbJqTUADC7",
+        object: "chat.completion",
         created: 1703129508,
-        model: 'gpt-4-1106-vision-preview',
+        model: "gpt-4-1106-vision-preview",
         usage: {
           prompt_tokens: 451,
           completion_tokens: 16,
@@ -2228,11 +2228,11 @@ class ChatLLM {
         choices: [
           {
             message: {
-              role: 'assistant',
+              role: "assistant",
               content:
-                'The chart you\'re referring to is a bar graph titled "The Number of Diamonds',
+                "The chart you're referring to is a bar graph titled \"The Number of Diamonds",
             },
-            finish_reason: 'length',
+            finish_reason: "length",
             index: 0,
           },
         ],
@@ -2243,7 +2243,7 @@ class ChatLLM {
   }
 
   ClaudeJson(text, img = null) {
-    const anthropicVersion = 'vertex-2023-10-16';
+    const anthropicVersion = "vertex-2023-10-16";
     const maxTokens = 256;
 
     const payload = {
@@ -2254,7 +2254,7 @@ class ChatLLM {
 
     // Construct the user message object
     const userMessage = {
-      role: 'user',
+      role: "user",
       content: [],
     };
 
@@ -2262,22 +2262,22 @@ class ChatLLM {
     if (img) {
       userMessage.content.push(
         {
-          type: 'image',
+          type: "image",
           source: {
-            type: 'base64',
-            media_type: 'image/jpeg', // Update if other formats are supported
+            type: "base64",
+            media_type: "image/jpeg", // Update if other formats are supported
             data: img,
           },
         },
         {
-          type: 'text',
+          type: "text",
           text: text,
         }
       );
     } else {
       // Add only the text content if no image is provided
       userMessage.content.push({
-        type: 'text',
+        type: "text",
         text: text,
       });
     }
@@ -2289,16 +2289,16 @@ class ChatLLM {
   }
 
   ClaudePromptAPI(text, imgBase64 = null) {
-    console.log('Claude prompt API');
+    console.log("Claude prompt API");
     let url =
-      'https://maidr-service.azurewebsites.net/api/claude?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+      "https://maidr-service.azurewebsites.net/api/claude?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D";
 
     // Create the prompt
     let prompt = constants.LLMSystemMessage;
     if (constants.LLMPreferences) {
       prompt += constants.LLMPreferences;
     }
-    prompt += '\n\n' + text; // Use the text parameter as the prompt
+    prompt += "\n\n" + text; // Use the text parameter as the prompt
 
     if (imgBase64 == null) {
       imgBase64 = constants.LLMImage;
@@ -2310,9 +2310,9 @@ class ChatLLM {
     let requestJson = chatLLM.ClaudeJson(prompt, imgBase64);
 
     fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authentication: constants.emailAuthKey,
       },
       body: JSON.stringify(requestJson),
@@ -2322,12 +2322,12 @@ class ChatLLM {
         data.text = function () {
           return data.content[0].text;
         };
-        chatLLM.ProcessLLMResponse(data, 'claude');
+        chatLLM.ProcessLLMResponse(data, "claude");
       })
       .catch((error) => {
         chatLLM.WaitingSound(false);
-        console.error('Error:', error);
-        chatLLM.DisplayChatMessage('Claude', 'Error processing request.', true);
+        console.error("Error:", error);
+        chatLLM.DisplayChatMessage("Claude", "Error processing request.", true);
         // also todo: handle errors somehow
       });
   }
@@ -2341,27 +2341,27 @@ class ChatLLM {
    */
   OpenAIPrompt(text, img = null) {
     // request init
-    let url = 'https://api.openai.com/v1/chat/completions';
+    let url = "https://api.openai.com/v1/chat/completions";
     let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
     //console.log('LLM request: ', requestJson);
 
     fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + auth,
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + auth,
       },
       body: JSON.stringify(requestJson),
     })
       .then((response) => response.json())
       .then((data) => {
-        chatLLM.ProcessLLMResponse(data, 'openai');
+        chatLLM.ProcessLLMResponse(data, "openai");
       })
       .catch((error) => {
         chatLLM.WaitingSound(false);
-        console.error('Error:', error);
-        chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
+        console.error("Error:", error);
+        chatLLM.DisplayChatMessage("OpenAI", "Error processing request.", true);
         // also todo: handle errors somehow
       });
   }
@@ -2369,27 +2369,27 @@ class ChatLLM {
   OpenAIPromptAPI(text, img = null) {
     // request init
     let url =
-      'https://maidr-service.azurewebsites.net/api/openai?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+      "https://maidr-service.azurewebsites.net/api/openai?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D";
     let auth = constants.openAIAuthKey;
     let requestJson = chatLLM.OpenAIJson(text, img);
-    console.log('LLM request: ', requestJson);
+    console.log("LLM request: ", requestJson);
 
     fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authentication: constants.emailAuthKey,
       },
       body: JSON.stringify(requestJson),
     })
       .then((response) => response.json())
       .then((data) => {
-        chatLLM.ProcessLLMResponse(data, 'openai');
+        chatLLM.ProcessLLMResponse(data, "openai");
       })
       .catch((error) => {
         chatLLM.WaitingSound(false);
-        console.error('Error:', error);
-        chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
+        console.error("Error:", error);
+        chatLLM.DisplayChatMessage("OpenAI", "Error processing request.", true);
         // also todo: handle errors somehow
       });
   }
@@ -2397,22 +2397,22 @@ class ChatLLM {
   OpenAIJson(text, img = null) {
     let sysMessage = constants.LLMSystemMessage;
     let backupMessage =
-      'Describe ' + singleMaidr.type + ' charts to a blind person';
+      "Describe " + singleMaidr.type + " charts to a blind person";
     // headers and sys message
     if (!this.requestJson) {
       this.requestJson = {};
       //this.requestJson.model = 'gpt-4-vision-preview';
-      this.requestJson.model = 'gpt-4o-2024-08-06';
+      this.requestJson.model = "gpt-4o-2024-11-20";
       this.requestJson.max_tokens = constants.LLMmaxResponseTokens; // note: if this is too short (tested with less than 200), the response gets cut off
 
       // sys message
       this.requestJson.messages = [];
       this.requestJson.messages[0] = {};
-      this.requestJson.messages[0].role = 'system';
+      this.requestJson.messages[0].role = "system";
       this.requestJson.messages[0].content = sysMessage;
       if (constants.LLMPreferences) {
         this.requestJson.messages[1] = {};
-        this.requestJson.messages[1].role = 'system';
+        this.requestJson.messages[1].role = "system";
         this.requestJson.messages[1].content = constants.LLMPreferences;
       }
     }
@@ -2421,16 +2421,16 @@ class ChatLLM {
     // if we have an image (first time only), send the image and the text, otherwise just the text
     let i = this.requestJson.messages.length;
     this.requestJson.messages[i] = {};
-    this.requestJson.messages[i].role = 'user';
+    this.requestJson.messages[i].role = "user";
     if (img) {
       // first message, include the img
       this.requestJson.messages[i].content = [
         {
-          type: 'text',
+          type: "text",
           text: text,
         },
         {
-          type: 'image_url',
+          type: "image_url",
           image_url: { url: img },
         },
       ];
@@ -2445,7 +2445,7 @@ class ChatLLM {
   GeminiJson(text, img = null) {
     let sysMessage = constants.LLMSystemMessage;
     let backupMessage =
-      'Describe ' + singleMaidr.type + ' charts to a blind person';
+      "Describe " + singleMaidr.type + " charts to a blind person";
 
     let payload = {
       generationConfig: {},
@@ -2455,7 +2455,7 @@ class ChatLLM {
 
     // System message as the initial "role" and "text" content for context
     let sysContent = {
-      role: 'user',
+      role: "user",
       parts: [
         {
           text: sysMessage || backupMessage, // Fallback if sysMessage is unavailable
@@ -2474,7 +2474,7 @@ class ChatLLM {
 
     // Add user input content, including image if available
     let userContent = {
-      role: 'user',
+      role: "user",
       parts: [],
     };
 
@@ -2487,7 +2487,7 @@ class ChatLLM {
         {
           inlineData: {
             data: img, // Expecting base64-encoded image data
-            mimeType: 'image/png', // Adjust if different image formats are possible
+            mimeType: "image/png", // Adjust if different image formats are possible
           },
         }
       );
@@ -2506,14 +2506,14 @@ class ChatLLM {
 
   async GeminiPromptAPI(text, imgBase64 = null) {
     let url =
-      'https://maidr-service.azurewebsites.net/api/gemini?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
+      "https://maidr-service.azurewebsites.net/api/gemini?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D";
 
     // Create the prompt
     let prompt = constants.LLMSystemMessage;
     if (constants.LLMPreferences) {
       prompt += constants.LLMPreferences;
     }
-    prompt += '\n\n' + text; // Use the text parameter as the prompt
+    prompt += "\n\n" + text; // Use the text parameter as the prompt
 
     if (imgBase64 == null) {
       imgBase64 = constants.LLMImage;
@@ -2525,9 +2525,9 @@ class ChatLLM {
     let requestJson = chatLLM.GeminiJson(prompt, imgBase64);
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authentication: constants.emailAuthKey,
       },
       body: JSON.stringify(requestJson),
@@ -2537,11 +2537,11 @@ class ChatLLM {
       responseJson.text = () => {
         return responseJson.candidates[0].content.parts[0].text;
       };
-      chatLLM.ProcessLLMResponse(responseJson, 'gemini');
+      chatLLM.ProcessLLMResponse(responseJson, "gemini");
     } else {
       chatLLM.WaitingSound(false);
-      console.error('Error:', error);
-      chatLLM.DisplayChatMessage('OpenAI', 'Error processing request.', true);
+      console.error("Error:", error);
+      chatLLM.DisplayChatMessage("OpenAI", "Error processing request.", true);
       // also todo: handle errors somehow
     }
   }
@@ -2559,12 +2559,12 @@ class ChatLLM {
 
       // Import the module
       const { GoogleGenerativeAI } = await import(
-        'https://esm.run/@google/generative-ai'
+        "https://esm.run/@google/generative-ai"
       );
       const API_KEY = constants.geminiAuthKey;
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
-        model: 'gemini-1.5-pro-latest',
+        model: "gemini-1.5-pro-latest",
       }); // old model was 'gemini-pro-vision'
 
       // Create the prompt
@@ -2572,11 +2572,11 @@ class ChatLLM {
       if (constants.LLMPreferences) {
         prompt += constants.LLMPreferences;
       }
-      prompt += '\n\n' + text; // Use the text parameter as the prompt
+      prompt += "\n\n" + text; // Use the text parameter as the prompt
       const image = {
         inlineData: {
           data: imgBase64, // Use the base64 image string
-          mimeType: 'image/png', // Or the appropriate mime type of your image
+          mimeType: "image/png", // Or the appropriate mime type of your image
         },
       };
 
@@ -2586,11 +2586,11 @@ class ChatLLM {
       //console.log(result.response.text());
 
       // Process the response
-      chatLLM.ProcessLLMResponse(result.response, 'gemini');
+      chatLLM.ProcessLLMResponse(result.response, "gemini");
     } catch (error) {
       chatLLM.WaitingSound(false);
-      chatLLM.DisplayChatMessage('Gemini', 'Error processing request.', true);
-      console.error('Error in GeminiPrompt:', error);
+      chatLLM.DisplayChatMessage("Gemini", "Error processing request.", true);
+      console.error("Error in GeminiPrompt:", error);
       throw error; // Rethrow the error for further handling if necessary
     }
   }
@@ -2602,11 +2602,11 @@ class ChatLLM {
    * @memberof module:constants
    * @returns {void}
    */
-  DisplayChatMessage(user = 'User', text = '', isSystem = false) {
-    let hLevel = 'h3';
-    if (!isSystem && constants.LLMModel == 'multi' && user != 'User') {
+  DisplayChatMessage(user = "User", text = "", isSystem = false) {
+    let hLevel = "h3";
+    if (!isSystem && constants.LLMModel == "multi" && user != "User") {
       if (this.firstMulti) {
-        let multiAIName = resources.GetString('multi');
+        let multiAIName = resources.GetString("multi");
         let titleHtml = `
           <div class="chatLLM_message chatLLM_message_other">
             <h3 class="chatLLM_message_user">${multiAIName} Responses</h3>
@@ -2615,20 +2615,20 @@ class ChatLLM {
         this.RenderChatMessage(titleHtml);
         this.firstMulti = false;
       }
-      hLevel = 'h4';
+      hLevel = "h4";
     }
     let html = `
       <div class="chatLLM_message ${
-        user == 'User' ? 'chatLLM_message_self' : 'chatLLM_message_other'
+        user == "User" ? "chatLLM_message_self" : "chatLLM_message_other"
       }">`;
-    if (text != resources.GetString('processing')) {
+    if (text != resources.GetString("processing")) {
       html += `<${hLevel} class="chatLLM_message_user">${user}</${hLevel}>`;
     }
     html += `<p class="chatLLM_message_text">${text}</p>
       </div>
     `;
     // add a copy button to actual messages
-    if (user != 'User' && text != resources.GetString('processing')) {
+    if (user != "User" && text != resources.GetString("processing")) {
       html += `
         <p class="chatLLM_message_copy"><button class="chatLLM_message_copy_button">Copy</button></p>
       `;
@@ -2638,13 +2638,13 @@ class ChatLLM {
   }
   RenderChatMessage(html) {
     document
-      .getElementById('chatLLM_chat_history')
-      .insertAdjacentHTML('beforeend', html);
-    document.getElementById('chatLLM_input').value = '';
+      .getElementById("chatLLM_chat_history")
+      .insertAdjacentHTML("beforeend", html);
+    document.getElementById("chatLLM_input").value = "";
 
     // scroll to bottom
-    document.getElementById('chatLLM_chat_history').scrollTop =
-      document.getElementById('chatLLM_chat_history').scrollHeight;
+    document.getElementById("chatLLM_chat_history").scrollTop =
+      document.getElementById("chatLLM_chat_history").scrollHeight;
   }
 
   /**
@@ -2652,7 +2652,7 @@ class ChatLLM {
    */
   ResetLLM() {
     // clear the main chat history
-    document.getElementById('chatLLM_chat_history').innerHTML = '';
+    document.getElementById("chatLLM_chat_history").innerHTML = "";
 
     // reset the data
     this.requestJson = null;
@@ -2673,11 +2673,11 @@ class ChatLLM {
    */
   Destroy() {
     // chatLLM element destruction
-    let chatLLM = document.getElementById('chatLLM');
+    let chatLLM = document.getElementById("chatLLM");
     if (chatLLM) {
       chatLLM.remove();
     }
-    let backdrop = document.getElementById('chatLLM_modal_backdrop');
+    let backdrop = document.getElementById("chatLLM_modal_backdrop");
     if (backdrop) {
       backdrop.remove();
     }
@@ -2688,8 +2688,8 @@ class ChatLLM {
    * @param {boolean} [onoff=false] - Whether to turn the chatLLM on or off. Defaults to false (close).
    */
   Toggle(onoff) {
-    if (typeof onoff == 'undefined') {
-      if (document.getElementById('chatLLM').classList.contains('hidden')) {
+    if (typeof onoff == "undefined") {
+      if (document.getElementById("chatLLM").classList.contains("hidden")) {
         onoff = true;
       } else {
         onoff = false;
@@ -2700,19 +2700,19 @@ class ChatLLM {
       // open
       this.whereWasMyFocus = document.activeElement;
       constants.tabMovement = 0;
-      document.getElementById('chatLLM').classList.remove('hidden');
+      document.getElementById("chatLLM").classList.remove("hidden");
       document
-        .getElementById('chatLLM_modal_backdrop')
-        .classList.remove('hidden');
-      document.querySelector('#chatLLM .close').focus();
+        .getElementById("chatLLM_modal_backdrop")
+        .classList.remove("hidden");
+      document.querySelector("#chatLLM .close").focus();
 
       if (this.firstTime) {
         this.InitChatMessage();
       }
     } else {
       // close
-      document.getElementById('chatLLM').classList.add('hidden');
-      document.getElementById('chatLLM_modal_backdrop').classList.add('hidden');
+      document.getElementById("chatLLM").classList.add("hidden");
+      document.getElementById("chatLLM_modal_backdrop").classList.add("hidden");
       this.whereWasMyFocus.focus();
       this.whereWasMyFocus = null;
       this.firstOpen = true;
@@ -2726,11 +2726,11 @@ class ChatLLM {
   async ConvertSVGtoJPG(id, model) {
     let svgElement = document.getElementById(id);
     return new Promise((resolve, reject) => {
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
 
       var svgData = new XMLSerializer().serializeToString(svgElement);
-      if (!svgData.startsWith('<svg xmlns')) {
+      if (!svgData.startsWith("<svg xmlns")) {
         svgData = `<svg xmlns="http://www.w3.org/2000/svg" ${svgData.slice(4)}`;
       }
 
@@ -2742,11 +2742,11 @@ class ChatLLM {
       var img = new Image();
       img.onload = function () {
         ctx.drawImage(img, 0, 0, svgSize.width, svgSize.height);
-        var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
-        if (model == 'openai') {
+        var jpegData = canvas.toDataURL("image/jpeg", 0.9); // 0.9 is the quality parameter
+        if (model == "openai") {
           resolve(jpegData);
-        } else if (model == 'gemini' || model == 'claude') {
-          let base64Data = jpegData.split(',')[1];
+        } else if (model == "gemini" || model == "claude") {
+          let base64Data = jpegData.split(",")[1];
           resolve(base64Data);
           //resolve(jpegData);
         }
@@ -2754,11 +2754,11 @@ class ChatLLM {
       };
 
       img.onerror = function () {
-        reject(new Error('Error loading SVG'));
+        reject(new Error("Error loading SVG"));
       };
 
       var svgBlob = new Blob([svgData], {
-        type: 'image/svg+xml;charset=utf-8',
+        type: "image/svg+xml;charset=utf-8",
       });
       var url = URL.createObjectURL(svgBlob);
       img.src = url;
@@ -2771,25 +2771,25 @@ class ChatLLM {
    * The prompt includes information about the blind person's skill level and the chart's image and raw data, if available.
    */
   GetDefaultPrompt() {
-    let text = 'Describe this chart to a blind person';
+    let text = "Describe this chart to a blind person";
     if (constants.skillLevel) {
-      if (constants.skillLevel == 'other' && constants.skillLevelOther) {
+      if (constants.skillLevel == "other" && constants.skillLevelOther) {
         text +=
-          ' who has a ' +
+          " who has a " +
           constants.skillLevelOther +
-          ' understanding of statistical charts. ';
+          " understanding of statistical charts. ";
       } else {
         text +=
-          ' who has a ' +
+          " who has a " +
           constants.skillLevel +
-          ' understanding of statistical charts. ';
+          " understanding of statistical charts. ";
       }
     } else {
-      text += ' who has a basic understanding of statistical charts. ';
+      text += " who has a basic understanding of statistical charts. ";
     }
-    text += 'Here is a chart in image format';
+    text += "Here is a chart in image format";
     if (singleMaidr) {
-      text += ' and raw data in json format: \n';
+      text += " and raw data in json format: \n";
       text += JSON.stringify(singleMaidr);
     }
 
@@ -2844,26 +2844,26 @@ class Description {
 
     `;
 
-    document.querySelector('body').insertAdjacentHTML('beforeend', html);
+    document.querySelector("body").insertAdjacentHTML("beforeend", html);
 
     // close events
     let allClose = document.querySelectorAll(
-      '#close_desc, #description .close'
+      "#close_desc, #description .close"
     );
     for (let i = 0; i < allClose.length; i++) {
       constants.events.push([
         allClose[i],
-        'click',
+        "click",
         function (e) {
           description.Toggle(false);
         },
       ]);
     }
     constants.events.push([
-      document.getElementById('description'),
-      'keyup',
+      document.getElementById("description"),
+      "keyup",
       function (e) {
-        if (e.key == 'Esc') {
+        if (e.key == "Esc") {
           // esc
           description.Toggle(false);
         }
@@ -2873,9 +2873,9 @@ class Description {
     // open events
     constants.events.push([
       document,
-      'keyup',
+      "keyup",
       function (e) {
-        if (e.key == 'd') {
+        if (e.key == "d") {
           description.Toggle(true);
         }
       },
@@ -2887,11 +2887,11 @@ class Description {
    */
   Destroy() {
     // description element destruction
-    let description = document.getElementById('menu');
+    let description = document.getElementById("menu");
     if (description) {
       description.remove();
     }
-    let backdrop = document.getElementById('desc_modal_backdrop');
+    let backdrop = document.getElementById("desc_modal_backdrop");
     if (backdrop) {
       backdrop.remove();
     }
@@ -2902,8 +2902,8 @@ class Description {
    * @param {boolean} [onoff=false] - Whether to turn the description element on or off.
    */
   Toggle(onoff = false) {
-    if (typeof onoff == 'undefined') {
-      if (document.getElementById('description').classList.contains('hidden')) {
+    if (typeof onoff == "undefined") {
+      if (document.getElementById("description").classList.contains("hidden")) {
         onoff = true;
       } else {
         onoff = false;
@@ -2914,13 +2914,13 @@ class Description {
       this.whereWasMyFocus = document.activeElement;
       constants.tabMovement = 0;
       this.PopulateData();
-      document.getElementById('description').classList.remove('hidden');
-      document.getElementById('desc_modal_backdrop').classList.remove('hidden');
-      document.querySelector('#description .close').focus();
+      document.getElementById("description").classList.remove("hidden");
+      document.getElementById("desc_modal_backdrop").classList.remove("hidden");
+      document.querySelector("#description .close").focus();
     } else {
       // close
-      document.getElementById('description').classList.add('hidden');
-      document.getElementById('desc_modal_backdrop').classList.add('hidden');
+      document.getElementById("description").classList.add("hidden");
+      document.getElementById("desc_modal_backdrop").classList.add("hidden");
       this.whereWasMyFocus.focus();
       this.whereWasMyFocus = null;
     }
@@ -2930,22 +2930,22 @@ class Description {
    * Populates the data for the chart and table based on the chart type and plot data.
    */
   PopulateData() {
-    let descHtml = '';
+    let descHtml = "";
 
     // chart labels and descriptions
-    let descType = '';
-    if (constants.chartType == 'bar') {
-      descType = 'Bar chart';
-    } else if (constants.chartType == 'heat') {
-      descType = 'Heatmap';
-    } else if (constants.chartType == 'box') {
-      descType = 'Box plot';
-    } else if (constants.chartType == 'scatter') {
-      descType = 'Scatter plot';
-    } else if (constants.chartType == 'line') {
-      descType = 'Line chart';
-    } else if (constants.chartType == 'hist') {
-      descType = 'Histogram';
+    let descType = "";
+    if (constants.chartType == "bar") {
+      descType = "Bar chart";
+    } else if (constants.chartType == "heat") {
+      descType = "Heatmap";
+    } else if (constants.chartType == "box") {
+      descType = "Box plot";
+    } else if (constants.chartType == "scatter") {
+      descType = "Scatter plot";
+    } else if (constants.chartType == "line") {
+      descType = "Line chart";
+    } else if (constants.chartType == "hist") {
+      descType = "Histogram";
     }
 
     if (descType) {
@@ -2962,7 +2962,7 @@ class Description {
     }
 
     // table of data, prep
-    let descTableHtml = '';
+    let descTableHtml = "";
     let descLabelX = null;
     let descLabelY = null;
     let descTickX = null;
@@ -2972,7 +2972,7 @@ class Description {
     let descNumColsWithLabels = 0;
     let descNumRows = 0;
     let descNumRowsWithLabels = 0;
-    if (constants.chartType == 'bar') {
+    if (constants.chartType == "bar") {
       if (plot.plotLegend.x != null) {
         descLabelX = plot.plotLegend.x;
         descNumColsWithLabels += 1;
@@ -2997,43 +2997,43 @@ class Description {
 
     // table of data, create
     if (descData != null) {
-      descTableHtml += '<table>';
+      descTableHtml += "<table>";
 
       // header rows
       if (descLabelX != null || descTickX != null) {
-        descTableHtml += '<thead>';
+        descTableHtml += "<thead>";
         if (descLabelX != null) {
-          descTableHtml += '<tr>';
+          descTableHtml += "<tr>";
           if (descLabelY != null) {
-            descTableHtml += '<td></td>';
+            descTableHtml += "<td></td>";
           }
           if (descTickY != null) {
-            descTableHtml += '<td></td>';
+            descTableHtml += "<td></td>";
           }
           descTableHtml += `<th scope="col" colspan="${descNumCols}">${descLabelX}</th>`;
-          descTableHtml += '</tr>';
+          descTableHtml += "</tr>";
         }
         if (descTickX != null) {
-          descTableHtml += '<tr>';
+          descTableHtml += "<tr>";
           if (descLabelY != null) {
-            descTableHtml += '<td></td>';
+            descTableHtml += "<td></td>";
           }
           if (descTickY != null) {
-            descTableHtml += '<td></td>';
+            descTableHtml += "<td></td>";
           }
           for (let i = 0; i < descNumCols; i++) {
             descTableHtml += `<th scope="col">${descTickX[i]}</th>`;
           }
-          descTableHtml += '</tr>';
+          descTableHtml += "</tr>";
         }
-        descTableHtml += '</thead>';
+        descTableHtml += "</thead>";
       }
 
       // body rows
       if (descNumRows > 0) {
-        descTableHtml += '<tbody>';
+        descTableHtml += "<tbody>";
         for (let i = 0; i < descNumRows; i++) {
-          descTableHtml += '<tr>';
+          descTableHtml += "<tr>";
           if (descLabelY != null && i == 0) {
             descTableHtml += `<th scope="row" rowspan="${descNumRows}">${descLabelY}</th>`;
           }
@@ -3043,19 +3043,19 @@ class Description {
           for (let j = 0; j < descNumCols; j++) {
             descTableHtml += `<td>${descData[i][j]}</td>`;
           }
-          descTableHtml += '</tr>';
+          descTableHtml += "</tr>";
         }
-        descTableHtml += '</tbody>';
+        descTableHtml += "</tbody>";
       }
 
-      descTableHtml += '</table>';
+      descTableHtml += "</table>";
     }
 
     // bar: don't need colspan or rowspan stuff, put legendX and Y as headers
 
-    document.getElementById('desc_title').innerHTML = descType + ' description';
-    document.getElementById('desc_content').innerHTML = descHtml;
-    document.getElementById('desc_table').innerHTML = descTableHtml;
+    document.getElementById("desc_title").innerHTML = descType + " description";
+    document.getElementById("desc_content").innerHTML = descHtml;
+    document.getElementById("desc_table").innerHTML = descTableHtml;
   }
 }
 
@@ -3097,7 +3097,7 @@ class Helper {
 class Tracker {
   // URL
   logUrl =
-    'https://maidr-service.azurewebsites.net/api/log?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D'; // TODO Replace
+    "https://maidr-service.azurewebsites.net/api/log?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D"; // TODO Replace
   isLocal = false;
 
   constructor() {
@@ -3116,7 +3116,7 @@ class Tracker {
       data.language = Object.assign(navigator.language);
       data.platform = Object.assign(navigator.platform);
       data.geolocation = Object.assign(navigator.geolocation);
-      data.log_type = 'system_data';
+      data.log_type = "system_data";
       data.events = [];
       data.settings = [];
 
@@ -3129,11 +3129,11 @@ class Tracker {
    * Downloads the tracker data as a JSON file.
    */
   DownloadTrackerData() {
-    let link = document.createElement('a');
+    let link = document.createElement("a");
     let data = this.GetTrackerData();
-    let fileStr = new Blob([JSON.stringify(data)], { type: 'text/plain' });
+    let fileStr = new Blob([JSON.stringify(data)], { type: "text/plain" });
     link.href = URL.createObjectURL(fileStr);
-    link.download = 'tracking.json';
+    link.download = "tracking.json";
     link.click();
   }
 
@@ -3142,16 +3142,16 @@ class Tracker {
    * @param {Object} data - The data to be saved.
    */
   async SaveTrackerData(data) {
-    console.log('about to save data', data);
+    console.log("about to save data", data);
     if (this.isLocal) {
       localStorage.setItem(constants.project_id, JSON.stringify(data));
     } else {
       // test this first
       try {
         const response = await fetch(this.logUrl, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
         });
@@ -3161,10 +3161,10 @@ class Tracker {
         }
 
         const result = await response.json();
-        console.log('Data saved successfully:', result);
+        console.log("Data saved successfully:", result);
         return result;
       } catch (error) {
-        console.error('Error saving data:', error);
+        console.error("Error saving data:", error);
         return null;
       }
     }
@@ -3187,7 +3187,7 @@ class Tracker {
     this.data = null;
 
     if (constants.debugLevel > 0) {
-      console.log('tracking data cleared');
+      console.log("tracking data cleared");
     }
 
     this.DataSetup();
@@ -3195,16 +3195,16 @@ class Tracker {
 
   SaveSettings() {
     // fetch all settings, push to data.settings
-    let settings = JSON.parse(localStorage.getItem('settings_data'));
+    let settings = JSON.parse(localStorage.getItem("settings_data"));
     if (settings) {
       // don't store their auth keys
-      settings.openAIAuthKey = 'hidden';
-      settings.geminiAuthKey = 'hidden';
+      settings.openAIAuthKey = "hidden";
+      settings.geminiAuthKey = "hidden";
       if (constants.emailAuthKey) {
         settings.username = constants.emailAuthKey;
       }
       settings;
-      this.SetData('settings', settings);
+      this.SetData("settings", settings);
     }
   }
 
@@ -3301,7 +3301,7 @@ class Tracker {
     }
     if (!this.isUndefinedOrNull(constants.infoDiv.innerHTML)) {
       let textDisplay = Object.assign(constants.infoDiv.innerHTML);
-      textDisplay = textDisplay.replaceAll(/<[^>]*>?/gm, '');
+      textDisplay = textDisplay.replaceAll(/<[^>]*>?/gm, "");
       eventToLog.text_display = textDisplay;
     }
     if (!this.isUndefinedOrNull(location.href)) {
@@ -3309,13 +3309,13 @@ class Tracker {
     }
 
     // chart specific values
-    let x_tickmark = '';
-    let y_tickmark = '';
-    let x_label = '';
-    let y_label = '';
-    let value = '';
-    let fill_value = '';
-    if (constants.chartType == 'bar') {
+    let x_tickmark = "";
+    let y_tickmark = "";
+    let x_label = "";
+    let y_label = "";
+    let value = "";
+    let fill_value = "";
+    if (constants.chartType == "bar") {
       if (!this.isUndefinedOrNull(plot.columnLabels[position.x])) {
         x_tickmark = plot.columnLabels[position.x];
       }
@@ -3328,7 +3328,7 @@ class Tracker {
       if (!this.isUndefinedOrNull(plot.plotData[position.x])) {
         value = plot.plotData[position.x];
       }
-    } else if (constants.chartType == 'heat') {
+    } else if (constants.chartType == "heat") {
       if (!this.isUndefinedOrNull(plot.x_labels[position.x])) {
         x_tickmark = plot.x_labels[position.x].trim();
       }
@@ -3349,11 +3349,11 @@ class Tracker {
       if (!this.isUndefinedOrNull(plot.group_labels[2])) {
         fill_value = plot.group_labels[2];
       }
-    } else if (constants.chartType == 'box') {
+    } else if (constants.chartType == "box") {
       let plotPos =
-        constants.plotOrientation == 'vert' ? position.x : position.y;
+        constants.plotOrientation == "vert" ? position.x : position.y;
       let sectionPos =
-        constants.plotOrientation == 'vert' ? position.y : position.x;
+        constants.plotOrientation == "vert" ? position.y : position.x;
       let sectionLabel = plot.sections[sectionPos];
 
       if (!this.isUndefinedOrNull(plot.x_group_label)) {
@@ -3362,7 +3362,7 @@ class Tracker {
       if (!this.isUndefinedOrNull(plot.y_group_label)) {
         y_label = plot.y_group_label;
       }
-      if (constants.plotOrientation == 'vert') {
+      if (constants.plotOrientation == "vert") {
         if (plotPos > -1 && sectionPos > -1) {
           if (!this.isUndefinedOrNull(sectionLabel)) {
             y_tickmark = sectionLabel;
@@ -3387,7 +3387,7 @@ class Tracker {
           }
         }
       }
-    } else if (constants.chartType == 'point') {
+    } else if (constants.chartType == "point") {
       if (!this.isUndefinedOrNull(plot.x_group_label)) {
         x_label = plot.x_group_label;
       }
@@ -3414,7 +3414,7 @@ class Tracker {
 
     //console.log("x_tickmark: '", x_tickmark, "', y_tickmark: '", y_tickmark, "', x_label: '", x_label, "', y_label: '", y_label, "', value: '", value, "', fill_value: '", fill_value);
 
-    this.SetData('events', eventToLog);
+    this.SetData("events", eventToLog);
     //console.log('logged an event');
   }
 
@@ -3427,7 +3427,7 @@ class Tracker {
   SetData(key, value) {
     if (this.isLocal) {
       let data = this.GetTrackerData();
-      let arrayKeys = ['events', 'ChatHistory', 'settings'];
+      let arrayKeys = ["events", "ChatHistory", "settings"];
       if (!arrayKeys.includes(key)) {
         data[key] = value;
       } else {
@@ -3438,7 +3438,7 @@ class Tracker {
       }
       this.SaveTrackerData(data);
     } else {
-      value['log_type'] = key;
+      value["log_type"] = key;
       this.SaveTrackerData(value);
     }
   }
@@ -3472,20 +3472,20 @@ class Review {
     // true means on or show
     if (onoff) {
       constants.reviewSaveSpot = document.activeElement;
-      constants.review_container.classList.remove('hidden');
+      constants.review_container.classList.remove("hidden");
       constants.reviewSaveBrailleMode = constants.brailleMode;
       constants.review.focus();
 
-      display.announceText('Review on');
+      display.announceText("Review on");
     } else {
-      constants.review_container.classList.add('hidden');
-      if (constants.reviewSaveBrailleMode == 'on') {
+      constants.review_container.classList.add("hidden");
+      if (constants.reviewSaveBrailleMode == "on") {
         // we have to turn braille mode back on
-        display.toggleBrailleMode('on');
+        display.toggleBrailleMode("on");
       } else {
         constants.reviewSaveSpot.focus();
       }
-      display.announceText('Review off');
+      display.announceText("Review off");
     }
   }
 }
@@ -3502,7 +3502,7 @@ class LogError {
    * @param {string} a - The absent element to log.
    */
   LogAbsentElement(a) {
-    console.log(a, 'not found. Visual highlighting is turned off.');
+    console.log(a, "not found. Visual highlighting is turned off.");
   }
 
   /**
@@ -3510,7 +3510,7 @@ class LogError {
    * @param {string} a - The critical element to log.
    */
   LogCriticalElement(a) {
-    consolelog(a, 'is critical. MAIDR unable to run');
+    consolelog(a, "is critical. MAIDR unable to run");
   }
 
   /**
@@ -3521,9 +3521,9 @@ class LogError {
   LogDifferentLengths(a, b) {
     console.log(
       a,
-      'and',
+      "and",
       b,
-      'do not have the same length. Visual highlighting is turned off.'
+      "do not have the same length. Visual highlighting is turned off."
     );
   }
 
@@ -3534,11 +3534,11 @@ class LogError {
    */
   LogTooManyElements(a, b) {
     console.log(
-      'Too many',
+      "Too many",
       a,
-      'elements. Only the first',
+      "elements. Only the first",
       b,
-      'will be highlighted.'
+      "will be highlighted."
     );
   }
 
@@ -3547,7 +3547,7 @@ class LogError {
    * @param {*} a - The parameter that is not an array.
    */
   LogNotArray(a) {
-    console.log(a, 'is not an array. Visual highlighting is turned off.');
+    console.log(a, "is not an array. Visual highlighting is turned off.");
   }
 }
 

@@ -1,3 +1,15 @@
+# [2.23.0](https://github.com/xability/maidr/compare/v2.22.1...v2.23.0) (2024-11-21)
+
+
+### Bug Fixes
+
+* enable tracking by default ([#596](https://github.com/xability/maidr/issues/596)) ([0775b2f](https://github.com/xability/maidr/commit/0775b2f156a610a99b2be3fe1ad6670275bc0ac9))
+
+
+### Features
+
+* update gpt-4o model to 2024-11-20 ([df33342](https://github.com/xability/maidr/commit/df333425ceb2847be086d0aa94453d97bc43bfc6))
+
 ## [2.22.1](https://github.com/xability/maidr/compare/v2.22.0...v2.22.1) (2024-11-19)
 
 
