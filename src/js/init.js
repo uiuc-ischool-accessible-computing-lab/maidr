@@ -224,13 +224,13 @@ function DestroyMaidr() {
   for (let i = 0; i < constants.events.length; i++) {
     if (Array.isArray(constants.events[i][0])) {
       for (let j = 0; j < constants.events[i][0].length; j++) {
-        constants.events[i][0][j].removeEventListener(
+        constants.events[i][0][j]?.removeEventListener(
           constants.events[i][1],
           constants.events[i][2]
         );
       }
     } else {
-      constants.events[i][0].removeEventListener(
+      constants.events[i][0]?.removeEventListener(
         constants.events[i][1],
         constants.events[i][2]
       );
