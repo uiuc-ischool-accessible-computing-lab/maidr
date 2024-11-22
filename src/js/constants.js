@@ -3536,8 +3536,11 @@ class Tracker {
       }
       this.SaveTrackerData(data);
     } else {
-      value['log_type'] = key;
-      this.SaveTrackerData(value);
+      // check if value is a dict
+      if (typeof value === 'object' && value !== null) {
+        value['log_type'] = key;
+        this.SaveTrackerData(value);
+      }
     }
   }
 
