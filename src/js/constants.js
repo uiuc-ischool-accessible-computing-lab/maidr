@@ -1576,6 +1576,7 @@ class Menu {
             if (data && data.message && data.client_token) {
               alert(data.message);
               constants.clientToken = data.client_token;
+              constants.emailAuthKey = email;
 
               this.DisableLLMAPIKeys();
 
