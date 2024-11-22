@@ -1279,11 +1279,9 @@ class Menu {
       'input',
       function (e) {
         if (e.target.value) {
-          document
-            .getElementById('delete_email_key')
-            .classList.remove('hidden');
+          document.getElementById('delete_email_key').style = '';
         } else {
-          document.getElementById('delete_email_key').classList.add('hidden');
+          document.getElementById('delete_email_key').style = 'display: none';
         }
       },
     ]);
@@ -1452,6 +1450,10 @@ class Menu {
     document
       .getElementById(`claude_auth_key_container`)
       .classList.add('hidden');
+
+    if (!constants.emailAuthKey) {
+      document.getElementById('delete_email_key').style = 'display: none';
+    }
 
     // skill level other
     if (constants.skillLevel == 'other') {
@@ -1889,7 +1891,7 @@ class ChatLLM {
       function (e) {
         document.getElementById('email_auth_key').value = '';
         document.getElementById('email_auth_key').disabled = false;
-        document.getElementById('delete_email_key').classList.add('hidden');
+        document.getElementById('delete_email_key').style = 'display: none';
         constants.clientToken = '';
         document.getElementById('verify').classList.remove('hidden');
       },
