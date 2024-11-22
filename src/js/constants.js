@@ -2093,20 +2093,20 @@ class ChatLLM {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
-      if (constants.openAIAuthKey) {
-        chatLLM.OpenAIPrompt(text, img);
-      } else {
+      if (constants.emailAuthKey) {
         chatLLM.OpenAIPromptAPI(text, img);
+      } else {
+        chatLLM.OpenAIPrompt(text, img);
       }
     }
     if ('gemini' in constants.LLMModels) {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
-      if (constants.geminiAuthKey) {
-        chatLLM.GeminiPrompt(text, img);
-      } else {
+      if (constants.emailAuthKey) {
         chatLLM.GeminiPromptAPI(text, img);
+      } else {
+        chatLLM.GeminiPrompt(text, img);
       }
     }
 
@@ -2114,10 +2114,10 @@ class ChatLLM {
       if (firsttime) {
         img = await this.ConvertSVGtoJPG(singleMaidr.id, 'claude');
       }
-      if (constants.claudeAuthKey) {
-        chatLLM.ClaudePrompt(text, img);
-      } else {
+      if (constants.emailAuthKey) {
         chatLLM.ClaudePromptAPI(text, img);
+      } else {
+        chatLLM.ClaudePrompt(text, img);
       }
     }
   }
