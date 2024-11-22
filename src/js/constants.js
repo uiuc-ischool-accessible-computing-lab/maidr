@@ -648,11 +648,9 @@ class Constants {
   /**
    * Base URL for the API calls to backend services.
    */
-  // baseURL = 'https://maidr-service.azurewebsites.net/api/';
-  baseURL = 'http://localhost:7071/api/';
+  baseURL = 'https://maidr-service.azurewebsites.net/api/';
 
-  // code = '?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
-  code = '';
+  code = '?code=I8Aa2PlPspjQ8Hks0QzGyszP8_i2-XJ3bq7Xh8-ykEe4AzFuYn_QWA%3D%3D';
 
   clientToken = null;
 
@@ -1275,6 +1273,21 @@ class Menu {
         }),
     ]);
 
+    // if email_auth_key has a value, show the delete button
+    constants.events.push([
+      document.getElementById('email_auth_key'),
+      'input',
+      function (e) {
+        if (e.target.value) {
+          document
+            .getElementById('delete_email_key')
+            .classList.remove('hidden');
+        } else {
+          document.getElementById('delete_email_key').classList.add('hidden');
+        }
+      },
+    ]);
+
     // Skill level other events
     constants.events.push([
       document.getElementById('skill_level'),
@@ -1518,15 +1531,6 @@ class Menu {
 
     // hide verify button
     document.getElementById('verify').classList.add('hidden');
-
-    // remove listener on enter
-    document
-      .getElementById('email_auth_key')
-      .removeEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-          document.getElementById('verify').click();
-        }
-      });
   }
 
   isEmailTriggered = false;
@@ -1885,15 +1889,9 @@ class ChatLLM {
       function (e) {
         document.getElementById('email_auth_key').value = '';
         document.getElementById('email_auth_key').disabled = false;
+        document.getElementById('delete_email_key').classList.add('hidden');
         constants.clientToken = '';
         document.getElementById('verify').classList.remove('hidden');
-        document
-          .getElementById('email_auth_key')
-          .addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-              document.getElementById('verify').click();
-            }
-          });
       },
     ]);
     constants.events.push([
