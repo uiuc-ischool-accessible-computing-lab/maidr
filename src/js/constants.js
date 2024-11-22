@@ -1321,6 +1321,9 @@ class Menu {
         if (checked.length > 2) {
           checkbox.checked = false;
           alert('You can select up to 2 AI models.');
+        } else if (checked.length === 0) {
+          checkbox.checked = true;
+          alert('You must select at least one AI model.');
         }
       });
     });
