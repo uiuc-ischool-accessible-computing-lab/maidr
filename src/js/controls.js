@@ -472,15 +472,19 @@ class Control {
           // we lock the selection while we're changing stuff so it doesn't loop
           constants.lockSelection = true;
 
-          // exception: don't let users click the seperator char
+          // exception: don't let users click the seperator char, so make them click just before
           let seperatorPositions = constants.brailleInput.value
             .split('')
             .reduce((positions, char, index) => {
               if (char === '⠳') positions.push(index);
               return positions;
             }, []);
+          console.log('seperatorPositions', seperatorPositions);
+          console.log('pos', pos);
           if (seperatorPositions.includes(pos)) {
-            return;
+            if (pos > 0) {
+              pos += -1;
+            }
           }
 
           // we're using braille cursor, update the selection from what was clicked
