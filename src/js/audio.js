@@ -38,6 +38,11 @@ class Audio {
    * Triggers playOscillator() with the correct parameters.
    */
   playTone(params = null) {
+    // workaround for FF starting audio context in a suspended state
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
     let currentDuration = constants.duration;
     let volume = constants.vol;
     if (params != null) {

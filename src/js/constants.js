@@ -405,7 +405,7 @@ class Constants {
    * @default 0
    * @memberof AdvancedUserSettings
    */
-  canTrack = 1; // 0 / 1, can we track user data
+  canTrack = 0; // 0 / 1, can we track user data
   /**
    * How are we representing braille? like, is it 1:1 with the chart, or do we do some compression and try to represent as accuratly as we can? Not currently in use.
    * @type {boolean}
@@ -2168,8 +2168,7 @@ class ChatLLM {
       if (data.text()) {
         text = data.text();
         chatLLM.DisplayChatMessage(LLMName, text);
-      }
-      if (data.error) {
+      } else if (data.error) {
         chatLLM.DisplayChatMessage(LLMName, 'Error processing request.', true);
         chatLLM.WaitingSound(false);
       }
@@ -2178,7 +2177,7 @@ class ChatLLM {
     // if we're tracking, log the data
     if (constants.canTrack) {
       let chatHist = chatLLM.CopyChatHistory();
-      tracker.SetData('ChatHistory', chatHist);
+      tracker.SetData('ChatHistory', { chatHistory: chatHist });
     }
   }
 
