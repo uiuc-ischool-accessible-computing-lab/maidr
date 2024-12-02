@@ -168,6 +168,10 @@ class Display {
         this.announceText(resources.GetString('son_off'));
       }
     }
+
+    if (constants.sonifMode != 'off') {
+      audio.fixAudioContext();
+    }
   }
 
   /**

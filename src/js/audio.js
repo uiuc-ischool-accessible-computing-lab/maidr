@@ -8,9 +8,20 @@
  */
 class Audio {
   constructor() {
-    this.AudioContext = window['AudioContext'] || window['webkitAudioContext'];
-    this.audioContext = new AudioContext();
-    this.compressor = this.compressorSetup(this.audioContext);
+    this.fixAudioContext();
+  }
+
+  fixAudioContext() {
+    if (!this.audioContext) {
+      this.AudioContext =
+        window['AudioContext'] || window['webkitAudioContext'];
+      this.audioContext = new AudioContext();
+      this.compressor = this.compressorSetup(this.audioContext);
+    } else if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume().then(() => {
+        console.log('AudioContext resumed');
+      });
+    }
   }
 
   /**
@@ -38,11 +49,6 @@ class Audio {
    * Triggers playOscillator() with the correct parameters.
    */
   playTone(params = null) {
-    // workaround for FF starting audio context in a suspended state
-    if (this.audioContext.state === 'suspended') {
-      this.audioContext.resume();
-    }
-
     let currentDuration = constants.duration;
     let volume = constants.vol;
     if (params != null) {
