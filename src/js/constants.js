@@ -1962,6 +1962,7 @@ class ChatLLM {
    */
   CopyChatHistory(e) {
     let text = '';
+    let notificationText = '';
     if (typeof e == 'undefined') {
       // check for passthrough
       // get html of the full chat history
@@ -1971,9 +1972,11 @@ class ChatLLM {
       if (e.target.id == 'chatLLM_copy_all') {
         // get html of the full chat history
         text = document.getElementById('chatLLM_chat_history').innerHTML;
+        notificationText = 'Copied All.';
       } else if (e.target.classList.contains('chatLLM_message_copy_button')) {
         // get the text of the element before the button
         text = e.target.closest('p').previousElementSibling.innerHTML;
+        notificationText = 'Copied.';
       }
     } else if (e.type == 'keyup') {
       // check for alt shift c or ctrl shift c
@@ -1985,6 +1988,7 @@ class ChatLLM {
         );
         if (elem) {
           text = elem.innerHTML;
+          notificationText = 'Copied.';
         }
       } else if (
         e.key == 'A' &&
@@ -1994,6 +1998,7 @@ class ChatLLM {
         e.preventDefault();
         // get html of the full chat history
         text = document.getElementById('chatLLM_chat_history').innerHTML;
+        notificationText = 'Copied All.';
       }
     }
 
@@ -2010,6 +2015,12 @@ class ChatLLM {
       let markdown = this.htmlToMarkdown(cleanElems);
       // this messes up a bit with spacing, so kill more than 2 newlines in a row
       markdown = markdown.replace(/\n{3,}/g, '\n\n');
+
+      if (notificationText != '') {
+        if (display) {
+          display.announceText(notificationText);
+        }
+      }
 
       try {
         navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
