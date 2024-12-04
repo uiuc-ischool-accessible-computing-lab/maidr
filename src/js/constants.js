@@ -2280,7 +2280,10 @@ class ChatLLM {
     // if we're tracking, log the data
     if (constants.canTrack) {
       let chatHist = chatLLM.CopyChatHistory();
-      tracker.SetData('ChatHistory', { chatHistory: chatHist });
+      let data = {};
+      data.chatHistory = chatHist;
+      if (constants.emailAuthKey) data.username = constants.emailAuthKey;
+      tracker.SetData('ChatHistory', data);
     }
   }
 
