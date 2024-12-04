@@ -810,6 +810,51 @@ class Constants {
     }
     return styleString;
   }
+  /**
+   * Converts the active chart to a jpg image.
+   * @id {string} - The html ID of the chart to convert.
+   */
+  async ConvertSVGtoJPG(id, model) {
+    let svgElement = document.getElementById(id);
+    return new Promise((resolve, reject) => {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+
+      var svgData = new XMLSerializer().serializeToString(svgElement);
+      if (!svgData.startsWith('<svg xmlns')) {
+        svgData = `<svg xmlns="http://www.w3.org/2000/svg" ${svgData.slice(4)}`;
+      }
+
+      var svgSize =
+        svgElement.viewBox.baseVal || svgElement.getBoundingClientRect();
+      canvas.width = svgSize.width;
+      canvas.height = svgSize.height;
+
+      var img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, svgSize.width, svgSize.height);
+        var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
+        if (model == 'openai') {
+          resolve(jpegData);
+        } else if (model == 'gemini' || model == 'claude') {
+          let base64Data = jpegData.split(',')[1];
+          resolve(base64Data);
+          //resolve(jpegData);
+        }
+        URL.revokeObjectURL(url);
+      };
+
+      img.onerror = function () {
+        reject(new Error('Error loading SVG'));
+      };
+
+      var svgBlob = new Blob([svgData], {
+        type: 'image/svg+xml;charset=utf-8',
+      });
+      var url = URL.createObjectURL(svgBlob);
+      img.src = url;
+    });
+  }
 }
 
 /**
@@ -2114,7 +2159,7 @@ class ChatLLM {
 
     if ('openai' in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'openai');
+        img = await constants.ConvertSVGtoJPG(singleMaidr.id, 'openai');
       }
       if (constants.emailAuthKey) {
         chatLLM.OpenAIPromptAPI(text, img);
@@ -2124,7 +2169,7 @@ class ChatLLM {
     }
     if ('gemini' in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
+        img = await constants.ConvertSVGtoJPG(singleMaidr.id, 'gemini');
       }
       if (constants.emailAuthKey) {
         chatLLM.GeminiPromptAPI(text, img);
@@ -2135,7 +2180,7 @@ class ChatLLM {
 
     if ('claude' in constants.LLMModels) {
       if (firsttime) {
-        img = await this.ConvertSVGtoJPG(singleMaidr.id, 'claude');
+        img = await constants.ConvertSVGtoJPG(singleMaidr.id, 'claude');
       }
       if (constants.emailAuthKey) {
         chatLLM.ClaudePromptAPI(text, img);
@@ -2832,52 +2877,6 @@ class ChatLLM {
   }
 
   /**
-   * Converts the active chart to a jpg image.
-   * @id {string} - The html ID of the chart to convert.
-   */
-  async ConvertSVGtoJPG(id, model) {
-    let svgElement = document.getElementById(id);
-    return new Promise((resolve, reject) => {
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-
-      var svgData = new XMLSerializer().serializeToString(svgElement);
-      if (!svgData.startsWith('<svg xmlns')) {
-        svgData = `<svg xmlns="http://www.w3.org/2000/svg" ${svgData.slice(4)}`;
-      }
-
-      var svgSize =
-        svgElement.viewBox.baseVal || svgElement.getBoundingClientRect();
-      canvas.width = svgSize.width;
-      canvas.height = svgSize.height;
-
-      var img = new Image();
-      img.onload = function () {
-        ctx.drawImage(img, 0, 0, svgSize.width, svgSize.height);
-        var jpegData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 is the quality parameter
-        if (model == 'openai') {
-          resolve(jpegData);
-        } else if (model == 'gemini' || model == 'claude') {
-          let base64Data = jpegData.split(',')[1];
-          resolve(base64Data);
-          //resolve(jpegData);
-        }
-        URL.revokeObjectURL(url);
-      };
-
-      img.onerror = function () {
-        reject(new Error('Error loading SVG'));
-      };
-
-      var svgBlob = new Blob([svgData], {
-        type: 'image/svg+xml;charset=utf-8',
-      });
-      var url = URL.createObjectURL(svgBlob);
-      img.src = url;
-    });
-  }
-
-  /**
    * GetDefaultPrompt is an asynchronous function that generates a prompt for describing a chart to a blind person.
    * It converts the chart to a JPG image using the ConvertSVGtoJPG method and then submits the prompt to the chatLLM function.
    * The prompt includes information about the blind person's skill level and the chart's image and raw data, if available.
@@ -3218,7 +3217,7 @@ class Tracker {
   /**
    * Sets up the tracker data by checking if previous data exists and creating new data if it doesn't.
    */
-  DataSetup() {
+  async DataSetup() {
     let prevData = this.GetTrackerData();
     if (!this.isLocal || !prevData) {
       let data = {};
@@ -3227,6 +3226,10 @@ class Tracker {
       data.language = Object.assign(navigator.language);
       data.platform = Object.assign(navigator.platform);
       data.geolocation = Object.assign(navigator.geolocation);
+      data.imageBase64 = await constants.ConvertSVGtoJPG(
+        singleMaidr.id,
+        'gemini'
+      );
       data.log_type = 'system_data';
       data.events = [];
       data.settings = [];
