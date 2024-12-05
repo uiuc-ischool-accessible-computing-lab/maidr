@@ -2265,7 +2265,6 @@ class ChatLLM {
         }
       }
     }
-    console.log('waiting queue: ' + constants.waitingQueue);
   }
   /**
    * Overrides and kills all waiting sounds for LLM
