@@ -2010,7 +2010,7 @@ class ChatLLM {
    *
    * @param {Event|undefined} e - The event that triggered the copy action. If undefined, the entire chat history is copied.
    */
-  CopyChatHistory(e) {
+  CopyChatHistory(e, actuallyCopy = true) {
     let text = '';
     let notificationText = '';
     if (typeof e == 'undefined') {
@@ -2072,10 +2072,12 @@ class ChatLLM {
         }
       }
 
-      try {
-        navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
-      } catch (err) {
-        console.error('Failed to copy: ', err);
+      if (actuallyCopy) {
+        try {
+          navigator.clipboard.writeText(markdown); // note: this fails if you're on the inspector. That's fine as it'll never happen to real users
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
       }
       return markdown;
     }
@@ -2343,7 +2345,7 @@ class ChatLLM {
 
     // if we're tracking, log the data
     if (constants.canTrack) {
-      let chatHist = chatLLM.CopyChatHistory();
+      let chatHist = chatLLM.CopyChatHistory(undefined, false);
       let data = {};
       data.chatHistory = chatHist;
       if (constants.emailAuthKey) data.username = constants.emailAuthKey;
