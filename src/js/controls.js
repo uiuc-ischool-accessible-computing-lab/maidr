@@ -299,6 +299,9 @@ class Control {
    * @returns {void}
    */
   SetMouseControls() {
+    // to set this up, we run the event at the document level, and then deal with what we've clicked on in individual chart types
+    // for bar hist stacked, we check if we've clicked on an element of the selector
+    // for box line, we use coordinates and find the closest point
     if ('selector' in singleMaidr) {
       let selectorElems = document.querySelectorAll(singleMaidr.selector);
       if (selectorElems.length > 0) {
@@ -307,12 +310,14 @@ class Control {
           'click',
           function (e) {
             if (constants.chartType == 'bar' || constants.chartType == 'hist') {
+              // check if we've hit a selector
               if (e.target.matches(singleMaidr.selector)) {
                 let index = Array.from(selectorElems).indexOf(e.target);
                 position.x = index;
                 control.UpdateAll();
               }
             } else if (constants.chartType == 'box') {
+              // here follows a nasty function where we use bounding boxes from the highlight feature compare to our click coords
               let closestDistance = Infinity;
               let closestIndex = -1;
               let clickX = e.clientX;
@@ -396,6 +401,7 @@ class Control {
                 control.UpdateAll();
               }
             } else if (constants.chartType == 'heat') {
+              // check if we've hit a selector
               let index = Array.from(selectorElems).indexOf(e.target);
               position.x = Math.floor(index / plot.num_rows);
               position.y = plot.num_rows - (index % plot.num_rows) - 1;
@@ -419,19 +425,7 @@ class Control {
                 let distance = Math.sqrt(
                   (pointX - clickX) ** 2 + (pointY - clickY) ** 2
                 );
-                console.log(
-                  'distance',
-                  distance,
-                  'given clicked coords (',
-                  clickX,
-                  ', ',
-                  clickY,
-                  ') and target coords (',
-                  pointX,
-                  ', ',
-                  pointY,
-                  ')'
-                );
+                //console.log( 'distance', distance, 'given clicked coords (', clickX, ', ', clickY, ') and target coords (', pointX, ', ', pointY, ')');
                 if (distance < closestDistance) {
                   closestDistance = distance;
                   closestIndex = i;
@@ -446,6 +440,19 @@ class Control {
               constants.chartType == 'stacked_normalized_bar' ||
               constants.chartType == 'dodged_bar'
             ) {
+              // check if we've hit a selector
+              if (e.target.matches(singleMaidr.selector)) {
+                outerLoop: for (let i = 0; i < plot.elements.length; i++) {
+                  for (let j = 0; j < plot.elements[i].length; j++) {
+                    if (plot.elements[i][j] == e.target) {
+                      position.x = i;
+                      position.y = j;
+                      control.UpdateAll();
+                      break outerLoop;
+                    }
+                  }
+                }
+              }
             }
           },
         ]);
