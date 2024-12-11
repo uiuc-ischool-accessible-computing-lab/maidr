@@ -400,8 +400,52 @@ class Control {
               position.x = Math.floor(index / plot.num_rows);
               position.y = plot.num_rows - (index % plot.num_rows) - 1;
               control.UpdateAll();
-            } else if (constants.chartType == 'point') {
-            } else if (constants.chartType == 'smooth') {
+            } else if (constants.chartType == 'line') {
+              // compare coordinates and get the point we're closest to, if we're within 24px
+              let chartBounds = constants.chart.getBoundingClientRect();
+              let scaleX =
+                constants.chart.viewBox.baseVal.width / chartBounds.width;
+              let scaleY =
+                constants.chart.viewBox.baseVal.height / chartBounds.height;
+
+              let closestDistance = Infinity;
+              let closestIndex = -1;
+              let clickX = (e.clientX - chartBounds.left) * scaleX;
+              let clickY = (e.clientY - chartBounds.top) * scaleY;
+              let pointX, pointY;
+              for (let i = 0; i < plot.chartLineX.length; i++) {
+                pointX = plot.chartLineX[i] - chartBounds.left;
+                pointY = plot.chartLineY[i] - chartBounds.top;
+                let distance = Math.sqrt(
+                  (pointX - clickX) ** 2 + (pointY - clickY) ** 2
+                );
+                console.log(
+                  'distance',
+                  distance,
+                  'given clicked coords (',
+                  clickX,
+                  ', ',
+                  clickY,
+                  ') and target coords (',
+                  pointX,
+                  ', ',
+                  pointY,
+                  ')'
+                );
+                if (distance < closestDistance) {
+                  closestDistance = distance;
+                  closestIndex = i;
+                }
+              }
+              if (closestDistance < 24) {
+                position.x = closestIndex;
+                control.UpdateAll();
+              }
+            } else if (
+              constants.chartType == 'stacked_bar' ||
+              constants.chartType == 'stacked_normalized_bar' ||
+              constants.chartType == 'dodged_bar'
+            ) {
             }
           },
         ]);
