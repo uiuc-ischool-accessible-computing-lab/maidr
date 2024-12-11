@@ -1492,7 +1492,7 @@ class Menu {
     }
 
     if (constants.emailAuthKey && constants.clientToken) {
-      console.log('email auth key and client token found');
+      //console.log('email auth key and client token found');
       for (let model in constants.LLMModels) {
         document.getElementById(`LLM_model_${model}`).checked = true;
       }

@@ -300,32 +300,110 @@ class Control {
    */
   SetMouseControls() {
     if ('selector' in singleMaidr) {
-      let selectedElems = document.querySelectorAll(singleMaidr.selector);
-      if (selectedElems.length > 1) {
-        selectedElems.forEach((elem) => {
-          constants.events.push([
-            elem,
-            'click',
-            function (e) {
-              if (
-                constants.chartType == 'bar' ||
-                constants.chartType == 'hist'
-              ) {
-                let index = Array.from(selectedElems).indexOf(elem);
+      let selectorElems = document.querySelectorAll(singleMaidr.selector);
+      if (selectorElems.length > 0) {
+        constants.events.push([
+          document,
+          'click',
+          function (e) {
+            if (constants.chartType == 'bar' || constants.chartType == 'hist') {
+              if (e.target.matches(singleMaidr.selector)) {
+                let index = Array.from(selectorElems).indexOf(e.target);
                 position.x = index;
                 control.UpdateAll();
-              } else if (constants.chartType == 'box') {
-              } else if (constants.chartType == 'heat') {
-              } else if (constants.chartType == 'point') {
-              } else if (constants.chartType == 'smooth') {
               }
-            },
-          ]);
-        });
+            } else if (constants.chartType == 'box') {
+              let closestDistance = Infinity;
+              let closestIndex = -1;
+              let clickX = e.clientX;
+              let clickY = e.clientY;
+              let expandedBox = null;
+              let padding = 15;
+              const chartBounds = constants.chart.getBoundingClientRect();
+
+              // Iterate through plot.plotBounds using regular loops
+              for (
+                let groupIndex = 0;
+                groupIndex < plot.plotBounds.length;
+                groupIndex++
+              ) {
+                const group = plot.plotBounds[groupIndex];
+
+                for (let boxIndex = 0; boxIndex < group.length; boxIndex++) {
+                  const box = group[boxIndex];
+
+                  if (
+                    box.top === undefined ||
+                    box.left === undefined ||
+                    box.bottom === undefined ||
+                    box.right === undefined
+                  ) {
+                    continue; // Skip invalid boxes
+                  }
+                  // Expand the bounding box by 15px
+                  let expandedBoxAdjustedCoords = {
+                    x: box.left - padding - chartBounds.left,
+                    y: box.top - padding - chartBounds.top,
+                    width: box.width + padding * 2,
+                    height: box.height + padding * 2,
+                  };
+                  expandedBox = {
+                    top: expandedBoxAdjustedCoords.y,
+                    left: expandedBoxAdjustedCoords.x,
+                    bottom:
+                      expandedBoxAdjustedCoords.y +
+                      expandedBoxAdjustedCoords.height,
+                    right:
+                      expandedBoxAdjustedCoords.x +
+                      expandedBoxAdjustedCoords.width,
+                  };
+                  // Calculate the center of the bounding box
+                  const centerX = (expandedBox.left + expandedBox.right) / 2;
+                  const centerY = (expandedBox.top + expandedBox.bottom) / 2;
+
+                  // Calculate the Euclidean distance
+                  const distance = Math.sqrt(
+                    (centerX - clickX) ** 2 + (centerY - clickY) ** 2
+                  );
+
+                  //console.log( 'clicked coords: (', clickX, ', ', clickY, ') | box coords: (', centerX, ', ', centerY, ') | distance: ', distance, 'array index: [', groupIndex, ',', boxIndex, ']');
+
+                  // Update the closest box if this one is nearer, and is inside the bounding box
+                  if (distance < closestDistance) {
+                    if (
+                      clickX >= expandedBox.left &&
+                      clickX <= expandedBox.right &&
+                      clickY >= expandedBox.top &&
+                      clickY <= expandedBox.bottom
+                    ) {
+                      closestDistance = distance;
+                      closestIndex = [groupIndex, boxIndex];
+                    }
+                  }
+                }
+              }
+
+              // did we get one?
+              if (closestDistance < Infinity) {
+                //console.log('found a box, index', closestIndex);
+                if (constants.plotOrientation == 'horz') {
+                  position.x = closestIndex[1];
+                  position.y = closestIndex[0];
+                } else {
+                  position.x = closestIndex[0];
+                  position.y = closestIndex[1];
+                }
+                control.UpdateAll();
+              }
+            } else if (constants.chartType == 'heat') {
+            } else if (constants.chartType == 'point') {
+            } else if (constants.chartType == 'smooth') {
+            }
+          },
+        ]);
       }
     }
   }
-  SetMouseControls() {}
 
   /**
    * Sets up event listeners for main controls
