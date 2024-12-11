@@ -396,6 +396,10 @@ class Control {
                 control.UpdateAll();
               }
             } else if (constants.chartType == 'heat') {
+              let index = Array.from(selectorElems).indexOf(e.target);
+              position.x = Math.floor(index / plot.num_rows);
+              position.y = plot.num_rows - (index % plot.num_rows) - 1;
+              control.UpdateAll();
             } else if (constants.chartType == 'point') {
             } else if (constants.chartType == 'smooth') {
             }
