@@ -299,25 +299,27 @@ class Control {
    * @returns {void}
    */
   SetMouseControls() {
-    // to set this up, we run the event at the document level, and then deal with what we've clicked on in individual chart types
-    // for bar hist stacked, we check if we've clicked on an element of the selector
+    // to set this up, we run the event at the document level, and then deal with what we've hovered on in individual chart types
+    // for bar hist stacked, we check if we've hovered on an element of the selector
     // for box line, we use coordinates and find the closest point
     if ('selector' in singleMaidr) {
       let selectorElems = document.querySelectorAll(singleMaidr.selector);
       if (selectorElems.length > 0) {
         constants.events.push([
           document,
-          'click',
+          'mousemove',
           function (e) {
             if (constants.chartType == 'bar' || constants.chartType == 'hist') {
               // check if we've hit a selector
               if (e.target.matches(singleMaidr.selector)) {
                 let index = Array.from(selectorElems).indexOf(e.target);
-                position.x = index;
-                control.UpdateAll();
+                if (index != position.x) {
+                  position.x = index;
+                  control.UpdateAll();
+                }
               }
             } else if (constants.chartType == 'box') {
-              // here follows a nasty function where we use bounding boxes from the highlight feature compare to our click coords
+              // here follows a nasty function where we use bounding boxes from the highlight feature compare to our hover coords
               let closestDistance = Infinity;
               let closestIndex = -1;
               let clickX = e.clientX;
@@ -392,20 +394,36 @@ class Control {
               if (closestDistance < Infinity) {
                 //console.log('found a box, index', closestIndex);
                 if (constants.plotOrientation == 'horz') {
-                  position.x = closestIndex[1];
-                  position.y = closestIndex[0];
+                  if (
+                    position.x != closestIndex[0] ||
+                    position.y != closestIndex[1]
+                  ) {
+                    position.x = closestIndex[1];
+                    position.y = closestIndex[0];
+                    control.UpdateAll();
+                  }
                 } else {
-                  position.x = closestIndex[0];
-                  position.y = closestIndex[1];
+                  if (
+                    position.x != closestIndex[0] ||
+                    position.y != closestIndex[1]
+                  ) {
+                    position.x = closestIndex[0];
+                    position.y = closestIndex[1];
+                    control.UpdateAll();
+                  }
                 }
-                control.UpdateAll();
               }
             } else if (constants.chartType == 'heat') {
               // check if we've hit a selector
               let index = Array.from(selectorElems).indexOf(e.target);
-              position.x = Math.floor(index / plot.num_rows);
-              position.y = plot.num_rows - (index % plot.num_rows) - 1;
-              control.UpdateAll();
+              if (
+                position.x != Math.floor(index / plot.num_rows) ||
+                position.y != plot.num_rows - (index % plot.num_rows) - 1
+              ) {
+                position.x = Math.floor(index / plot.num_rows);
+                position.y = plot.num_rows - (index % plot.num_rows) - 1;
+                control.UpdateAll();
+              }
             } else if (constants.chartType == 'line') {
               // compare coordinates and get the point we're closest to, if we're within 24px
               let chartBounds = constants.chart.getBoundingClientRect();
@@ -432,8 +450,10 @@ class Control {
                 }
               }
               if (closestDistance < 24) {
-                position.x = closestIndex;
-                control.UpdateAll();
+                if (position.x != closestIndex) {
+                  position.x = closestIndex;
+                  control.UpdateAll();
+                }
               }
             } else if (
               constants.chartType == 'stacked_bar' ||
@@ -445,9 +465,11 @@ class Control {
                 outerLoop: for (let i = 0; i < plot.elements.length; i++) {
                   for (let j = 0; j < plot.elements[i].length; j++) {
                     if (plot.elements[i][j] == e.target) {
-                      position.x = i;
-                      position.y = j;
-                      control.UpdateAll();
+                      if (position.x != i || position.y != j) {
+                        position.x = i;
+                        position.y = j;
+                        control.UpdateAll();
+                      }
                       break outerLoop;
                     }
                   }
