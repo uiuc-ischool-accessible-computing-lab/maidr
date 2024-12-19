@@ -535,7 +535,7 @@ class Display {
       }
       verboseText += plot.pointValuesX[position.x] + ', ';
       if (plot.plotLegend) {
-        plot.plotLegend.y + ' is ';
+        verboseText += plot.plotLegend.y + ' is ';
       }
       verboseText += plot.pointValuesY[position.x];
 
