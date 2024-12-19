@@ -291,17 +291,37 @@ function SetEvents() {
   // add all events
   for (let i = 0; i < constants.events.length; i++) {
     if (Array.isArray(constants.events[i][0])) {
+      // sometimes we have multiple elements to apply the same event to in the [i][0] spot
       for (let j = 0; j < constants.events[i][0].length; j++) {
-        constants.events[i][0][j]?.addEventListener(
+        // and sometimes we have multiple event types in [i][1]
+        if (Array.isArray(constants.events[i][1])) {
+          for (let k = 0; k < constants.events[i][1].length; k++) {
+            constants.events[i][0][j]?.addEventListener(
+              constants.events[i][1][k],
+              constants.events[i][2]
+            );
+          }
+        } else {
+          constants.events[i][0][j]?.addEventListener(
+            constants.events[i][1],
+            constants.events[i][2]
+          );
+        }
+      }
+    } else {
+      if (Array.isArray(constants.events[i][1])) {
+        for (let j = 0; j < constants.events[i][1].length; j++) {
+          constants.events[i][0]?.addEventListener(
+            constants.events[i][1][j],
+            constants.events[i][2]
+          );
+        }
+      } else {
+        constants.events[i][0]?.addEventListener(
           constants.events[i][1],
           constants.events[i][2]
         );
       }
-    } else {
-      constants.events[i][0]?.addEventListener(
-        constants.events[i][1],
-        constants.events[i][2]
-      );
     }
   }
   // add all post load events

@@ -306,8 +306,8 @@ class Control {
       let selectorElems = document.querySelectorAll(singleMaidr.selector);
       if (selectorElems.length > 0) {
         constants.events.push([
-          document,
-          'mousemove',
+          constants.chart,
+          ['mousemove', 'touchmove'],
           function (e) {
             if (constants.chartType == 'bar' || constants.chartType == 'hist') {
               // check if we've hit a selector
@@ -416,13 +416,15 @@ class Control {
             } else if (constants.chartType == 'heat') {
               // check if we've hit a selector
               let index = Array.from(selectorElems).indexOf(e.target);
-              if (
-                position.x != Math.floor(index / plot.num_rows) ||
-                position.y != plot.num_rows - (index % plot.num_rows) - 1
-              ) {
-                position.x = Math.floor(index / plot.num_rows);
-                position.y = plot.num_rows - (index % plot.num_rows) - 1;
-                control.UpdateAll();
+              if (index != -1) {
+                if (
+                  position.x != Math.floor(index / plot.num_rows) ||
+                  position.y != plot.num_rows - (index % plot.num_rows) - 1
+                ) {
+                  position.x = Math.floor(index / plot.num_rows);
+                  position.y = plot.num_rows - (index % plot.num_rows) - 1;
+                  control.UpdateAll();
+                }
               }
             } else if (constants.chartType == 'line') {
               // compare coordinates and get the point we're closest to, if we're within 24px
