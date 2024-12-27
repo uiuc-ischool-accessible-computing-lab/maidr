@@ -548,6 +548,44 @@ class Control {
       },
     ]);
 
+    // mark and recall
+    // mark with M + # (0-9), recall with m + # (0-9)
+    // available in chart and braille, not review
+    let lastKeytime = 0;
+    let lastKey = null;
+    constants.events.push([
+      [constants.chart, constants.brailleInput],
+      'keydown',
+      function (e) {
+        // setup
+        const now = new Date().getTime();
+        const key = e.key;
+
+        // check for keypress within threshold
+        if (now - lastKeytime < constants.keypressInterval) {
+          // mark with M
+          if (lastKey == 'M' && /[0-9]/.test(key)) {
+            const markIndex = parseInt(key, 10);
+            constants.mark[markIndex] = JSON.parse(JSON.stringify(position)); // deep copy
+            display.announceText('Marked position ' + markIndex);
+          }
+
+          // recall with m
+          if (lastKey == 'm' && /[0-9]/.test(key)) {
+            const recallIndex = parseInt(key, 10);
+            if (constants.mark[recallIndex]) {
+              position = constants.mark[recallIndex];
+              control.UpdateAll();
+            }
+          }
+        }
+
+        // update last key and time
+        lastKey = key;
+        lastKeytime = now;
+      },
+    ]);
+
     // Init a few things
     let lastPlayed = '';
     if ([].concat(singleMaidr.type).includes('bar')) {

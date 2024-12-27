@@ -655,6 +655,13 @@ class Constants {
   clientToken = null;
 
   /**
+   * Mark and recall vars. Used to store the current mark and recall state of the chart.
+   * @type {Array<number>}
+   * @default Array(10).fill(null)
+   */
+  mark = Array(10).fill(null);
+
+  /**
    * Stops the autoplay if it is currently running.
    *
    * @return {void}
