@@ -497,8 +497,10 @@ class Control {
    * @returns {void}
    */
   async SetKeyControls() {
+    // home / end: first / last element
+    // not available in review mode
     constants.events.push([
-      document,
+      [constants.chart, constants.brailleInput],
       'keydown',
       function (e) {
         // ctrl/cmd: stop autoplay
