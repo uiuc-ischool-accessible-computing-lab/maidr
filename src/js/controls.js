@@ -200,95 +200,97 @@ class Control {
   SetPrefixControls() {
     // prefix events, l + x, where x is a key for the title, axis, etc
     // we listen for a moment when l is hit for a key to follow
-    constants.events.push([
-      document,
-      'keydown',
-      function (e) {
-        // init
-        let pressedTimeout = null;
+    for (let i = 0; i < this.allControlElements.length; i++) {
+      constants.events.push([
+        this.allControlElements[i],
+        'keydown',
+        function (e) {
+          // init
+          let pressedTimeout = null;
 
-        // enable / disable prefix mode
-        if (e.key == 'l') {
-          control.pressedL = true;
-          if (pressedTimeout != null) {
-            clearTimeout(pressedTimeout);
-            pressedTimeout = null;
+          // enable / disable prefix mode
+          if (e.key == 'l') {
+            control.pressedL = true;
+            if (pressedTimeout != null) {
+              clearTimeout(pressedTimeout);
+              pressedTimeout = null;
+            }
+            pressedTimeout = setTimeout(function () {
+              control.pressedL = false;
+            }, constants.keypressInterval);
           }
-          pressedTimeout = setTimeout(function () {
-            control.pressedL = false;
-          }, constants.keypressInterval);
-        }
 
-        // Prefix mode stuff: L is enabled, look for these keys
-        if (control.pressedL) {
-          if (e.key == 'x') {
-            // X: x label
-            let xlabel = '';
-            if (singleMaidr.type == 'bar' || singleMaidr.type == 'line') {
-              xlabel = plot.plotLegend.x;
-            } else if (singleMaidr.type == 'hist') {
-              xlabel = plot.legendX;
-            } else if (
-              singleMaidr.type == 'heat' ||
-              singleMaidr.type == 'box' ||
-              singleMaidr.type == 'point' ||
-              singleMaidr.type.includes('point')
-            ) {
-              xlabel = plot.x_group_label;
-            } else if (
-              singleMaidr.type == 'stacked_bar' ||
-              singleMaidr.type == 'stacked_normalized_bar' ||
-              singleMaidr.type == 'dodged_bar'
-            ) {
-              xlabel = plot.plotLegend.x;
+          // Prefix mode stuff: L is enabled, look for these keys
+          if (control.pressedL) {
+            if (e.key == 'x') {
+              // X: x label
+              let xlabel = '';
+              if (singleMaidr.type == 'bar' || singleMaidr.type == 'line') {
+                xlabel = plot.plotLegend.x;
+              } else if (singleMaidr.type == 'hist') {
+                xlabel = plot.legendX;
+              } else if (
+                singleMaidr.type == 'heat' ||
+                singleMaidr.type == 'box' ||
+                singleMaidr.type == 'point' ||
+                singleMaidr.type.includes('point')
+              ) {
+                xlabel = plot.x_group_label;
+              } else if (
+                singleMaidr.type == 'stacked_bar' ||
+                singleMaidr.type == 'stacked_normalized_bar' ||
+                singleMaidr.type == 'dodged_bar'
+              ) {
+                xlabel = plot.plotLegend.x;
+              }
+              display.displayInfo('x label', xlabel);
+              control.pressedL = false;
+            } else if (e.key == 'y') {
+              // Y: y label
+              let ylabel = '';
+              if (singleMaidr.type == 'bar' || singleMaidr.type == 'line') {
+                ylabel = plot.plotLegend.y;
+              } else if (singleMaidr.type == 'hist') {
+                ylabel = plot.legendY;
+              } else if (
+                singleMaidr.type == 'heat' ||
+                singleMaidr.type == 'box' ||
+                singleMaidr.type == 'point' ||
+                singleMaidr.type == 'line' ||
+                singleMaidr.type.includes('point')
+              ) {
+                ylabel = plot.y_group_label;
+              } else if (
+                singleMaidr.type == 'stacked_bar' ||
+                singleMaidr.type == 'stacked_normalized_bar' ||
+                singleMaidr.type == 'dodged_bar'
+              ) {
+                ylabel = plot.plotLegend.y;
+              }
+              display.displayInfo('y label', ylabel);
+              control.pressedL = false;
+            } else if (e.key == 't') {
+              // T: title
+              display.displayInfo('title', plot.title);
+              control.pressedL = false;
+            } else if (e.key == 's') {
+              // subtitle
+              display.displayInfo('subtitle', plot.subtitle);
+              control.pressedL = false;
+            } else if (e.key == 'c') {
+              // caption
+              display.displayInfo('caption', plot.caption);
+              control.pressedL = false;
+            } else if (e.key == 'f') {
+              display.displayInfo('fill', plot.fill);
+              control.pressedL = false;
+            } else if (e.key != 'l') {
+              control.pressedL = false;
             }
-            display.displayInfo('x label', xlabel);
-            control.pressedL = false;
-          } else if (e.key == 'y') {
-            // Y: y label
-            let ylabel = '';
-            if (singleMaidr.type == 'bar' || singleMaidr.type == 'line') {
-              ylabel = plot.plotLegend.y;
-            } else if (singleMaidr.type == 'hist') {
-              ylabel = plot.legendY;
-            } else if (
-              singleMaidr.type == 'heat' ||
-              singleMaidr.type == 'box' ||
-              singleMaidr.type == 'point' ||
-              singleMaidr.type == 'line' ||
-              singleMaidr.type.includes('point')
-            ) {
-              ylabel = plot.y_group_label;
-            } else if (
-              singleMaidr.type == 'stacked_bar' ||
-              singleMaidr.type == 'stacked_normalized_bar' ||
-              singleMaidr.type == 'dodged_bar'
-            ) {
-              ylabel = plot.plotLegend.y;
-            }
-            display.displayInfo('y label', ylabel);
-            control.pressedL = false;
-          } else if (e.key == 't') {
-            // T: title
-            display.displayInfo('title', plot.title);
-            control.pressedL = false;
-          } else if (e.key == 's') {
-            // subtitle
-            display.displayInfo('subtitle', plot.subtitle);
-            control.pressedL = false;
-          } else if (e.key == 'c') {
-            // caption
-            display.displayInfo('caption', plot.caption);
-            control.pressedL = false;
-          } else if (e.key == 'f') {
-            display.displayInfo('fill', plot.fill);
-            control.pressedL = false;
-          } else if (e.key != 'l') {
-            control.pressedL = false;
           }
-        }
-      },
-    ]);
+        },
+      ]);
+    }
   }
 
   /**

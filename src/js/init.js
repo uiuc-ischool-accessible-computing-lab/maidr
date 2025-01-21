@@ -65,6 +65,7 @@ function InitMaidr(thisMaidr) {
     window.control = new Control(); // this inits the actual chart object and Position
     window.review = new Review();
     window.display = new Display();
+    window.goto = new Goto();
     window.audio = new Audio();
 
     // blur destruction events

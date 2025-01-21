@@ -25,6 +25,7 @@ gulp.task('scripts', function () {
       './src/js/lineplot.js',
       './src/js/segmented.js',
       './src/js/controls.js',
+      './src/js/goto.js',
       './src/js/init.js',
     ]) // order matters here
     .pipe(concat('maidr.js'))
