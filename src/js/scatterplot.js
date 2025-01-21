@@ -740,12 +740,8 @@ class Layer0Point {
    * @async
    */
   async ClearPoints() {
-    if (document.getElementById('highlight_point'))
-      document.getElementById('highlight_point').remove();
-    let points = document.getElementsByClassName('highlight_point');
-    for (let i = 0; i < points.length; i++) {
-      document.getElementsByClassName('highlight_point')[i].remove();
-    }
+    // kill all .highlight_point
+    document.querySelectorAll('.highlight_point').forEach((e) => e.remove());
   }
 
   /**
@@ -821,12 +817,8 @@ class Layer1Point {
    * @async
    */
   async ClearPoints() {
-    let points = document.getElementsByClassName('highlight_point');
-    for (let i = 0; i < points.length; i++) {
-      document.getElementsByClassName('highlight_point')[i].remove();
-    }
-    if (document.getElementById('highlight_point'))
-      document.getElementById('highlight_point').remove();
+    // kill all .highlight_point
+    document.querySelectorAll('.highlight_point').forEach((e) => e.remove());
   }
 
   /**
