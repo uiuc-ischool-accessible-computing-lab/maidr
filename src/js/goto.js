@@ -1,114 +1,127 @@
 class Goto {
   //locations = ['Max Value', 'Min Value', 'Mean', 'Median'];
-  locations = ['Max Value', 'Min Value'];
+  static options = ['Max Value', 'Min Value'];
 
   constructor() {
-    this.popupOpen = false;
-    this.popupIndex = 0;
-    this.attachBootstrapModal();
+    this.menuOpen = false;
+    this.initMenu();
     this.attachEventListeners();
   }
 
-  attachBootstrapModal() {
-    // Create modal container
-    const modalHtml = `
-      <div class="modal fade hidden" id="goto-modal" tabindex="-1" aria-labelledby="navigationModalLabel">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="navigationModalLabel">Navigate to Location</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+  initMenu() {
+    this.menu = document.createElement('div');
+    this.menu.id = 'goto-menu';
+    this.menu.style.display = 'none';
+    this.menu.innerHTML = `
+            <div class="menu-container">
+                <input 
+                    type="text" 
+                    id="menu-search" 
+                    placeholder="Search locations..." 
+                    aria-label="Search locations to go to"
+                />
+                <ul id="menu-items">
+                    ${Goto.options
+                      .map((option) => `<li><button>${option}</button></li>`)
+                      .join('')}
+                </ul>
             </div>
-            <div class="modal-body">
-              <ul class="list-group" id="goto-list">
-                ${this.locations
-                  .map(
-                    (location, index) => `
-                  <li class="list-group-item ${index === 0 ? 'active' : ''}">
-                    <button type="button" class="btn btn-link">
-                      ${location}
-                    </button>
-                  </li>`
-                  )
-                  .join('')}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="goto_modal_backdrop" class="modal-backdrop hidden"></div>
-      `;
+        `;
 
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    this.menuSearch = this.menu.querySelector('#menu-search');
+    this.menuItems = Array.from(
+      this.menu.querySelectorAll('#menu-items button')
+    );
 
-    constants.gotoModal = document.getElementById('goto-modal');
+    constants.gotoMenu = this.menu;
+    document.body.appendChild(this.menu);
   }
 
-  openPopup() {
-    this.popupOpen = true;
-    this.popupIndex = 0;
-    constants.tabMovement = 0;
-
+  openMenu() {
     this.whereWasMyFocus = document.activeElement;
-    document.getElementById('goto-modal').classList.remove('hidden');
-    document.getElementById('goto_modal_backdrop').classList.remove('hidden');
-    document.querySelector('#goto-modal .close').focus();
-    this.updateSelection(this.popupIndex);
+    constants.tabMovement = 0; // to prevent maidr from being destroyed as we leave the chart
+
+    this.menuOpen = true;
+    this.menu.style.display = 'block';
+    this.menuSearch.focus();
   }
 
-  closePopup() {
-    this.popupOpen = false;
-    // close
-    document.getElementById('goto-modal').classList.add('hidden');
-    document.getElementById('goto_modal_backdrop').classList.add('hidden');
+  closeMenu() {
+    this.menuOpen = false;
+    this.menu.style.display = 'none';
     this.whereWasMyFocus.focus();
     this.whereWasMyFocus = null;
   }
 
-  updateSelection(index) {
-    const items = document.querySelectorAll('#goto-list button');
-    Array.from(items).forEach((item, idx) => {
-      item.classList.toggle('active', idx === index);
+  filterItems(query) {
+    const lowerCaseQuery = query.toLowerCase();
+    this.menuItems.forEach((item) => {
+      if (item.textContent.toLowerCase().includes(lowerCaseQuery)) {
+        item.parentElement.style.display = 'block';
+      } else {
+        item.parentElement.style.display = 'none';
+      }
     });
   }
 
   attachEventListeners() {
+    this.menuSearch.addEventListener('input', (event) =>
+      this.filterItems(event.target.value)
+    );
+
     // Open the modal when the user presses 'g'
     constants.events.push([
       [constants.chart, constants.brailleInput],
-      'keydown',
+      'keyup',
       function (event) {
         if (event.key === 'g' && !goto.popupOpen) {
-          goto.openPopup();
+          goto.openMenu();
         }
       },
     ]);
-    // arrow keys to navigate the list, enter to select, escape to close
+    // arrow keys to navigate the list, escape to close
     constants.events.push([
-      constants.gotoModal,
+      constants.gotoMenu,
       'keydown',
       function (event) {
-        if (goto.popupOpen) {
+        if (goto.menuOpen) {
+          const focusableElements = [
+            goto.menuSearch,
+            ...goto.menuItems.filter(
+              (item) => item.parentElement.style.display !== 'none'
+            ),
+          ];
+          const currentIndex = focusableElements.indexOf(
+            document.activeElement
+          );
+
           if (event.key === 'ArrowDown') {
             event.preventDefault();
-            goto.popupIndex = (goto.popupIndex + 1) % goto.locations.length;
-            goto.updateSelection(goto.popupIndex);
+            const nextIndex = (currentIndex + 1) % focusableElements.length;
+            focusableElements[nextIndex]?.focus();
           } else if (event.key === 'ArrowUp') {
             event.preventDefault();
-            goto.popupIndex =
-              (goto.popupIndex - 1 + goto.locations.length) %
-              goto.locations.length;
-            goto.updateSelection(goto.popupIndex);
-          } else if (event.key === 'Enter') {
-            event.preventDefault();
-            const selectedLocation = goto.locations[goto.popupIndex];
-            goto.closePopup();
-            goto.goToLocation(selectedLocation);
-          } else if (event.key === 'Escape') {
-            goto.closePopup();
+            const prevIndex =
+              (currentIndex - 1 + focusableElements.length) %
+              focusableElements.length;
+            focusableElements[prevIndex]?.focus();
+          } else {
+            if (event.key === 'Escape') {
+              goto.closeMenu();
+            }
           }
+        }
+      },
+    ]);
+    // enter to select, which we register as a click event so it works with screen readers
+    constants.events.push([
+      constants.gotoMenu,
+      'click',
+      function (event) {
+        if (event.target.tagName === 'BUTTON') {
+          let loc = event.target.textContent;
+          goto.closeMenu();
+          goto.goToLocation(loc);
         }
       },
     ]);
