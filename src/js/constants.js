@@ -660,6 +660,7 @@ class Constants {
    * @default Array(10).fill(null)
    */
   mark = Array(10).fill(null);
+  markText = Array(10).fill(null);
 
   /**
    * Stops the autoplay if it is currently running.
@@ -1053,6 +1054,22 @@ class Menu {
                                         <td>Copy full chat history in AI Chat View</td>
                                         <td>${constants.alt} + Shift + A</td>
                                     </tr>
+                                    <tr>
+                                        <td>Mark current position</td>
+                                        <td>M # (Shift + m, then a number 0-9)</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Play marked position</td>
+                                        <td>m # (m, then a number 0-9)</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Jump to marked position</td>
+                                        <td>j # (j, then a number 0-9)</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Goto location menu</td>
+                                        <td>g</td>
+                                      </tr>
                                 </tbody>
                             </table>
                         </div>

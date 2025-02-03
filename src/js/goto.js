@@ -38,9 +38,15 @@ class Goto {
   }
 
   openMenu() {
+    // save the current focus so we can return to it later
     this.whereWasMyFocus = document.activeElement;
     constants.tabMovement = 0; // to prevent maidr from being destroyed as we leave the chart
 
+    // clear the search input
+    this.menuSearch.value = '';
+    this.filterItems('');
+
+    // open the menu etc
     this.menuOpen = true;
     this.menu.style.display = 'block';
     this.menuSearch.focus();

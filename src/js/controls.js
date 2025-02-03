@@ -551,7 +551,7 @@ class Control {
     ]);
 
     // mark and recall
-    // mark with M + # (0-9), recall with m + # (0-9)
+    // mark with M + # (0-9), play with m + # (0-9), jump to with j + #
     // available in chart and braille, not review
     let lastKeytime = 0;
     let lastKey = null;
@@ -569,17 +569,36 @@ class Control {
           if (lastKey == 'M' && /[0-9]/.test(key)) {
             const markIndex = parseInt(key, 10);
             constants.mark[markIndex] = JSON.parse(JSON.stringify(position)); // deep copy
+            constants.markText[markIndex] = JSON.parse(
+              JSON.stringify(constants.verboseText)
+            ); // deep copy
             display.announceText('Marked position ' + markIndex);
           }
 
-          // recall with m
-          if (lastKey == 'm' && /[0-9]/.test(key)) {
+          // jump with j
+          if (lastKey == 'j' && /[0-9]/.test(key)) {
             const recallIndex = parseInt(key, 10);
             if (constants.mark[recallIndex]) {
               position = JSON.parse(
                 JSON.stringify(constants.mark[recallIndex])
               ); // deep copy
               control.UpdateAll();
+            } else {
+              display.announceText(
+                'No position marked at index ' + recallIndex
+              );
+            }
+          }
+
+          // play with m
+          if (lastKey == 'm' && /[0-9]/.test(key)) {
+            const recallIndex = parseInt(key, 10);
+            if (constants.markText[recallIndex]) {
+              display.announceText(constants.markText[recallIndex]);
+            } else {
+              display.announceText(
+                'No position marked at index ' + recallIndex
+              );
             }
           }
         }
