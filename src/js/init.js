@@ -10,13 +10,40 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // set focus events for all charts matching maidr ids
   let maidrObjects = [];
-  if (typeof maidr != 'undefined') {
-    if (!Array.isArray(maidr)) {
-      maidrObjects.push(maidr);
+  
+  // First check for globally defined maidr variable (script tag method)
+  if (typeof window.maidr !== 'undefined') {
+    if (!Array.isArray(window.maidr)) {
+      maidrObjects.push(window.maidr);
     } else {
-      maidrObjects = maidr;
+      maidrObjects = maidrObjects.concat(window.maidr);
     }
   }
+
+  // Then look for elements with maidr attribute
+  const elementsWithMaidrAttr = document.querySelectorAll('[maidr]');
+  elementsWithMaidrAttr.forEach(element => {
+    try {
+      const maidrData = JSON.parse(element.getAttribute('maidr'));
+      // If id is not provided in the JSON, use the element's id
+      if (!maidrData.id) {
+        if (element.id) {
+          maidrData.id = element.id;
+        } else {
+          // Generate a random id if none exists
+          element.id = 'maidr-' + Math.random().toString(36).substr(2, 9);
+          maidrData.id = element.id;
+        }
+      }
+      // Check if this id already exists in maidrObjects to avoid duplicates
+      if (!maidrObjects.some(obj => obj.id === maidrData.id)) {
+        maidrObjects.push(maidrData);
+      }
+    } catch (e) {
+      console.error('Failed to parse maidr attribute:', e);
+    }
+  });
+
   // set focus events for all maidr ids
   DestroyMaidr(); // just in case
   window.maidrIds = [];
