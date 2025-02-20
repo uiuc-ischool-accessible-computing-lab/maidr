@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // set focus events for all charts matching maidr ids
   let maidrObjects = [];
-  
+
   // First check for globally defined maidr variable (script tag method)
   if (typeof window.maidr !== 'undefined') {
     if (!Array.isArray(window.maidr)) {
@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
   }
 
   // Then look for elements with maidr attribute
-  const elementsWithMaidrAttr = document.querySelectorAll('[maidr]');
-  elementsWithMaidrAttr.forEach(element => {
+  const elementsWithMaidrAttr = document.querySelectorAll('[maidr-data]');
+  elementsWithMaidrAttr.forEach((element) => {
     try {
-      const maidrData = JSON.parse(element.getAttribute('maidr'));
+      const maidrData = JSON.parse(element.getAttribute('maidr-data'));
       // If id is not provided in the JSON, use the element's id
       if (!maidrData.id) {
         if (element.id) {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
       }
       // Check if this id already exists in maidrObjects to avoid duplicates
-      if (!maidrObjects.some(obj => obj.id === maidrData.id)) {
+      if (!maidrObjects.some((obj) => obj.id === maidrData.id)) {
         maidrObjects.push(maidrData);
       }
     } catch (e) {
