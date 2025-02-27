@@ -1,6 +1,6 @@
 // events and init functions
 // we do some setup, but most of the work is done when user focuses on an element matching an id from maidr user data
-document.addEventListener('DOMContentLoaded', function (e) {
+function init(id) {
   // we wrap in DOMContentLoaded to make sure everything has loaded before we run anything
 
   // create global vars
@@ -19,30 +19,50 @@ document.addEventListener('DOMContentLoaded', function (e) {
       maidrObjects = maidrObjects.concat(window.maidr);
     }
   }
-
-  // Then look for elements with maidr attribute
-  const elementsWithMaidrAttr = document.querySelectorAll('[maidr-data]');
-  elementsWithMaidrAttr.forEach((element) => {
-    try {
-      const maidrData = JSON.parse(element.getAttribute('maidr-data'));
+  if (id !== undefined) {
+    const elementWithId = document.getElementById(id);
+    if (elementWithId) {
+      const maidrData = JSON.parse(elementWithId.getAttribute('maidr-data'));
       // If id is not provided in the JSON, use the element's id
       if (!maidrData.id) {
-        if (element.id) {
-          maidrData.id = element.id;
+        if (elementWithId.id) {
+          maidrData.id = elementWithId.id;
         } else {
           // Generate a random id if none exists
-          element.id = 'maidr-' + Math.random().toString(36).substr(2, 9);
-          maidrData.id = element.id;
+          elementWithId.id = 'maidr-' + Math.random().toString(36).substr(2, 9);
+          maidrData.id = elementWithId.id;
         }
       }
       // Check if this id already exists in maidrObjects to avoid duplicates
       if (!maidrObjects.some((obj) => obj.id === maidrData.id)) {
         maidrObjects.push(maidrData);
       }
-    } catch (e) {
-      console.error('Failed to parse maidr attribute:', e);
     }
-  });
+  } else {
+    // Then look for elements with maidr attribute
+    const elementsWithMaidrAttr = document.querySelectorAll('[maidr-data]');
+    elementsWithMaidrAttr.forEach((element) => {
+      try {
+        const maidrData = JSON.parse(element.getAttribute('maidr-data'));
+        // If id is not provided in the JSON, use the element's id
+        if (!maidrData.id) {
+          if (element.id) {
+            maidrData.id = element.id;
+          } else {
+            // Generate a random id if none exists
+            element.id = 'maidr-' + Math.random().toString(36).substr(2, 9);
+            maidrData.id = element.id;
+          }
+        }
+        // Check if this id already exists in maidrObjects to avoid duplicates
+        if (!maidrObjects.some((obj) => obj.id === maidrData.id)) {
+          maidrObjects.push(maidrData);
+        }
+      } catch (e) {
+        console.error('Failed to parse maidr attribute:', e);
+      }
+    });
+  }
 
   // set focus events for all maidr ids
   DestroyMaidr(); // just in case
@@ -63,9 +83,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
       // blur done elsewhere
     }
   }
-
   // init components like alt text on just the first chart
   CreateChartComponents(firstMaidr, true);
+}
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  init();
 });
 
 /**
