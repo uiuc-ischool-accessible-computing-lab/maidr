@@ -1686,6 +1686,7 @@ class Menu {
   UpdateHtml() {
     // set aria attributes
     constants.infoDiv.setAttribute('aria-live', constants.ariaMode);
+
     document
       .getElementById(constants.announcement_container_id)
       .setAttribute('aria-live', constants.ariaMode);

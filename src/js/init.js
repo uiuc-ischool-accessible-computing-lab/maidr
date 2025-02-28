@@ -20,6 +20,17 @@ function init(id) {
     }
   }
   if (id !== undefined) {
+    constants.main_container_id = constants.main_container_id + '-' + id;
+    constants.chart_container_id = constants.chart_container_id + '-' + id;
+    constants.braille_container_id = constants.braille_container_id + '-' + id;
+    constants.braille_input_id = constants.braille_input_id + '-' + id;
+    constants.info_id = constants.info_id + '-' + id;
+    constants.announcement_container_id =
+      constants.announcement_container_id + '-' + id;
+    constants.review_id_container = constants.review_id_container + '-' + id;
+    constants.review_id = constants.review_id + '-' + id;
+    constants.end_chime_id = constants.end_chime_id + '-' + id;
+
     const elementWithId = document.getElementById(id);
     if (elementWithId) {
       let maidrData;
@@ -92,10 +103,12 @@ function init(id) {
   // init components like alt text on just the first chart
   CreateChartComponents(firstMaidr, true);
 }
-
-document.addEventListener('DOMContentLoaded', function (e) {
-  init();
-});
+window.init = init;
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function (e) {
+    init();
+  });
+}
 
 /**
  * Initializes the Maidr app for a given chart, taken from the matching ID of the focused chart
@@ -464,7 +477,9 @@ function CreateChartComponents(thisMaidr, chartOnly = false) {
       .getElementById(constants.info_id)
       .insertAdjacentHTML(
         'afterend',
-        '<div id="announcements" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
+        '<div id="' +
+          constants.announcement_container_id +
+          '" aria-live="assertive" aria-atomic="true" class="mb-3"></div>\n'
       );
 
     // review mode form field
