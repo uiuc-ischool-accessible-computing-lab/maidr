@@ -93,7 +93,7 @@
 }
 
 /* Menu stuff */
-.modal {
+.maidr-modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -102,7 +102,6 @@
   z-index: 1072;
   overflow-x: hidden;
   overflow-y: auto;
-
   opacity: 1;
   transition: opacity 0.15s linear;
 }

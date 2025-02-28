@@ -928,7 +928,7 @@ class Menu {
 
   // initial html for the menu
   menuHtml = `
-        <div id="menu" class="modal hidden" role="dialog" tabindex="-1">
+        <div id="menu" class="maidr-modal hidden" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1846,7 +1846,7 @@ class ChatLLM {
    */
   CreateComponent() {
     let html = `
-        <div id="chatLLM" class="modal hidden" role="dialog" tabindex="-1">
+        <div id="chatLLM" class="maidr-modal hidden" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -2985,7 +2985,7 @@ class Description {
   CreateComponent() {
     // modal containing description summary stuff
     let html = `
-        <div id="description" class="modal hidden" role="dialog" tabindex="-1">
+        <div id="description" class="maidr-modal hidden" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document" tabindex="0">
                 <div class="modal-content">
                     <div class="modal-header">
