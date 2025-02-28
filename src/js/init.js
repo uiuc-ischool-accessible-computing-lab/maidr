@@ -22,7 +22,13 @@ function init(id) {
   if (id !== undefined) {
     const elementWithId = document.getElementById(id);
     if (elementWithId) {
-      const maidrData = JSON.parse(elementWithId.getAttribute('maidr-data'));
+      let maidrData;
+      try {
+        maidrData = JSON.parse(elementWithId.getAttribute('maidr-data'));
+      } catch (e) {
+        console.error('Failed to parse maidr attribute:', e);
+        return;
+      }
       // If id is not provided in the JSON, use the element's id
       if (!maidrData.id) {
         if (elementWithId.id) {
